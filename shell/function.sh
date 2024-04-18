@@ -15,13 +15,13 @@ check_axeron() {
 
 get_ram_percentage() {
     # Mendapatkan penggunaan RAM
-    used_ram=$(dumpsys meminfo | grep "Used RAM" | cut -d ":" -f 2 | tr -d '[:space:]')
+    used_ram=$(dumpsys meminfo | grep "Used RAM" | tr -s ' ' | cut -d ' ' -f 3)
 
     # Mendapatkan total RAM
-    total_ram=$(cat /proc/meminfo | grep "MemTotal" | cut -d ":" -f 2 | tr -d '[:space:]')
+    total_ram=$(cat /proc/meminfo | grep "MemTotal" | tr -s ' ' | cut -d ' ' -f 2)
 
     # Menghitung persentase penggunaan RAM
-    ram_percentage=$(echo "scale=2; ($used_ram / $total_ram) * 100" | bc)
+    ram_percentage=$(echo "scale=2; ($used_ram * 100) / $total_ram" | bc)
 
     # Mengembalikan persentase sebagai angka saja tanpa desimal
     ram_percentage_int=$(printf "%.0f" "$ram_percentage")
