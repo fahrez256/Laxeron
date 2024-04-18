@@ -39,13 +39,13 @@ axeroncore() {
 }
 
 axeron() {
-  prop=$(cat <<-EOF
-  id="SC"
-  name="StormCore"
-  version="v1.1-stable"
-  versionCode=10
-  author="FahrezONE"
-  description="StormCore is an online based default module (no tweaks)"
+prop=$(cat <<-EOF
+id="SC"
+name="StormCore"
+version="v1.1-stable"
+versionCode=10
+author="FahrezONE"
+description="StormCore is an online based default module (no tweaks)"
 EOF
 )
   echo -e "$prop" > "${EXECPATH}/axeron.prop"
