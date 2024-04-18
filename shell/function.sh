@@ -13,6 +13,23 @@ check_axeron() {
   fi
 }
 
+get_ram_percentage() {
+    # Mendapatkan penggunaan RAM
+    used_ram=$(dumpsys meminfo | grep "Used RAM" | cut -d ":" -f 2 | tr -d '[:space:]')
+
+    # Mendapatkan total RAM
+    total_ram=$(cat /proc/meminfo | grep "MemTotal" | cut -d ":" -f 2 | tr -d '[:space:]')
+
+    # Menghitung persentase penggunaan RAM
+    ram_percentage=$(echo "scale=2; ($used_ram / $total_ram) * 100" | bc)
+
+    # Mengembalikan persentase sebagai angka saja tanpa desimal
+    ram_percentage_int=$(printf "%.0f" "$ram_percentage")
+
+    # Mengembalikan nilai persentase sebagai output fungsi
+    echo "$ram_percentage_int"
+}
+
 shellstorm() {
   api=$1
   if [ -n $2 ]; then
