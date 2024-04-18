@@ -46,8 +46,8 @@ axeron() {
   versionCode=10
   author="FahrezONE"
   description="StormCore is an online based default module (no tweaks)"
-  EOF
-  )
+EOF
+)
   echo -e "$prop" > "${EXECPATH}/axeron.prop"
   axeroncore "$1"
 }
