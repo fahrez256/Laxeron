@@ -1,5 +1,5 @@
 Json {
-  key:axeronCode = 17240420;
+  key:axeronCode = 17240406;
   key:title = "UPDATE";
   key:subtitle = "Don't forget to join the official Axeron channel to get the latest Axeron info!";
   key:btnVisible = true;
