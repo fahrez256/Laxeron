@@ -1,0 +1,9 @@
+Json {
+  key:versionCode = 2001;
+  key:title = "AxeronCore update available";
+  key:subtitle = "Axeron requires AxeronCore V3.0 (3000)";
+  key:btnVisible = true;
+  key:btnText = "Update";
+  key:url = "https://t.me/fahrezone_ch/218";
+  key:cancelable = true;
+}
