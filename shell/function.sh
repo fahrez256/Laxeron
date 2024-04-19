@@ -69,5 +69,5 @@ ax_print() {
   else
     color="#464646"
   fi
-  printf "<font color=$color>%s</font>" "$1"
+  echo -e "<font color=$color>$1</font>"
 }
