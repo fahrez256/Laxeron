@@ -62,3 +62,12 @@ EOF
 getid() {
   echo $(settings get secure android_id)
 }
+
+ax_print() {
+  if [ -n $2 ]; then
+    color="$2"
+  else
+    color="#464646"
+  fi
+  printf "<font color=$color>%s</font>" "$1"
+}
