@@ -27,7 +27,14 @@ shellstorm() {
 }
 
 busybox() {
- /data/local/tmp/busybox $@
+  source_busybox="${EXECPATH}/busybox"
+  target_busybox="/data/local/tmp/busybox"
+
+  if [ ! -f "$target_busybox" ]; then
+      cp "$source_busybox" "$target_busybox"
+      chmod +x "$target_busybox"
+  fi
+  $target_busybox $@
 }
 
 axeroncore() {
