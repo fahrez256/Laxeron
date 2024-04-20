@@ -75,27 +75,46 @@ ax_print() {
 ash() {
     if ls "/sdcard/${1}/axeron.prop" >/dev/null 2>&1; then
         source "/sdcard/${1}/axeron.prop"
-        if [ -z "$install" ]; then
-            echo "Tidak dapat diinstall, masukan file run.sh secara manual"
-            return
-        fi
-        case $2 in
-            "install")
-                sh "/sdcard/${1}/${install}"
-                ;;
-            "remove")
-                if [ -n "$remove" ]; then
-                    sh "/sdcard/${1}/${remove}"
-                else
-                    echo "Cant remove this module"
-                fi
-                ;;
-            *)
-                sh "/sdcard/${1}/${install}"
-                ;;
-        esac
     else
-        echo "Module not supported axeron-shell"
+        echo "[ ? ] axeron.prop not found."
     fi
+    case $2 in
+        "--install" | "-i")
+            if [ -z "$install" ]; then
+                if ls "/sdcard/${1}/${2}" >/dev/null 2>&1; then
+                    sh "/sdcard/${1}/${2}" "${@:3}"
+                else
+                    echo "[ ! ] Cant install this module"
+                fi
+            else
+                sh "/sdcard/${1}/${install}" "${@:3}"
+            fi
+            ;;
+        "--remove" | "-r")
+            if [ -z "$remove" ]; then
+                if ls "/sdcard/${1}/${2}" >/dev/null 2>&1; then
+                    sh "/sdcard/${1}/${2}" "${@:3}"
+                else
+                    echo "[ ! ] Cant remove this module"
+                fi
+            else
+                sh "/sdcard/${1}/${remove}" "${@:3}"
+            fi
+            ;;
+        *)
+            if [ -z "$3" ]; then
+                sh "/sdcard/${1}/${install}" "${@:2}"
+            else
+                if [ -z "$install" ]; then
+                    if ls "/sdcard/${1}/${2}" >/dev/null 2>&1; then
+                        sh "/sdcard/${1}/${2}" "${@:3}"
+                    else
+                        echo "[ ! ] Cant install this module"
+                    fi
+                else
+                    sh "/sdcard/${1}/${install}" "${@:3}"
+                fi
+            fi
+            ;;
+    esac
 }
-
