@@ -82,9 +82,10 @@ ash() {
     case $2 in
         "--install" | "-i")
             if [ -z "$install" ]; then
-                if ls "${path}/${3}" >/dev/null 2>&1; then
+                local pathInstall="${path}/${3}"
+                if ls "${pathInstall}" >/dev/null 2>&1; then
                     shift 3
-                    sh "${path}/${3}" "$@"
+                    sh "${pathInstall}" "$@"
                 else
                     echo "[ ! ] Cant install this module"
                 fi
@@ -95,9 +96,10 @@ ash() {
             ;;
         "--remove" | "-r")
             if [ -z "$remove" ]; then
-                if ls "${path}/${3}" >/dev/null 2>&1; then
+                local pathRemove="${path}/${3}"
+                if ls "${pathRemove}" >/dev/null 2>&1; then
                     shift 3
-                    sh "${path}/${3}" "$@"
+                    sh "${pathRemove}" "$@"
                 else
                     echo "[ ! ] Cant remove this module"
                 fi
@@ -112,14 +114,15 @@ ash() {
                 sh "${path}/${install}" "$@"
             else
                 if [ -z "${install}" ]; then
-                    if ls "${path}/${2}" >/dev/null 2>&1; then
+                    local pathInstall="${path}/${2}"
+                    if ls "${pathInstall}" >/dev/null 2>&1; then
                         shift 2
-                        sh "${path}/${2}" "$@"
+                        sh "${pathInstall}" "$@"
                     else
                         echo "[ ! ] Cant install this module"
                     fi
                 else
-                    shift 2
+                    shift
                     sh "${path}/${install}" "$@"
                 fi
             fi
