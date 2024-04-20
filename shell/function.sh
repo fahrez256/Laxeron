@@ -91,7 +91,7 @@ ash() {
 
     # Check if the specified path exists
     if [ ! -d "$path" ]; then
-        echo "[ ? ] Path not found: $path"
+        echo "[ ! ] Path not found: $path"
         return 1
     fi
 
@@ -100,7 +100,6 @@ ash() {
         source "${path}/axeron.prop"
     else
         echo "[ ? ] axeron.prop not found in $path."
-        return 1
     fi
 
     case $2 in
