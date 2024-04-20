@@ -89,11 +89,24 @@ ash() {
 
     local path="/sdcard/${1}"
 
-    # Check if the specified path exists
-    if [ ! -d "$path" ]; then
-        echo "[ ! ] Path not found: $path"
-        return 1
-    fi
+    case $1 in
+        "--help" | "-h")
+            # Show usage information
+            echo "Usage: ash <path> [options] [arguments]"
+            echo "Options:"
+            echo "  --install, -i <module>: Install a module from the specified path"
+            echo "  --remove, -r <module>: Remove a module from the specified path"
+            echo "  --help, -h: Show this help message"
+            return 0
+            ;;
+        *)
+            # Check if the specified path exists
+            if [ ! -d "$path" ]; then
+                echo "[ ? ] Path not found: $path"
+                return 1
+            fi
+            ;;
+    esac
 
     # Check if axeron.prop exists in the specified path
     if ls "${path}/axeron.prop" >/dev/null 2>&1; then
@@ -131,17 +144,9 @@ ash() {
                 sh "${path}/${remove}" "$@"
             fi
             ;;
-        "--help" | "-h")
-            # Show usage information
-            echo "Usage: ash <path> [options] [arguments]"
-            echo "Options:"
-            echo "  --install, -i <module>: Install a module from the specified path"
-            echo "  --remove, -r <module>: Remove a module from the specified path"
-            echo "  --help, -h: Show this help message"
-            ;;
         *)
             if [ -z "${3}" ]; then
-                shift
+                shift 2
                 sh "${path}/${install}" "$@"
             else
                 if [ -z "${install}" ]; then
@@ -153,7 +158,7 @@ ash() {
                         echo "[ ! ] Cant install this module"
                     fi
                 else
-                    shift
+                    shift 2
                     sh "${path}/${install}" "$@"
                 fi
             fi
