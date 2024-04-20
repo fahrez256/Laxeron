@@ -81,19 +81,25 @@ ash() {
     #   --remove, -r <module>: Remove a module from the specified path
     #   --help, -h: Show this help message
 
+    # Check if no arguments are provided
+    if [ $# -eq 0 ]; then
+        echo "Usage: ash <path> [options] [arguments]"
+        return 1
+    fi
+
     local path="/sdcard/${1}"
+
+    # Check if the specified path exists
+    if [ ! -d "$path" ]; then
+        echo "[ ? ] Path not found: $path"
+        return 1
+    fi
 
     # Check if axeron.prop exists in the specified path
     if ls "${path}/axeron.prop" >/dev/null 2>&1; then
         source "${path}/axeron.prop"
     else
-        echo "[ ? ] axeron.prop not found."
-        return 1
-    fi
-
-    # Check if no arguments are provided
-    if [ $# -eq 0 ]; then
-        echo "Usage: ash <path> [options] [arguments]"
+        echo "[ ? ] axeron.prop not found in $path."
         return 1
     fi
 
