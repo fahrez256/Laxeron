@@ -83,7 +83,7 @@ ash() {
 
     # Check if no arguments are provided
     if [ $# -eq 0 ]; then
-        echo "Usage: ash <path> [options] [arguments]"
+        echo -e "Usage: ash <path> [options] [arguments]"
         return 1
     fi
 
@@ -92,10 +92,10 @@ ash() {
     case $1 in
         "--help" | "-h")
             # Show usage information
-            echo "Usage: ash <path> [options] [arguments]"
+            echo -e "Usage: ash <path> [options] [arguments]"
             echo "Options:"
-            echo "  --install, -i <module>: Install a module from the specified path"
-            echo "  --remove, -r <module>: Remove a module from the specified path"
+            echo "  --install, -i <module>: Install a module from path"
+            echo "  --remove, -r <module>: Remove a module from path"
             echo "  --help, -h: Show this help message"
             return 0
             ;;
