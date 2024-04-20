@@ -73,11 +73,29 @@ ax_print() {
 }
 
 ash() {
-if ls /sdcard/${1}/axeron.prop 1> /dev/null 2>&1; then
-    source /sdcard/${1}/axeron.prop
-    echo $install
-    echo "installing"
-else
-    echo "File a.txt tidak ada di sdcard."
-fi
+    if ls "/sdcard/${1}/axeron.prop" >/dev/null 2>&1; then
+        source "/sdcard/${1}/axeron.prop"
+        if [ -z "$install" ]; then
+            echo "Tidak dapat diinstall, masukan file run.sh secara manual"
+            return
+        fi
+        case $2 in
+            "install")
+                sh "/sdcard/${1}/${install}"
+                ;;
+            "remove")
+                if [ -n "$remove" ]; then
+                    sh "/sdcard/${1}/${remove}"
+                else
+                    echo "Cant remove this module"
+                fi
+                ;;
+            *)
+                sh "/sdcard/${1}/${install}"
+                ;;
+        esac
+    else
+        echo "Module not supported axeron-shell"
+    fi
 }
+
