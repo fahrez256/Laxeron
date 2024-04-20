@@ -93,6 +93,7 @@ ash() {
         "--help" | "-h")
             # Show usage information
             echo -e "Save the Module in the AxeronModules folder!"
+            echo ""
             echo -e "Usage: ash <path> [options] [arguments]"
             echo "Options:"
             echo "  --install, -i <module>: Install a module from path"
