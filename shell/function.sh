@@ -73,5 +73,5 @@ ax_print() {
 }
 
 ash() {
- sh -c /sdcard/$@
+ sh /sdcard/$@
 }
