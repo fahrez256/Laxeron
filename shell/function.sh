@@ -76,6 +76,7 @@ ash() {
 if ls /sdcard/${1}/axeron.prop 1> /dev/null 2>&1; then
     source /sdcard/${1}/axeron.prop
     echo $install
+    echo "installing"
 else
     echo "File a.txt tidak ada di sdcard."
 fi
