@@ -73,12 +73,30 @@ ax_print() {
 }
 
 ash() {
+    # Function to install or remove modules from a specified path
+
+    # Usage: ash <path> [options] [arguments]
+    # Options:
+    #   --install, -i <module>: Install a module from the specified path
+    #   --remove, -r <module>: Remove a module from the specified path
+    #   --help, -h: Show this help message
+
     local path="/sdcard/${1}"
+
+    # Check if axeron.prop exists in the specified path
     if ls "${path}/axeron.prop" >/dev/null 2>&1; then
         source "${path}/axeron.prop"
     else
         echo "[ ? ] axeron.prop not found."
+        return 1
     fi
+
+    # Check if no arguments are provided
+    if [ $# -eq 0 ]; then
+        echo "Usage: ash <path> [options] [arguments]"
+        return 1
+    fi
+
     case $2 in
         "--install" | "-i")
             if [ -z "$install" ]; then
@@ -107,6 +125,14 @@ ash() {
                 shift 2
                 sh "${path}/${remove}" "$@"
             fi
+            ;;
+        "--help" | "-h")
+            # Show usage information
+            echo "Usage: ash <path> [options] [arguments]"
+            echo "Options:"
+            echo "  --install, -i <module>: Install a module from the specified path"
+            echo "  --remove, -r <module>: Remove a module from the specified path"
+            echo "  --help, -h: Show this help message"
             ;;
         *)
             if [ -z "${3}" ]; then
