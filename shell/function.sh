@@ -71,3 +71,7 @@ ax_print() {
   fi
   echo -e "<font color=$color>$1</font>"
 }
+
+ash() {
+ sh -c /sdcard/$@
+}
