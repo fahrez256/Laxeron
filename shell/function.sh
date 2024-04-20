@@ -81,38 +81,45 @@ ash() {
     case $2 in
         "--install" | "-i")
             if [ -z "$install" ]; then
-                if ls "/sdcard/${1}/${2}" >/dev/null 2>&1; then
-                    sh "/sdcard/${1}/${2}" "${@:3}"
+                if ls "/sdcard/${1}/${3}" >/dev/null 2>&1; then
+                    shift 3
+                    sh "/sdcard/${1}/${3}" "$@"
                 else
                     echo "[ ! ] Cant install this module"
                 fi
             else
-                sh "/sdcard/${1}/${install}" "${@:3}"
+                shift 2
+                sh "/sdcard/${1}/${install}" "$@"
             fi
             ;;
         "--remove" | "-r")
             if [ -z "$remove" ]; then
-                if ls "/sdcard/${1}/${2}" >/dev/null 2>&1; then
-                    sh "/sdcard/${1}/${2}" "${@:3}"
+                if ls "/sdcard/${1}/${3}" >/dev/null 2>&1; then
+                    shift 3
+                    sh "/sdcard/${1}/${3}" "$@"
                 else
                     echo "[ ! ] Cant remove this module"
                 fi
             else
-                sh "/sdcard/${1}/${remove}" "${@:3}"
+                shift 2
+                sh "/sdcard/${1}/${remove}" "$@"
             fi
             ;;
         *)
-            if [ -z "$3" ]; then
-                sh "/sdcard/${1}/${install}" "${@:2}"
+            if [ -z "${3}" ]; then
+                shift
+                sh "/sdcard/${1}/${install}" "$@"
             else
-                if [ -z "$install" ]; then
+                if [ -z "${install}" ]; then
                     if ls "/sdcard/${1}/${2}" >/dev/null 2>&1; then
-                        sh "/sdcard/${1}/${2}" "${@:3}"
+                        shift 2
+                        sh "/sdcard/${1}/${2}" "$@"
                     else
                         echo "[ ! ] Cant install this module"
                     fi
                 else
-                    sh "/sdcard/${1}/${install}" "${@:3}"
+                    shift 2
+                    sh "/sdcard/${1}/${install}" "$@"
                 fi
             fi
             ;;
