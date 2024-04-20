@@ -101,6 +101,13 @@ ash() {
             echo "  --help, -h: Show this help message"
             return 0
             ;;
+        "--list" | "-s")
+            # Show usage information
+            echo "List of Modules"
+            echo ""
+            ls /sdcard/AxeronModules
+            return 0
+            ;;
         *)
             # Check if the specified path exists
             if [ ! -d "$path" ]; then
