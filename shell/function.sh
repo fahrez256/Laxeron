@@ -101,7 +101,7 @@ ash() {
             echo "  --help, -h: Show this help message"
             return 0
             ;;
-        "--list" | "-s")
+        "--list" | "-l")
             # Show usage information
             echo "List of Modules"
             echo ""
