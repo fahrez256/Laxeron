@@ -73,53 +73,54 @@ ax_print() {
 }
 
 ash() {
-    if ls "/sdcard/${1}/axeron.prop" >/dev/null 2>&1; then
-        source "/sdcard/${1}/axeron.prop"
+    local path="/sdcard/${1}"
+    if ls "${path}/axeron.prop" >/dev/null 2>&1; then
+        source "${path}/axeron.prop"
     else
         echo "[ ? ] axeron.prop not found."
     fi
     case $2 in
         "--install" | "-i")
             if [ -z "$install" ]; then
-                if ls "/sdcard/${1}/${3}" >/dev/null 2>&1; then
+                if ls "${path}/${3}" >/dev/null 2>&1; then
                     shift 3
-                    sh "/sdcard/${1}/${3}" "$@"
+                    sh "${path}/${3}" "$@"
                 else
                     echo "[ ! ] Cant install this module"
                 fi
             else
                 shift 2
-                sh "/sdcard/${1}/${install}" "$@"
+                sh "${path}/${install}" "$@"
             fi
             ;;
         "--remove" | "-r")
             if [ -z "$remove" ]; then
-                if ls "/sdcard/${1}/${3}" >/dev/null 2>&1; then
+                if ls "${path}/${3}" >/dev/null 2>&1; then
                     shift 3
-                    sh "/sdcard/${1}/${3}" "$@"
+                    sh "${path}/${3}" "$@"
                 else
                     echo "[ ! ] Cant remove this module"
                 fi
             else
                 shift 2
-                sh "/sdcard/${1}/${remove}" "$@"
+                sh "${path}/${remove}" "$@"
             fi
             ;;
         *)
             if [ -z "${3}" ]; then
                 shift
-                sh "/sdcard/${1}/${install}" "$@"
+                sh "${path}/${install}" "$@"
             else
                 if [ -z "${install}" ]; then
-                    if ls "/sdcard/${1}/${2}" >/dev/null 2>&1; then
+                    if ls "${path}/${2}" >/dev/null 2>&1; then
                         shift 2
-                        sh "/sdcard/${1}/${2}" "$@"
+                        sh "${path}/${2}" "$@"
                     else
                         echo "[ ! ] Cant install this module"
                     fi
                 else
                     shift 2
-                    sh "/sdcard/${1}/${install}" "$@"
+                    sh "${path}/${install}" "$@"
                 fi
             fi
             ;;
