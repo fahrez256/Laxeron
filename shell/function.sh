@@ -146,7 +146,7 @@ ash() {
             ;;
         *)
             if [ -z "${3}" ]; then
-                shift 2
+                shift
                 sh "${path}/${install}" "$@"
             else
                 if [ -z "${install}" ]; then
@@ -158,7 +158,7 @@ ash() {
                         echo "[ ! ] Cant install this module"
                     fi
                 else
-                    shift 2
+                    shift
                     sh "${path}/${install}" "$@"
                 fi
             fi
