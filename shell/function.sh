@@ -87,7 +87,7 @@ ash() {
         return 1
     fi
 
-    local path="/sdcard/${1}"
+    local path="/sdcard/AxeronModules/${1}"
 
     case $1 in
         "--help" | "-h")
