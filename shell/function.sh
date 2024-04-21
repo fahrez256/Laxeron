@@ -102,7 +102,7 @@ whitelist() {
             ;;
         *)
             if [ ! -f "$whitelist_file" ]; then
-                echo "Invalid operation. Use '+' to add and '-' to remove."
+                echo "Usage: whitelist [+/-] [package_name]"
             else
                 echo -e $(cat "$whitelist_file")
             fi
