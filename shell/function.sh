@@ -78,6 +78,51 @@ fastlaunch() {
   am start -n $pkgLaunch
 }
 
+# Fungsi untuk menambahkan atau menghapus packagename dari whitelist
+whitelist() {
+    # Path ke file whitelist
+    local whitelist_file="@{EXECPATH}/whitelist.list"
+
+    # Memastikan ada parameter yang diberikan
+    if [ -z "$1" ]; then
+        echo "Usage: whitelist [+/-] package_name"
+        return 1
+    fi
+
+    # Memisahkan tanda + atau - dari nama paket
+    local op="${1:0:1}"
+    local package="${1:1}"
+
+    # Mengecek operasi yang diminta
+    case "$op" in
+        "+")
+            # Mengecek apakah packagename telah disimpan di whitelist.txt
+            if grep -q "^$package$" "$whitelist_file" >/dev/null 2>&1; then
+                echo "$package is already in the whitelist."
+            else
+                # Menambahkan packagename ke dalam whitelist
+                echo "$package" >> "$whitelist_file"
+                echo "$package has been added to the whitelist."
+            fi
+            ;;
+        "-")
+            # Mengecek apakah packagename ada di dalam whitelist.txt
+            if grep -q "^$package$" "$whitelist_file" >/dev/null 2>&1; then
+                # Menghapus packagename dari whitelist
+                sed -i "/^$package$/d" "$whitelist_file"
+                echo "$package has been removed from the whitelist."
+            else
+                echo "$package is not in the whitelist."
+            fi
+            ;;
+        *)
+            echo "Invalid operation. Use '+' to add and '-' to remove."
+            return 1
+            ;;
+    esac
+}
+
+
 ash() {
     # Function to install or remove modules from a specified path
 
