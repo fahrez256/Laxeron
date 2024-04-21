@@ -114,7 +114,11 @@ whitelist() {
             fi
             ;;
         *)
-            echo "Invalid operation. Use '+' to add and '-' to remove."
+            if [ ! -f "$whitelist_file" ]; then
+                echo "Invalid operation. Use '+' to add and '-' to remove."
+            else
+                echo -e $(cat "$whitelist_file")
+            fi
             return 1
             ;;
     esac
