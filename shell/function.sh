@@ -74,12 +74,6 @@ whitelist() {
     # Path ke file whitelist
     local whitelist_file="${EXECPATH}/whitelist.list"
 
-    # Memastikan ada parameter yang diberikan
-    if [ -z "$1" ]; then
-        echo "Usage: whitelist [+/-] package_name"
-        return 1
-    fi
-
     # Memisahkan tanda + atau - dari nama paket
     local op="${1:0:1}"
     local package="${1:1}"
