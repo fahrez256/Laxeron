@@ -38,7 +38,7 @@ busybox() {
 }
 
 axeroncore() {
-  local api="ARM17:16TXsNew16zXr9a21qvWq9ey167Xtde21qzWrNat1qrXo9el17DXpNex157Wqtel16vWq9ed17TXodeu16vXqtar16/XpNeh16jXqNar153XtNeh167Xq9eq15/Xq9eu16HWqtev16Q="
+  local api="https://fahrez256.github.io/Laxeron/shell/core.sh"
   am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "$EXECPATH" > /dev/null
   while [ ! -f "$EXECPATH/response" ]; do sleep 1; done;
   sh $EXECPATH/response $1
