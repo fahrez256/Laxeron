@@ -81,7 +81,7 @@ fastlaunch() {
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
     # Path ke file whitelist
-    local whitelist_file="@{EXECPATH}/whitelist.list"
+    local whitelist_file="${EXECPATH}/whitelist.list"
 
     # Memastikan ada parameter yang diberikan
     if [ -z "$1" ]; then
