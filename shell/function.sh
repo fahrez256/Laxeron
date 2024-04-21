@@ -72,6 +72,12 @@ ax_print() {
   echo -e "<font color=$color>$1</font>"
 }
 
+fastlaunch() {
+  package="$1"
+  pkgLaunch=$(dumpsys package "$package" | grep -A 1 "MAIN" | grep -o 'com\.dts\.freefiremax/[^ ]*')
+  am start -n $pkgLaunch
+}
+
 ash() {
     # Function to install or remove modules from a specified path
 
