@@ -5,4 +5,6 @@ if ! type $(echo $myCommands | cut -d " " -f 1) > ${EXECPATH}/axeron_log.txt 2>&
     echo ""
     echo -e $(cat ${EXECPATH}/error.txt)
 fi
+
+echo ""
 echo "[End Execution]"
