@@ -56,7 +56,8 @@ description="StormCore is an online based default module (no tweaks)"
 EOF
 )
   echo -e "$prop" > "${EXECPATH}/axeron.prop"
-  axeroncore "$1"
+  echo "Maintenance"
+  #axeroncore "$1"
 }
 
 getid() {
