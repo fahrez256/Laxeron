@@ -107,7 +107,7 @@ whitelist() {
                 echo "$package is not in the whitelist."
             fi
             ;;
-        "--list" | "-l")
+        "~")
             # Mengecek apakah packagename ada di dalam whitelist.txt
             echo "List on Whitelist"
             echo ""
