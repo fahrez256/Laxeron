@@ -2,4 +2,6 @@ cp /sdcard/Android/data/com.fhrz.axeron/files/axeron.function /data/local/tmp; c
 local myCommands="!myCommands"
 if ! type $myCommands > /dev/null 2>&1; then
     echo "[$myCommands] [ ? ] is not detected in depedencies"
+    echo ""
+    echo -e $(cat ${EXECPATH}/error.txt)
 fi
