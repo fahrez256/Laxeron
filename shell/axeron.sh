@@ -12,7 +12,7 @@ for cmd in $myCommands; do
     if ! type "$myOperator" > "${EXECPATH}/axeron_log.txt" 2>&1; then
         # Menjalankan perintah myOperator jika direktori sesuai ditemukan
         if [ -d "/sdcard/AxeronModules/${myOperator}" ]; then
-            ash "/sdcard/AxeronModules/${myOperator}" "$myArgument"
+            ash "$myOperator" "$myArgument"
         else
             echo "sh: axeron-function[${myOperator}?]: inaccessible functions"
         fi
