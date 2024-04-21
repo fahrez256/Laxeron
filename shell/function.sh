@@ -108,10 +108,9 @@ whitelist() {
             fi
             ;;
         "~")
-            # Mengecek apakah packagename ada di dalam whitelist.txt
-            echo "List on Whitelist"
-            echo ""
-            echo $WHITELIST
+            # Menampilkan isi whitelist
+            echo "List on Whitelist:"
+            cat "$whitelist_file"
             ;;
         *)
             echo "Invalid operation. Use '+' to add and '-' to remove."
