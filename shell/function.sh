@@ -2,7 +2,6 @@ export AXERON=true
 export CORE="d8a97692ad1e71b1"
 export EXECPATH=$(dirname $0)
 export PACKAGES=$(cat /sdcard/Android/data/com.fhrz.axeron/files/packages.list)
-export WHITELIST=$(cat /sdcard/Android/data/com.fhrz.axeron/files/whitelist.list)
 export TMPFUNC="${EXECPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
