@@ -2,6 +2,7 @@ export AXERON=true
 export CORE="d8a97692ad1e71b1"
 export EXECPATH=$(dirname $0)
 export PACKAGES=$(cat /sdcard/Android/data/com.fhrz.axeron/files/packages.list)
+export WHITELIST=$(cat /sdcard/Android/data/com.fhrz.axeron/files/whitelist.list)
 export TMPFUNC="${EXECPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
@@ -63,15 +64,6 @@ getid() {
   echo $(settings get secure android_id)
 }
 
-ax_print() {
-  if [ -n $2 ]; then
-    color="$2"
-  else
-    color="#464646"
-  fi
-  echo -e "<font color=$color>$1</font>"
-}
-
 fastlaunch() {
   package="$1"
   pkgLaunch=$(dumpsys package "$package" | grep -A 1 "MAIN" | grep -o 'com\.dts\.freefiremax/[^ ]*')
@@ -114,6 +106,12 @@ whitelist() {
             else
                 echo "$package is not in the whitelist."
             fi
+            ;;
+        "--list" | "-l")
+            # Mengecek apakah packagename ada di dalam whitelist.txt
+            echo "List on Whitelist"
+            echo ""
+            echo $WHITELIST
             ;;
         *)
             echo "Invalid operation. Use '+' to add and '-' to remove."
