@@ -2,7 +2,7 @@ cp /sdcard/Android/data/com.fhrz.axeron/files/axeron.function /data/local/tmp; c
 local myCommands="!myCommands"
 IFS=$'\n'
 for cmd in $myCommands; do
-    myOperator=$(echo "$cmd" | awk '{print $1}')
+    myOperator=$(echo "$cmd" | awk -d ' ' -f 1)
     myArgument=$(echo "$cmd" | cut -d ' ' -f 2-)
 
     # Memeriksa apakah myOperator tersedia
