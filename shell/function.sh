@@ -74,6 +74,12 @@ whitelist() {
     # Path ke file whitelist
     local whitelist_file="${EXECPATH}/whitelist.list"
 
+    if [ ! -f "$whitelist_file" ]; then
+        # Jika file tidak ada, maka buat file tersebut
+        touch "$whitelist_file"
+        echo "Whitelist file created at $whitelist_file."
+    fi
+
     # Mengekstrak operasi dan nama paket dari parameter
     local operation="${1:0:1}"
     local package_name="${1:1}"
