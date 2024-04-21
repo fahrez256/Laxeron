@@ -74,13 +74,6 @@ whitelist() {
     # Path ke file whitelist
     local whitelist_file="${EXECPATH}/whitelist.list"
 
-    if [ "$1" = "~" ]; then
-        # Menampilkan isi whitelist
-        echo "List on Whitelist:"
-        echo -e $WHITELIST
-        return 0
-    fi
-
     # Memastikan ada parameter yang diberikan
     if [ -z "$1" ]; then
         echo "Usage: whitelist [+/-] package_name"
