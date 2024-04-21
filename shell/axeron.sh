@@ -1,4 +1,4 @@
-cp /sdcard/Android/data/com.fhrz.axeron/files/axeron.function /data/local/tmp; chmod +x /data/local/tmp/axeron.function; source /data/local/tmp/axeron.function; check_axeron; echo "[Execution-start]"; !myCommands 2>${EXECPATH}/error.txt
+cp /sdcard/Android/data/com.fhrz.axeron/files/axeron.function /data/local/tmp; chmod +x /data/local/tmp/axeron.function; source /data/local/tmp/axeron.function; check_axeron; echo "[Execution-start]"; eval "!myCommands" 2>${EXECPATH}/error.txt
 local myCommands="!myCommands"
 IFS=$'\n;'
 for cmd in $myCommands; do
