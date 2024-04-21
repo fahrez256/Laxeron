@@ -74,43 +74,37 @@ whitelist() {
     # Path ke file whitelist
     local whitelist_file="${EXECPATH}/whitelist.list"
 
-    # Memisahkan tanda + atau - dari nama paket
-    local op="${1:0:1}"
-    local package="${1:1}"
+    # Mengekstrak operasi dan nama paket dari parameter
+    local operation="${1:0:1}"
+    local package_name="${1:1}"
 
-    # Mengecek operasi yang diminta
-    case "$op" in
-        "+")
-            # Mengecek apakah packagename telah disimpan di whitelist.txt
-            if grep -q "^$package$" "$whitelist_file" >/dev/null 2>&1; then
-                echo "$package is already in the whitelist."
-            else
-                # Menambahkan packagename ke dalam whitelist
-                echo "$package" >> "$whitelist_file"
-                echo "$package has been added to the whitelist."
-            fi
-            ;;
-        "-")
-            # Mengecek apakah packagename ada di dalam whitelist.txt
-            if grep -q "^$package$" "$whitelist_file" >/dev/null 2>&1; then
-                # Menghapus packagename dari whitelist
-                sed -i "/^$package$/d" "$whitelist_file"
-                echo "$package has been removed from the whitelist."
-            else
-                echo "$package is not in the whitelist."
-            fi
-            ;;
-        *)
-            if [ ! -f "$whitelist_file" ]; then
-                echo "Usage: whitelist [+/-] [package_name]"
-            else
-                echo -e $(cat "$whitelist_file")
-            fi
-            return 1
-            ;;
-    esac
+    # Mengecek keberadaan file whitelist
+    if [ ! -f "$whitelist_file" ]; then
+        echo "Whitelist file not found."
+        return 1
+    fi
+
+    # Menambahkan paket ke dalam daftar whitelist
+    if [ "$operation" = "+" ]; then
+        if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
+            echo "$package_name is already in the whitelist."
+        else
+            echo "$package_name" >> "$whitelist_file"
+            echo "$package_name has been added to the whitelist."
+        fi
+    # Menghapus paket dari daftar whitelist
+    elif [ "$operation" = "-" ]; then
+        if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
+            sed -i "/^$package_name$/d" "$whitelist_file"
+            echo "$package_name has been removed from the whitelist."
+        else
+            echo "$package_name is not in the whitelist."
+        fi
+    # Menampilkan seluruh daftar whitelist
+    else
+        cat "$whitelist_file"
+    fi
 }
-
 
 ash() {
     # Function to install or remove modules from a specified path
