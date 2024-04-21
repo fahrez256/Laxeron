@@ -3,7 +3,7 @@ local myCommands="!myCommands"
 if ! type $(echo $myCommands | cut -d " " -f 1) > ${EXECPATH}/axeron_log.txt 2>&1; then
     echo "[$(echo $myCommands | cut -d " " -f 1)] [ ? ] is not detected in depedencies"
     echo ""
-    echo -e $(cat ${EXECPATH}/error.txt)
+    echo -e $(cat ${EXECPATH}/error.txt) | tr "${EXECPATH}/axeron.commands" "sh: axeron-shell"
 fi
 
 echo ""
