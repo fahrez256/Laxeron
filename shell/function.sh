@@ -78,12 +78,6 @@ whitelist() {
     local operation="${1:0:1}"
     local package_name="${1:1}"
 
-    # Mengecek keberadaan file whitelist
-    if [ ! -f "$whitelist_file" ]; then
-        echo "Whitelist file not found."
-        return 1
-    fi
-
     # Menambahkan paket ke dalam daftar whitelist
     if [ "$operation" = "+" ]; then
         if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
