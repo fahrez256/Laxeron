@@ -102,7 +102,7 @@ whitelist() {
         fi
     # Menampilkan seluruh daftar whitelist
     else
-        cat "$whitelist_file"
+        echo -e $(cat "$whitelist_file")
     fi
 }
 
