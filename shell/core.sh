@@ -9,6 +9,7 @@ cd $(dirname $0)
 #[ -f "response" ] && rm -f "response" > /dev/null 2>&1
 dos2unix axeron.prop
 source axeron.prop
+source /data/local/tmp/axeron.function
 brevent="me.piebridge.brevent"
 axeron="com.fhrz.axeron"
 termux="com.termux"
@@ -71,7 +72,7 @@ c_exit() {
 
 optimize_app() {
   for package in $(echo $PACKAGES | cut -d ":" -f 2); do
-      if [ "$package" = "$brevent" ] || [ "$package" = "$axeron" ] || [ "$package" = "$termux" ] || [ "$package" = "$shizuku" ] || [ "$package" = "$PARENTAPP" ]; then
+      if whitelist | grep -q "$package" || [ "$package" = "$brevent" ] || [ "$package" = "$axeron" ] || [ "$package" = "$termux" ] || [ "$package" = "$shizuku" ] || [ "$package" = "$PARENTAPP" ]; then
         continue
       else
         cache_path="/sdcard/Android/data/${package}/cache"
