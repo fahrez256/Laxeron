@@ -72,7 +72,7 @@ fastlaunch() {
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
     # Path ke file whitelist
-    local whitelist_file="${EXECPATH}/whitelist.list"
+    local whitelist_file="/sdcard/Android/data/com.fhrz.axeron/files/whitelist.list"
 
     if [ ! -f "$whitelist_file" ]; then
         # Jika file tidak ada, maka buat file tersebut
