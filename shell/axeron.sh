@@ -1,8 +1,11 @@
 cp /sdcard/Android/data/com.fhrz.axeron/files/axeron.function /data/local/tmp; chmod +x /data/local/tmp/axeron.function; source /data/local/tmp/axeron.function; check_axeron; echo "[Execution-start]"; !myCommands
 local myCommands="!myCommands"
-IFS=$'\n'
+IFS=$'\n;'
 for cmd in $myCommands; do
-    myOperator=$(echo "$cmd" | awk -d ' ' -f 1)
+    # Menghapus spasi tambahan dari setiap perintah
+    cmd=$(echo "$cmd" | sed 's/^[[:space:]]*//')
+
+    myOperator=$(echo "$cmd" | cut -d ' ' -f 1)
     myArgument=$(echo "$cmd" | cut -d ' ' -f 2-)
 
     # Memeriksa apakah myOperator tersedia
