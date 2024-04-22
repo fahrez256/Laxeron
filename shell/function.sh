@@ -13,10 +13,6 @@ check_axeron() {
   fi
 }
 
-testing() {
-  echo $EXECPATH
-}
-
 shellstorm() {
   api=$1
   if [ -n $2 ]; then
