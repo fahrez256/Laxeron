@@ -82,9 +82,9 @@ whitelist() {
 
     # Mengekstrak operasi dan nama paket dari parameter
     local operation="${1:0:1}"
-    local package_name="${1:1}"
+    local packages="${1:1}"
 
-    # Menambahkan paket ke dalam daftar whitelist
+    # Menambahkan atau menghapus paket dari daftar whitelist
     IFS=',' read -ra package_array <<< "$packages"
     for package_name in "${package_array[@]}"; do
         if [ "$operation" = "+" ]; then
