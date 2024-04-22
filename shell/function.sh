@@ -94,27 +94,29 @@ whitelist() {
     local packages="${1:1}"
     
     # Menambahkan atau menghapus paket dari daftar whitelist
-    for package_name in $(echo $packages | tr ',' '\n'); do
-        if [ "$operation" = "+" ]; then
-            if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
-                echo "[Duplicate] $package_name"
-            else
-                echo "$package_name" >> "$whitelist_file"
-                echo "[Added] $package_name"
-            fi
-        elif [ "$operation" = "-" ]; then
-            if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
-                sed -i "/$package_name/d" "$whitelist_file"
-                echo "[Removed] $package_name"
-            else
-                echo "[Failed] $package_name"
-            fi
-        else
-            # Menampilkan seluruh daftar whitelist
-            echo "$(cat "$whitelist_file")"
-            break
-        fi
-    done
+    if [ "$operation" = "+" ]; then
+      for package_name in $(echo $packages | tr ',' '\n'); do
+          if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
+              echo "[Duplicate] $package_name"
+          else
+              echo "$package_name" >> "$whitelist_file"
+              echo "[Added] $package_name"
+          fi
+        done
+    elif [ "$operation" = "-" ]; then
+      for package_name in $(echo $packages | tr ',' '\n'); do
+          if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
+              sed -i "/$package_name/d" "$whitelist_file"
+              echo "[Removed] $package_name"
+          else
+              echo "[Failed] $package_name"
+          fi
+        done
+    else
+        # Menampilkan seluruh daftar whitelist
+        echo "$(cat "$whitelist_file")"
+        break
+    fi
 }
 
 ash() {
