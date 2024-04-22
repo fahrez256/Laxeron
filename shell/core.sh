@@ -29,8 +29,6 @@ if [ -n "$1" ]; then
   runPackage="$1"
 fi
 
-sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${runPackage}\"/g" axeron.prop
-
 axeron_core=$(cat <<-EOF
 Optione {
   key:id="$id";
@@ -97,6 +95,8 @@ fi
 
 if [ -n "$runPackage" ]; then
   if echo "$PACKAGES" | grep -qw $runPackage;then
+    sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${runPackage}\"/g" axeron.prop
+    echo "$p PackageName saved in axeron.prop"
     sleep 1
   else
     echo "$w PackageName is not detected or installed" && c_exit
