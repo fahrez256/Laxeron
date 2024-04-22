@@ -115,7 +115,6 @@ whitelist() {
     else
         # Menampilkan seluruh daftar whitelist
         echo "$(cat "$whitelist_file")"
-        break
     fi
 }
 
