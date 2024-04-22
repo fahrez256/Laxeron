@@ -28,7 +28,9 @@ androidId=$(settings get secure android_id)
 if [ -n "$1" ]; then
   runPackage="$1"
 fi
-  
+
+sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${runPackage}\"/g" axeron.prop
+
 axeron_core=$(cat <<-EOF
 Optione {
   key:id="$id";
