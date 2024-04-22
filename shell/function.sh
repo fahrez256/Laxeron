@@ -82,10 +82,11 @@ whitelist() {
 
     # Mengekstrak operasi dan nama paket dari parameter
     local operation="${1:0:1}"
-    local packages="${1:1}"
+    local packages="${1:2}"
 
     # Menambahkan atau menghapus paket dari daftar whitelist
     IFS=',' read -ra package_array <<< "$packages"
+    # Menambahkan atau menghapus paket dari daftar whitelist
     for package_name in "${package_array[@]}"; do
         if [ "$operation" = "+" ]; then
             if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
@@ -102,7 +103,7 @@ whitelist() {
                 echo "[Failed] $package_name"
             fi
         else
-            echo -e $(cat "$whitelist_file")
+            echo "$(cat "$whitelist_file")"
             break
         fi
     done
