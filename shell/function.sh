@@ -83,11 +83,7 @@ whitelist() {
     # Mengekstrak operasi dan nama paket dari parameter
     local operation="${1:0:1}"
     local packages="${1:1}"
-
-    # Menambahkan atau menghapus paket dari daftar whitelist
-    package_list=$(echo $packages | tr ',' '\n')
-    echo -e $package_list
-
+    
     # Menambahkan atau menghapus paket dari daftar whitelist
     for package_name in $(echo $packages | tr ',' '\n'); do
         if [ "$operation" = "+" ]; then
