@@ -72,8 +72,13 @@ fastlaunch() {
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
     # Path ke file whitelist
-    local whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
+    local whitelist_dir="/sdcard/AxeronModules/.config"
+    local whitelist_file="${whitelist_dir}/whitelist.list"
 
+    if [ ! -d "$whitelist_dir" ]; then
+        mkdir "whitelist_dir"
+    fi
+    
     if [ ! -f "$whitelist_file" ]; then
         # Jika file tidak ada, maka buat file tersebut
         touch "$whitelist_file"
