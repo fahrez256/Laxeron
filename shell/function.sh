@@ -82,7 +82,7 @@ whitelist() {
     if [ ! -f "$whitelist_file" ]; then
         # Jika file tidak ada, maka buat file tersebut
         touch "$whitelist_file"
-        echo "Whitelist file created."
+        echo "[Created] whitelist.list"
     fi
 
     # Mengekstrak operasi dan nama paket dari parameter
