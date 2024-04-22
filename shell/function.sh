@@ -86,6 +86,7 @@ whitelist() {
 
     # Menambahkan atau menghapus paket dari daftar whitelist
     package_list=$(echo $packages | tr ',' '\n')
+    echo $package_list
 
     # Menambahkan atau menghapus paket dari daftar whitelist
     for package_name in "$package_list"; do
