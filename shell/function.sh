@@ -85,10 +85,7 @@ whitelist() {
     local packages="${1:1}"
 
     # Menambahkan atau menghapus paket dari daftar whitelist
-    local package_list=$(echo "$packages" | tr ',' ' ')
-
-    # Memasukkan nama-nama paket ke dalam array
-    read -r -a package_array <<< "$package_list"
+    IFS=',' read -r -a package_array <<< "$packages"
 
     # Menambahkan atau menghapus paket dari daftar whitelist
     for package_name in "${package_array[@]}"; do
@@ -107,6 +104,7 @@ whitelist() {
                 echo "[Failed] $package_name"
             fi
         else
+            # Menampilkan seluruh daftar whitelist
             echo "$(cat "$whitelist_file")"
             break
         fi
