@@ -72,12 +72,12 @@ fastlaunch() {
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
     # Path ke file whitelist
-    local whitelist_file="/sdcard/Android/data/com.fhrz.axeron/files/whitelist.list"
+    local whitelist_file="/sdcard/AxeronModules/whitelist.list"
 
     if [ ! -f "$whitelist_file" ]; then
         # Jika file tidak ada, maka buat file tersebut
         touch "$whitelist_file"
-        echo "Whitelist file created at $whitelist_file."
+        echo "Whitelist file created."
     fi
 
     # Mengekstrak operasi dan nama paket dari parameter
@@ -85,25 +85,26 @@ whitelist() {
     local package_name="${1:1}"
 
     # Menambahkan paket ke dalam daftar whitelist
-    if [ "$operation" = "+" ]; then
-        if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
-            echo "$package_name is already in the whitelist."
+    IFS=',' read -ra package_array <<< "$packages"
+    for package_name in "${package_array[@]}"; do
+        if [ "$operation" = "+" ]; then
+            if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
+                echo "[Duplicate] $package_name"
+            else
+                echo "$package_name" >> "$whitelist_file"
+                echo "[Added] $package_name"
+            fi
+        elif [ "$operation" = "-" ]; then
+            if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
+                sed -i "/^$package_name$/d" "$whitelist_file"
+                echo "[Removed] $package_name"
+            else
+                echo "[Failed] $package_name"
+            fi
         else
-            echo "$package_name" >> "$whitelist_file"
-            echo "$package_name has been added to the whitelist."
+            echo -e $(cat "$whitelist_file")
         fi
-    # Menghapus paket dari daftar whitelist
-    elif [ "$operation" = "-" ]; then
-        if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
-            sed -i "/^$package_name$/d" "$whitelist_file"
-            echo "$package_name has been removed from the whitelist."
-        else
-            echo "$package_name is not in the whitelist."
-        fi
-    # Menampilkan seluruh daftar whitelist
-    else
-        echo -e $(cat "$whitelist_file")
-    fi
+    done
 }
 
 ash() {
