@@ -86,10 +86,10 @@ whitelist() {
 
     # Menambahkan atau menghapus paket dari daftar whitelist
     package_list=$(echo $packages | tr ',' '\n')
-    echo $package_list
+    echo -e $package_list
 
     # Menambahkan atau menghapus paket dari daftar whitelist
-    for package_name in "$package_list"; do
+    for package_name in $(echo $packages | tr ',' '\n'); do
         if [ "$operation" = "+" ]; then
             if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
                 echo "[Duplicate] $package_name"
