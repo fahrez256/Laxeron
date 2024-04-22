@@ -87,7 +87,7 @@ whitelist() {
     # Menambahkan atau menghapus paket dari daftar whitelist
     IFS=',' read -ra package_array <<< "$packages"
     # Menambahkan atau menghapus paket dari daftar whitelist
-    for package_name in "${package_array[@]}"; do
+    for package_name in "$package_array"; do
         echo $package_name
         if [ "$operation" = "+" ]; then
             if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
