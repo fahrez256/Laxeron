@@ -85,10 +85,13 @@ whitelist() {
     local packages="${1:1}"
 
     # Menambahkan atau menghapus paket dari daftar whitelist
-    IFS=',' read -ra package_array <<< "$packages"
+    local package_list=$(echo "$packages" | tr ',' ' ')
+
+    # Memasukkan nama-nama paket ke dalam array
+    read -r -a package_array <<< "$package_list"
+
     # Menambahkan atau menghapus paket dari daftar whitelist
-    for package_name in "$package_array"; do
-        echo $package_name
+    for package_name in "${package_array[@]}"; do
         if [ "$operation" = "+" ]; then
             if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
                 echo "[Duplicate] $package_name"
