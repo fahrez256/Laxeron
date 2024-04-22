@@ -103,6 +103,7 @@ whitelist() {
             fi
         else
             echo -e $(cat "$whitelist_file")
+            break
         fi
     done
 }
