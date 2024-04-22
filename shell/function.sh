@@ -82,22 +82,22 @@ whitelist() {
 
     # Mengekstrak operasi dan nama paket dari parameter
     local operation="${1:0:1}"
-    local packages="${1:2}"
+    local packages="${1:1}"
 
     # Menambahkan atau menghapus paket dari daftar whitelist
     IFS=',' read -ra package_array <<< "$packages"
     # Menambahkan atau menghapus paket dari daftar whitelist
     for package_name in "${package_array[@]}"; do
         if [ "$operation" = "+" ]; then
-            if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
+            if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
                 echo "[Duplicate] $package_name"
             else
                 echo "$package_name" >> "$whitelist_file"
                 echo "[Added] $package_name"
             fi
         elif [ "$operation" = "-" ]; then
-            if grep -q "^$package_name$" "$whitelist_file" >/dev/null 2>&1; then
-                sed -i "/^$package_name$/d" "$whitelist_file"
+            if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
+                sed -i "/$package_name/d" "$whitelist_file"
                 echo "[Removed] $package_name"
             else
                 echo "[Failed] $package_name"
