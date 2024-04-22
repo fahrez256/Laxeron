@@ -76,7 +76,7 @@ whitelist() {
     local whitelist_file="${whitelist_dir}/whitelist.list"
 
     if [ ! -d "$whitelist_dir" ]; then
-        mkdir "whitelist_dir"
+        mkdir "$whitelist_dir"
     fi
     
     if [ ! -f "$whitelist_file" ]; then
