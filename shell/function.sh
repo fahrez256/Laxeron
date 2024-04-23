@@ -114,6 +114,14 @@ whitelist() {
     fi
 }
 
+checkjit() {
+  dumpsys package "$1" | grep -B 1 status= | grep -A 1 "base.apk" | grep status= | sed 's/.*status=\([^]]*\).*/\1/'
+}
+
+removejit() {
+  pm compile --reset "$1"
+}
+
 jit() {
   pm compile -m "$1" -f "$2"
 }
