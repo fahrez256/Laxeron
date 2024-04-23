@@ -114,6 +114,10 @@ whitelist() {
     fi
 }
 
+jit() {
+  pm compile -m "$1" -f "$2"
+}
+
 optimize() {
   for package in $(echo $PACKAGES | cut -d ":" -f 2); do
       if whitelist | grep -q "$package" >/dev/null 2>&1; then
