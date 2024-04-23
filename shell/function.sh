@@ -32,17 +32,17 @@ busybox() {
 
   if [ ! -f "$target_busybox" ]; then
       cp "$source_busybox" "$target_busybox"
-      chmod +x "$target_busybox"
+      chmod 777 "$target_busybox"
   fi
   $target_busybox $@
 }
 
 axeroncore() {
   local api="https://fahrez256.github.io/Laxeron/shell/core.sh"
-  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "$(dirname $0)" > /dev/null
+  $(am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "$(dirname $0)" > /dev/null)
   while [ ! -f "$(dirname $0)/response" ]; do sleep 1; done;
   sh $(dirname $0)/response $1
-  am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
+  $(am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1)
 }
 
 axeron() {
