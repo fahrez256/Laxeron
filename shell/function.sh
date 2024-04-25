@@ -141,15 +141,6 @@ optimize() {
 }
 
 ash() {
-    # Function to install or remove modules from a specified path
-
-    # Usage: ash <path> [options] [arguments]
-    # Options:
-    #   --install, -i <module>: Install a module from the specified path
-    #   --remove, -r <module>: Remove a module from the specified path
-    #   --help, -h: Show this help message
-
-    # Check if no arguments are provided
     if [ $# -eq 0 ]; then
         echo -e "Usage: ash <path> [options] [arguments]"
         return 1
@@ -204,6 +195,7 @@ ash() {
                 fi
             else
                 shift 2
+                echo "$#"
                 sh "${path}/${install}" "$@"
             fi
             ;;
@@ -224,6 +216,7 @@ ash() {
         *)
             if [ -z "${3}" ]; then
                 shift
+                echo "$#"
                 sh "${path}/${install}" "$@"
             else
                 if [ -z "${install}" ]; then
@@ -236,6 +229,7 @@ ash() {
                     fi
                 else
                     shift
+                    echo "$#"
                     sh "${path}/${install}" "$@"
                 fi
             fi
