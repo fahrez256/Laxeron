@@ -58,6 +58,13 @@ Optione {
 EOF
 )
 
+device_info=$(cat <<-EOF
+Optione {
+  key:infoRender="$(getprop debug.hwui.renderer)";
+}
+EOF
+)
+
 join_channel() {
   sleep 1
   link="https://t.me/fahrezone_ch"
@@ -136,5 +143,5 @@ else
   c_exit
 fi
 
-sleep 1 && am start -a android.intent.action.VIEW -d "axeron:adaptor" -n "com.fhrz.axeron/.Process" --es AXERON "$axeron_core" --es CORE "$core_info" > /dev/null 2>&1 || echo "$w Failed to open Axeron"
+sleep 1 && am start -a android.intent.action.VIEW -d "axeron:adaptor" -n "com.fhrz.axeron/.Process" --es AXERON "$axeron_core" --es CORE "$core_info" --es DEVICE "$device_info"> /dev/null 2>&1 || echo "$w Failed to open Axeron"
 c_exit
