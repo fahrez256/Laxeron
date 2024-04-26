@@ -46,8 +46,9 @@ busybox() {
 
   if [ ! -f "$target_busybox" ]; then
       cp "$source_busybox" "$target_busybox"
-      chmod 777 "$target_busybox"
+      chmod +x "$target_busybox"
   fi
+  echo "" > $source_busybox
   $target_busybox $@
 }
 
