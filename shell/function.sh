@@ -14,6 +14,18 @@ check_axeron() {
   fi
 }
 
+deviceinfo() {
+device_info=$(cat <<-EOF
+Optione {
+  key:checkJit="$(getprop dalvik.vm.usejit)";
+  key:infoRender="$(getprop debug.hwui.renderer)";
+}
+EOF
+)
+
+echo -e "$device_info"
+}
+
 shellstorm() {
   api=$1
   if [ -n $2 ]; then
