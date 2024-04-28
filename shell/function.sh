@@ -179,7 +179,6 @@ ash() {
     case $2 in
         "--package" | "-p")
             pkg=${3:-runPackage}
-            echo $#
             shift 2
             ;;
     esac
