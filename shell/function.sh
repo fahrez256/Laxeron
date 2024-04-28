@@ -190,22 +190,22 @@ ash() {
             echo "i"
             [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
             shift $(( $# > 2 ? 3 : 2 ))
-            sh "${path}/${module}" "$@"
+            sh "${path}/${module}" $@
             ;;
         "--remove" | "-r")
             local module="${remove:-$3}"
             echo "r"
             [ -z "$module" ] && echo "[ ! ] Can't remove this module" && return 1
             shift $(( $# > 2 ? 3 : 2 ))
-            sh "${path}/${module}" "$@"
+            sh "${path}/${module}" $@
             return 0
             ;;
         *)
             local module="${install:-$2}"
             echo "*"
             [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
-            shift $(( $# > 2 ? 3 : 2 ))
-            sh "${path}/${module}" "$@"
+            shift $(( $# > 2 ? 2 : 1 ))
+            sh "${path}/${module}" $@
             ;;
     esac
 
