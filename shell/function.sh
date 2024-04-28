@@ -186,26 +186,51 @@ ash() {
 
     case $2 in
         "--install" | "-i")
-            local module="${install:-$3}"
-            echo "i"
-            [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
-            shift $(( $# > 2 ? 3 : 2 ))
-            sh "${path}/${module}" $@
+            if [ -z "$install" ]; then
+                local pathInstall="${path}/${3}"
+                if ls "${pathInstall}" >/dev/null 2>&1; then
+                    shift 3
+                    sh "${pathInstall}" "$@"
+                else
+                    echo "[ ! ] Cant install this module"
+                fi
+            else
+                shift 2
+                sh "${path}/${install}" "$@"
+            fi
             ;;
         "--remove" | "-r")
-            local module="${remove:-$3}"
-            echo "r"
-            [ -z "$module" ] && echo "[ ! ] Can't remove this module" && return 1
-            shift $(( $# > 2 ? 3 : 2 ))
-            sh "${path}/${module}" $@
-            return 0
+            if [ -z "$remove" ]; then
+                local pathRemove="${path}/${3}"
+                if ls "${pathRemove}" >/dev/null 2>&1; then
+                    shift 3
+                    sh "${pathRemove}" "$@"
+                else
+                    echo "[ ! ] Cant remove this module"
+                fi
+            else
+                shift 2
+                sh "${path}/${remove}" "$@"
+            fi
             ;;
         *)
-            local module="${install}"
-            echo "*"
-            [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
-            shift
-            sh "${path}/${module}" $@
+            if [ -z "${3}" ]; then
+                shift
+                sh "${path}/${install}" "$@"
+            else
+                if [ -z "${install}" ]; then
+                    local pathInstall="${path}/${2}"
+                    if ls "${pathInstall}" >/dev/null 2>&1; then
+                        shift 2
+                        sh "${pathInstall}" "$@"
+                    else
+                        echo "[ ! ] Cant install this module"
+                    fi
+                else
+                    shift
+                    sh "${path}/${install}" "$@"
+                fi
+            fi
             ;;
     esac
 
