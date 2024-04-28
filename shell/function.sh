@@ -169,6 +169,13 @@ ash() {
     [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
     case $2 in
+        "--package" | -p)
+            pkg=${3:-runPackage}
+            shift 3
+            ;;
+    esac
+
+    case $2 in
         "--install" | "-i")
             local module="${install:-$3}"
             [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
@@ -188,4 +195,8 @@ ash() {
             sh "${path}/${module}" "$@"
             ;;
     esac
+
+    if [ $useAxeron ]; then
+        axeroncore $pkg
+    fi
 }
