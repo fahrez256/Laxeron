@@ -87,47 +87,29 @@ fastlaunch() {
 
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
-    # Path ke file whitelist
-    local whitelist_dir="/sdcard/AxeronModules/.config"
-    local whitelist_file="${whitelist_dir}/whitelist.list"
+    local whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
-    if [ ! -d "$whitelist_dir" ]; then
-        mkdir "$whitelist_dir"
-    fi
-    
-    if [ ! -f "$whitelist_file" ]; then
-        # Jika file tidak ada, maka buat file tersebut
-        touch "$whitelist_file"
-        echo "[Created] whitelist.list"
-    fi
+    [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
+    [ ! -f "$whitelist_file" ] && touch "$whitelist_file" && echo "[Created] whitelist.list"
 
-    # Mengekstrak operasi dan nama paket dari parameter
     local operation="${1:0:1}"
     local packages="${1:1}"
-    
-    # Menambahkan atau menghapus paket dari daftar whitelist
-    if [ "$operation" = "+" ]; then
-      for package_name in $(echo $packages | tr ',' '\n'); do
-          if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
-              echo "[Duplicate] $package_name"
-          else
-              echo "$package_name" >> "$whitelist_file"
-              echo "[Added] $package_name"
-          fi
-        done
-    elif [ "$operation" = "-" ]; then
-      for package_name in $(echo $packages | tr ',' '\n'); do
-          if grep -q "$package_name" "$whitelist_file" >/dev/null 2>&1; then
-              sed -i "/$package_name/d" "$whitelist_file"
-              echo "[Removed] $package_name"
-          else
-              echo "[Failed] $package_name"
-          fi
-        done
-    else
-        # Menampilkan seluruh daftar whitelist
-        echo "$(cat "$whitelist_file")"
-    fi
+
+    case $operation in
+        "+")
+            echo "$packages" | tr ',' '\n' | while IFS= read -r package_name; do
+                grep -q "$package_name" "$whitelist_file" && echo "[Duplicate] $package_name" || { echo "$package_name" >> "$whitelist_file"; echo "[Added] $package_name"; }
+            done
+            ;;
+        "-")
+            echo "$packages" | tr ',' '\n' | while IFS= read -r package_name; do
+                grep -q "$package_name" "$whitelist_file" && { sed -i "/$package_name/d" "$whitelist_file"; echo "[Removed] $package_name"; } || echo "[Failed] $package_name"
+            done
+            ;;
+        *)
+            cat "$whitelist_file"
+            ;;
+    esac
 }
 
 checkjit() {
@@ -165,89 +147,45 @@ ash() {
 
     case $1 in
         "--help" | "-h")
-            # Show usage information
-            echo -e "Save the Module in AxeronModules folder!"
-            echo ""
+            echo -e "Save the Module in AxeronModules folder!\n"
             echo -e "Usage: ash <path> [options] [arguments]"
             echo "Options:"
             echo "  --install, -i <module>: Install a module from path"
             echo "  --remove, -r <module>: Remove a module from path"
+            echo "  --list, -l: List installed modules"
             echo "  --help, -h: Show this help message"
             return 0
             ;;
         "--list" | "-l")
-            # Show usage information
-            echo "List of Modules"
-            echo ""
+            echo "List of Modules\n"
             ls /sdcard/AxeronModules
             return 0
             ;;
         *)
-            # Check if the specified path exists
-            if [ ! -d "$path" ]; then
-                echo "[ ? ] Path not found: $path"
-                return 1
-            fi
+            [ ! -d "$path" ] && echo "[ ? ] Path not found: $path" && return 1
             ;;
     esac
 
-    # Check if axeron.prop exists in the specified path
-    if ls "${path}/axeron.prop" >/dev/null 2>&1; then
-        source "${path}/axeron.prop"
-    else
-        echo "[ ? ] axeron.prop not found in $path."
-    fi
+    [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
     case $2 in
         "--install" | "-i")
-            if [ -z "$install" ]; then
-                local pathInstall="${path}/${3}"
-                if ls "${pathInstall}" >/dev/null 2>&1; then
-                    shift 3
-                    sh "${pathInstall}" "$@"
-                else
-                    echo "[ ! ] Cant install this module"
-                fi
-            else
-                shift 2
-                echo "$#"
-                sh "${path}/${install}" "$@"
-            fi
+            local module="${install:-$3}"
+            [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
+            shift $(( $# > 2 ? 3 : 2 ))
+            sh "${path}/${module}" "$@"
             ;;
         "--remove" | "-r")
-            if [ -z "$remove" ]; then
-                local pathRemove="${path}/${3}"
-                if ls "${pathRemove}" >/dev/null 2>&1; then
-                    shift 3
-                    sh "${pathRemove}" "$@"
-                else
-                    echo "[ ! ] Cant remove this module"
-                fi
-            else
-                shift 2
-                sh "${path}/${remove}" "$@"
-            fi
+            local module="${remove:-$3}"
+            [ -z "$module" ] && echo "[ ! ] Can't remove this module" && return 1
+            shift $(( $# > 2 ? 3 : 2 ))
+            sh "${path}/${module}" "$@"
             ;;
         *)
-            if [ -z "${3}" ]; then
-                shift
-                echo "$#"
-                sh "${path}/${install}" "$@"
-            else
-                if [ -z "${install}" ]; then
-                    local pathInstall="${path}/${2}"
-                    if ls "${pathInstall}" >/dev/null 2>&1; then
-                        shift 2
-                        sh "${pathInstall}" "$@"
-                    else
-                        echo "[ ! ] Cant install this module"
-                    fi
-                else
-                    shift
-                    echo "$#"
-                    sh "${path}/${install}" "$@"
-                fi
-            fi
+            local module="${install:-$2}"
+            [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
+            shift $(( $# > 2 ? 2 : 1 ))
+            sh "${path}/${module}" "$@"
             ;;
     esac
 }
