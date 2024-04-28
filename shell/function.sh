@@ -197,6 +197,7 @@ ash() {
     esac
 
     if [ $useAxeron ]; then
+        cd $path
         axeroncore $pkg
     fi
 }
