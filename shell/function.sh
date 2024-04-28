@@ -196,6 +196,7 @@ ash() {
             [ -z "$module" ] && echo "[ ! ] Can't remove this module" && return 1
             shift $(( $# > 2 ? 3 : 2 ))
             sh "${path}/${module}" "$@"
+            return 0
             ;;
         *)
             local module="${install:-$2}"
