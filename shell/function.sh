@@ -185,27 +185,9 @@ ash() {
     esac
 
     case $2 in
-        "--install" | "-i")
-            if [ -z "$install" ]; then
-                if [ -z "${4}" ]; then
-                    echo "[ ! ] Cant install this module"
-                else
-                    local pathInstall="${path}/${3}"
-                    if ls "${pathInstall}" >/dev/null 2>&1; then
-                        shift 3
-                        sh "${pathInstall}" $@
-                    else
-                        echo "[ ! ] Cant install this module"
-                    fi
-                fi
-            else
-                shift 2
-                sh "${path}/${install}" $@
-            fi
-            ;;
         "--remove" | "-r")
             if [ -z "$remove" ]; then
-                if [ -z "${4}" ]; then
+                if [ -z "${3}" ]; then
                     echo "[ ! ] Cant remove this module"
                 else
                     local pathRemove="${path}/${3}"
@@ -223,7 +205,7 @@ ash() {
             ;;
         *)
             if [ -z "$install" ]; then
-                if [ -z "${3}" ]; then
+                if [ -z "${2}" ]; then
                     echo "[ ! ] Cant install this module"
                 else
                     local pathInstall="${path}/${2}"
