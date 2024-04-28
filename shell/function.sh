@@ -177,7 +177,7 @@ ash() {
     [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
     case $2 in
-        "--package" | -p)
+        "--package" | "-p")
             pkg=${3:-runPackage}
             shift 3
             ;;
