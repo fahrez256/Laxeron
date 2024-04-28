@@ -142,7 +142,7 @@ ashcore() {
   am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "${2}" > /dev/null
   while [ ! -f "${2}/response" ]; do sleep 1; done;
   sh ${2}/response $1
-  am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
+  # am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
 }
 
 ash() {
