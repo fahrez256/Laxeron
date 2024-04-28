@@ -137,6 +137,14 @@ optimize() {
   done
 }
 
+ashcore() {
+  local api="https://fahrez256.github.io/Laxeron/shell/core.sh"
+  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "${2}" > /dev/null
+  while [ ! -f "${2}/response" ]; do sleep 1; done;
+  sh ${2}/response $1
+  am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
+}
+
 ash() {
     if [ $# -eq 0 ]; then
         echo -e "Usage: ash <path> [options] [arguments]"
@@ -197,7 +205,6 @@ ash() {
     esac
 
     if [ $useAxeron ]; then
-        cd $path
-        axeroncore $pkg
+        ashcore "$pkg" "$path"
     fi
 }
