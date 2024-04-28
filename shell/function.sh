@@ -179,7 +179,7 @@ ash() {
     case $2 in
         "--package" | "-p")
             pkg=${3:-runPackage}
-            shift 3
+            shift $(( $# > 2 ? 3 : 2 ))
             ;;
     esac
 
