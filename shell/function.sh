@@ -201,10 +201,10 @@ ash() {
             return 0
             ;;
         *)
-            local module="${install:-$2}"
+            local module="${install}"
             echo "*"
             [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
-            shift $(( $# > 2 ? 2 : 1 ))
+            shift
             sh "${path}/${module}" $@
             ;;
     esac
