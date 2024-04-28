@@ -187,12 +187,14 @@ ash() {
     case $2 in
         "--install" | "-i")
             local module="${install:-$3}"
+            echo "i"
             [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
             shift $(( $# > 2 ? 3 : 2 ))
             sh "${path}/${module}" "$@"
             ;;
         "--remove" | "-r")
             local module="${remove:-$3}"
+            echo "r"
             [ -z "$module" ] && echo "[ ! ] Can't remove this module" && return 1
             shift $(( $# > 2 ? 3 : 2 ))
             sh "${path}/${module}" "$@"
@@ -200,6 +202,7 @@ ash() {
             ;;
         *)
             local module="${install:-$2}"
+            echo "*"
             [ -z "$module" ] && echo "[ ! ] Can't install this module" && return 1
             shift $(( $# > 2 ? 2 : 1 ))
             sh "${path}/${module}" "$@"
