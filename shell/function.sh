@@ -223,7 +223,7 @@ ash() {
             ;;
     esac
 
-    if [ $useAxeron = true ]; then
+    if [ -n $useAxeron ] && [ $useAxeron = true ]; then
         ashcore "$pkg" "$path"
     fi
 }
