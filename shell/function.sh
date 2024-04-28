@@ -158,6 +158,7 @@ ash() {
             echo -e "Save the Module in AxeronModules folder!\n"
             echo -e "Usage: ash <path> [options] [arguments]"
             echo "Options:"
+            echo "  --package, -p <packagename>: use custom packagename"
             echo "  --install, -i <module>: Install a module from path"
             echo "  --remove, -r <module>: Remove a module from path"
             echo "  --list, -l: List installed modules"
