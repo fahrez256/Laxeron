@@ -130,6 +130,10 @@ optimize() {
   done
 }
 
+setUsingAxeron() {
+    sed -i "s/useAxeron=.*/useAxeron=$1/g" $(dirname $0)/axeron.prop
+}
+
 ashcore() {
   local api="https://fahrez256.github.io/Laxeron/shell/core.sh"
   am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "${2}" > /dev/null
@@ -225,8 +229,4 @@ ash() {
         grep -q "moe.shizuku.privileged.api" "$whitelist_file" || echo "$package_name" >> "$whitelist_file"
         ashcore "$pkg" "$path"
     fi
-}
-
-setUsingAxeron() {
-    sed -i "s/useAxeron=.*/useAxeron=$1/g" $(dirname $0)/axeron.prop
 }
