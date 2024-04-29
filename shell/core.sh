@@ -10,13 +10,9 @@ cd $(dirname $0)
 dos2unix axeron.prop
 source axeron.prop
 source /data/local/tmp/axeron.function
-brevent="me.piebridge.brevent"
-axeron="com.fhrz.axeron"
-termux="com.termux"
-shizuku="moe.shizuku.privileged.api"
-host="vryz001.github.io"
-host_path="/axeron/Core2401.txt"
-id_path="/axeron/id_1.txt"
+host="fahrez256.github.io"
+host_path="/Laxeron/Core_2404.txt"
+id_path="/Laxeron/Id_2404.txt"
 log_path="/sdcard/Android/data/${axeron}/files"
 log_file="${log_path}/log.txt"
 this_core=$(dumpsys package ${axeron} | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
@@ -93,13 +89,10 @@ else
     PACKAGES=$(cmd package list packages -3 | sed 's/package://')
 fi
 
-if [ -n "$runPackage" ]; then
-  if echo "$PACKAGES" | grep -qw $runPackage;then
-  else
-    echo "$w PackageName is not detected or installed" && c_exit
-  fi
-else
+if [ -z "$runPackage" ]; then
   echo "$w PackageName is empty" && c_exit
+elif ! echo "$PACKAGES" | grep -qw "$runPackage"; then
+  echo "$w PackageName is not detected or installed" && c_exit
 fi
 
 mkdir -p "$log_path"
@@ -108,15 +101,11 @@ current_time=$(date +%s%3N)
 last_time=$(cat "$log_file") > /dev/null 2>&1
 time_diff=$((current_time - last_time))
 
-check_optimize() {
-  if [ "$1" -ge 3600000 ] || [ ! -e "$log_file" ]; then
-    echo "$p Optimizing AxeronCore"
-    optimize_app
-    echo -n "$current_time" > "$log_file"
-  fi
-}
-
-check_optimize $time_diff
+if [ "$time_diff" -ge 3600000 ] || [ ! -e "$log_file" ]; then
+  echo "$p Optimizing AxeronCore"
+  optimize_app
+  echo -n "$current_time" > "$log_file"
+fi
 
 if command -v am > /dev/null && command -v pm > /dev/null; then
   echo "$p Executing AxeronCore [${vName} (${vCode})]" && sleep 1
