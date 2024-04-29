@@ -80,6 +80,18 @@ getid() {
   echo $(settings get secure android_id)
 }
 
+set_perm_recursive() {
+    local directory=$1
+    local owner=$2
+    local group=$3
+    local dirpermission=$4
+    local filepermission=$5
+    find "$directory" -type d -exec chown "$owner":"$group" {} +
+    find "$directory" -type d -exec chmod "$dirpermission" {} +
+    find "$directory" -type f -exec chown "$owner":"$group" {} +
+    find "$directory" -type f -exec chmod "$filepermission" {} +
+}
+
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
     [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
