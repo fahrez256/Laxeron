@@ -218,9 +218,15 @@ ash() {
             ;;
     esac
 
+    [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || { echo "[ ? ] axeron.prop not found in $path."; return 0 }
+
     if [ $useAxeron ] && [ $useAxeron = true ]; then
         grep -q "com.fhrz.axeron" "$whitelist_file" || echo "$package_name" >> "$whitelist_file"
         grep -q "moe.shizuku.privileged.api" "$whitelist_file" || echo "$package_name" >> "$whitelist_file"
         ashcore "$pkg" "$path"
     fi
+}
+
+setUsingAxeron() {
+    sed -i "s/useAxeron=.*/useAxeron=$1/g" $(dirname $0)/axeron.prop
 }
