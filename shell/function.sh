@@ -16,6 +16,15 @@ check_axeron() {
   fi
 }
 
+crun() {
+  local pathCrun="/data/local/tmp/axeron_crun"
+  [ ! -d "$pathCrun" ] && mkdir -p $pathCrun
+  cp $(dirname $0)/${1} $pathCrun
+  chmod +x ${pathCrun}/${1}
+  ${pathCrun}/${1}
+  rm -f ${pathCrun}/${1}
+}
+
 axeroncore() {
   echo "axeroncore not supported :("
   sleep 1
