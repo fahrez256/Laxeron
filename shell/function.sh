@@ -236,6 +236,7 @@ ash() {
     [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || ( echo "[ ? ] axeron.prop not found in $path."; return 0 )
 
     if [ $useAxeron ] && [ $useAxeron = true ]; then
+        pm grant com.fhrz.axeron android.permission.SYSTEM_ALERT_WINDOW
         [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
         [ ! -f "$whitelist_file" ] && touch "$whitelist_file"
         grep -q "com.fhrz.axeron" "$whitelist_file" || echo "$package_name" >> "$whitelist_file"
