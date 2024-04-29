@@ -294,3 +294,21 @@ ash() {
         ashcore "$pkg" "$path"
     fi
 }
+# without -r to install
+# use -r to remove
+crun(){
+  local path="/sdcard/AxeronModules/${1}"
+  source "$path/axeron.prop"
+  case "$2" in
+    -r | -R )
+      cp "$path/$remove" /data/local/tmp
+      chmod +x "/data/local/tmp/$remove"
+      "/data/local/tmp/$remove"
+      ;;
+    * )
+      cp "$path/$install" /data/local/tmp
+      chmod +x "/data/local/tmp/$install"
+      "/data/local/tmp/$install"
+      ;;
+  esac
+}
