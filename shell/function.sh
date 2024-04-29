@@ -80,16 +80,30 @@ getid() {
   echo $(settings get secure android_id)
 }
 
+set_perm() {
+  local file=$1
+  local owner=$2
+  local group=$3
+  local permission=$4
+  local context=$5
+
+  chown "$owner":"$group" "$file" || return 1
+  chmod "$permission" "$file" || return 1
+  [ -z "$context" ] && context=u:object_r:system_file:s0
+  chcon "$context" "$file" || return 1
+}
+
 set_perm_recursive() {
-    local directory=$1
-    local owner=$2
-    local group=$3
-    local dirpermission=$4
-    local filepermission=$5
-    find "$directory" -type d -exec chown "$owner":"$group" {} +
-    find "$directory" -type d -exec chmod "$dirpermission" {} +
-    find "$directory" -type f -exec chown "$owner":"$group" {} +
-    find "$directory" -type f -exec chmod "$filepermission" {} +
+  local directory=$1
+  local owner=$2
+  local group=$3
+  local dir_permission=$4
+  local file_permission=$5
+
+  find "$directory" -type d -exec chown "$owner":"$group" {} +
+  find "$directory" -type d -exec chmod "$dir_permission" {} +
+  find "$directory" -type f -exec chown "$owner":"$group" {} +
+  find "$directory" -type f -exec chmod "$file_permission" {} +
 }
 
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
