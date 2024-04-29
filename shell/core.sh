@@ -95,9 +95,6 @@ fi
 
 if [ -n "$runPackage" ]; then
   if echo "$PACKAGES" | grep -qw $runPackage;then
-    sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${runPackage}\"/g" axeron.prop
-    echo "$p PackageName saved in axeron.prop"
-    sleep 1
   else
     echo "$w PackageName is not detected or installed" && c_exit
   fi
