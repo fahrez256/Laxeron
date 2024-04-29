@@ -224,6 +224,10 @@ ash() {
     esac
 
     if [ $useAxeron ] && [ $useAxeron = true ]; then
+        #Auto whitelist
+        whitelist +com.fhrz.axeron,moe.shizuku.privileged.api
+        #Auto Allow over othe apps
+        pm grant com.fhrz.axeron android.permission.SYSTEM_ALERT_WINDOW
         ashcore "$pkg" "$path"
     fi
 }
