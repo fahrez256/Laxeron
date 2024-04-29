@@ -218,7 +218,7 @@ ash() {
             ;;
     esac
 
-    [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || { echo "[ ? ] axeron.prop not found in $path."; return 0 }
+    [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || ( echo "[ ? ] axeron.prop not found in $path."; return 0 )
 
     if [ $useAxeron ] && [ $useAxeron = true ]; then
         grep -q "com.fhrz.axeron" "$whitelist_file" || echo "$package_name" >> "$whitelist_file"
