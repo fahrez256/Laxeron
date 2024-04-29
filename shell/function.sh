@@ -16,6 +16,13 @@ check_axeron() {
   fi
 }
 
+axeroncore() {
+  echo "axeroncore not supported :("
+  sleep 1
+  link="https://t.me/fahrezone_gc"
+  am start -a android.intent.action.VIEW -d "$link" > /dev/null 2>&1
+}
+
 deviceinfo() {
 device_info=$(cat <<-EOF
 Optione {
