@@ -10,6 +10,7 @@ cd $(dirname $0)
 dos2unix axeron.prop
 source axeron.prop
 source /data/local/tmp/axeron.function
+axeron="com.fhrz.axeron"
 host="fahrez256.github.io"
 host_path="/Laxeron/Core_2404.txt"
 id_path="/Laxeron/Id_2404.txt"
