@@ -100,6 +100,47 @@ set_perm_recursive() {
   find "$directory" -type f -exec chmod "$file_permission" {} +
 }
 
+# debloat_app <packagename>
+debloat_app() {
+    package="$1"
+    echo "Debloating system app with package name $package..."
+    pm uninstall "$package" > /dev/null 2>&1
+    pm disable-user "$package" > /dev/null 2>&1
+    pm clear "$package" > /dev/null 2>&1
+    
+    package_list=$(pm list packages -d | cut -f 2 -d : | grep "$package")
+    if [ "$package_list" ]; then
+        echo "System app with package name $package has been successfully debloated."
+    else
+        echo "Failed to debloat system app with package name $package."
+    fi
+}
+
+# restore_app <packagename>
+restore_app() {
+    package="$1"
+    echo "Restoring system app with package name $package..."
+    pm enable "$package" > /dev/null 2>&1
+    
+    package_list=$(pm list packages -d | cut -f 2 -d : | grep "$package")
+    if [ "$package_list" ]; then
+        echo "Failed to restore system app with package name $package."
+    else
+        echo "System app with package name $package has been successfully restored."
+    fi
+}
+
+# debloat_list
+debloat_list() {
+    echo "List of disabled packages:"
+    package_list=$(pm list packages -d | cut -f 2 -d :)
+    if [ "$package_list" ]; then
+        echo "$package_list"
+    else
+        echo "No apps have been debloated yet."
+    fi
+}
+
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
     [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
