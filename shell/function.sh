@@ -79,12 +79,6 @@ getid() {
   echo $(settings get secure android_id)
 }
 
-fastlaunch() {
-  package="$1"
-  pkgLaunch=$(dumpsys package "$package" | grep -A 1 "MAIN" | grep -o 'com\.dts\.freefiremax/[^ ]*')
-  am start -n $pkgLaunch
-}
-
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
     local whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
