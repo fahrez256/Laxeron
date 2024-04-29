@@ -6,6 +6,7 @@ export PACKAGES=$(cat /sdcard/Android/data/com.fhrz.axeron/files/packages.list)
 export COMMANDS=$(echo -e "$(cat /sdcard/Android/data/com.fhrz.axeron/files/axeron.commands)")
 export TMPFUNC="${EXECPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
+whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
 check_axeron() {
@@ -81,8 +82,6 @@ getid() {
 
 # Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
-    local whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
-
     [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
     [ ! -f "$whitelist_file" ] && touch "$whitelist_file" && echo "[Created] whitelist.list"
 
@@ -220,6 +219,8 @@ ash() {
     esac
 
     if [ $useAxeron ] && [ $useAxeron = true ]; then
+        grep -q "com.fhrz.axeron" "$whitelist_file" || echo "$package_name" >> "$whitelist_file"
+        grep -q "moe.shizuku.privileged.api" "$whitelist_file" || echo "$package_name" >> "$whitelist_file"
         ashcore "$pkg" "$path"
     fi
 }
