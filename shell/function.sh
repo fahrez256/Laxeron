@@ -83,22 +83,22 @@ set_perm_recursive() {
 }
 
 cclean() {
-	echo "Running cache cleanup..."
-	available_before=$(df /data | awk 'NR==2{print $4}')
-	pm trim-caches 999G
-	available_after=$(df /data | awk 'NR==2{print $4}')
-
-	cleared_cache=$((available_after - available_before))
-
-	if (( cleared_cache < 1024 )); then
-		echo "Total cache cleared: $cleared_cache Bytes"
-	elif (( cleared_cache < 1048576 )); then
-		echo "Total cache cleared: $((cleared_cache / 1024)) KB"
-	elif (( cleared_cache < 1073741824 )); then
-		echo "Total cache cleared: $((cleared_cache / 1048576)) MB"
-	else
-		echo "Total cache cleared: $((cleared_cache / 1073741824)) GB"
-	fi
+  echo "Running cache cleanup..."
+  available_before=$(df /data | awk 'NR==2{print $4}')
+  pm trim-caches 999G
+  available_after=$(df /data | awk 'NR==2{print $4}')
+  
+  cleared_cache=$((available_after - available_before))
+  
+  if (( cleared_cache < 1024 )); then
+    echo "Total cache cleared: $cleared_cache Bytes"
+  elif (( cleared_cache < 1048576 )); then
+    echo "Total cache cleared: $((cleared_cache / 1024)) KB"
+  elif (( cleared_cache < 1073741824 )); then
+    echo "Total cache cleared: $((cleared_cache / 1048576)) MB"
+  else
+    echo "Total cache cleared: $((cleared_cache / 1073741824)) GB"
+  fi
 }
 
 # debloat_app <packagename>
