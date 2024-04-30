@@ -16,21 +16,6 @@ check_axeron() {
   fi
 }
 
-cash() {
-  if [ -z $1 ]; then
-    echo "Usage: cash <path>"
-    return 0
-  fi
-  local path=$(dirname $1)
-  local fileName=$(basename $1)
-  local pathCrun="/data/local/tmp/axeron_crun"
-  [ ! -d "$pathCrun" ] && mkdir -p $pathCrun
-  cp ${path} $pathCrun
-  chmod +x ${pathCrun}/$fileName
-  ${pathCrun}/$fileName
-  rm -f ${pathCrun}/$fileName
-}
-
 fastlaunch() {
    am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
 }
@@ -71,22 +56,6 @@ shellstorm() {
   am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
 }
 
-# busybox() {
-#   source_busybox="${EXECPATH}/busybox"
-#   target_busybox="/data/local/tmp/busybox"
-
-#   if [ ! -f "$target_busybox" ]; then
-#       cp "$source_busybox" "$target_busybox"
-#       chmod +x "$target_busybox"
-#   fi
-#   echo "" > $source_busybox
-#   $target_busybox $@
-# }
-
-getid() {
-  echo $(settings get secure android_id)
-}
-
 set_perm() {
   local file=$1
   local owner=$2
@@ -113,7 +82,6 @@ set_perm_recursive() {
   find "$directory" -type f -exec chmod "$file_permission" {} +
 }
 
-# Clear all Cache in one command
 cclean() {
     echo "Running cache cleanup..."
     available_before=$(df /data | awk 'NR==2{print $4}')
@@ -174,7 +142,6 @@ debloat_list() {
     fi
 }
 
-# Fungsi untuk menambahkan atau menghapus packagename dari whitelist
 whitelist() {
     [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
     [ ! -f "$whitelist_file" ] && touch "$whitelist_file" && echo "[Created] whitelist.list"
@@ -200,7 +167,7 @@ whitelist() {
 }
 
 checkjit() {
-  dumpsys package "$1" | grep -B 1 status= | grep -A 1 "base.apk" | grep status= | sed 's/.*status=\([^]]*\).*/\1/'
+  cmd package dump "$1" | grep -B 1 status= | grep -A 1 "base.apk" | grep status= | sed 's/.*status=\([^]]*\).*/\1/'
 }
 
 removejit() {
@@ -292,14 +259,14 @@ ash() {
                     local pathRemove="${path}/${3}"
                     if ls "${pathRemove}" >/dev/null 2>&1; then
                         shift 3
-                        sh "${pathRemove}" "$@"
+                        ${pathRemove} $@
                     else
                         echo "[ ! ] Cant remove this module"
                     fi
                 fi
             else
                 shift 2
-                sh "${path}/${remove}" "$@"
+                ${path}/${remove} $@
             fi
             ;;
         *)
@@ -310,14 +277,14 @@ ash() {
                     local pathInstall="${path}/${2}"
                     if ls "${pathInstall}" >/dev/null 2>&1; then
                         shift 2
-                        sh "${pathInstall}" $@
+                        ${pathInstall} $@
                     else
                         echo "[ ! ] Cant install this module"
                     fi
                 fi
             else
                 shift 
-                sh "${path}/${install}" $@
+                ${path}/${install} $@
             fi
             ;;
     esac
@@ -332,23 +299,4 @@ ash() {
         grep -q "moe.shizuku.privileged.api" "$whitelist_file" || echo "$package_name" >> "$whitelist_file"
         ashcore "$pkg" "$path"
     fi
-}
-
-# without -r to install
-# use -r to remove
-crun(){
-  local path="/sdcard/AxeronModules/${1}"
-  source "$path/axeron.prop"
-  case "$2" in
-    -r | -R )
-      cp "$path/$remove" /data/local/tmp
-      chmod +x "/data/local/tmp/$remove"
-      "/data/local/tmp/$remove"
-      ;;
-    * )
-      cp "$path/$install" /data/local/tmp
-      chmod +x "/data/local/tmp/$install"
-      "/data/local/tmp/$install"
-      ;;
-  esac
 }
