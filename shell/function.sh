@@ -2,9 +2,10 @@ export AXERON=true
 export EXPIRED=true
 export CORE="d8a97692ad1e71b1"
 export EXECPATH=$(dirname $0)
-export PACKAGES=$(cat /sdcard/Android/data/com.fhrz.axeron/files/packages.list)
-export COMMANDS=$(echo -e "$(cat /sdcard/Android/data/com.fhrz.axeron/files/axeron.commands)")
-export TMPFUNC="${EXECPATH}/axeron.function"
+local THISPATH="/sdcard/Android/data/com.fhrz.axeron/files"
+export PACKAGES=$(cat ${THISPATH}/packages.list)
+export COMMANDS=$(echo -e "$(cat ${THISPATH}/axeron.commands)")
+export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
@@ -212,8 +213,9 @@ setUsingAxeron() {
 
 ashcore() {
 local api="https://fahrez256.github.io/Laxeron/shell/core.sh"
-  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "${2}" > /dev/null
-  while [ ! -f "${2}/response" ]; do sleep 1; done;
+  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "${THISPATH}" > /dev/null
+  while [ ! -f "${THISPATH}/response" ]; do sleep 1; done;
+  cp ${THISPATH}/response $2
   sh ${2}/response $1
   # am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
 }
