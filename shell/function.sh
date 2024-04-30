@@ -244,7 +244,6 @@ ash() {
 
     local path="/sdcard/AxeronModules/${1}"
     local pathCash="/data/local/tmp/axeron_cash"
-    local pathCash="/data/local/tmp/axeron_cash"
     [ ! -d "$pathCash" ] && mkdir -p $pathCash
     [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
     
