@@ -166,17 +166,32 @@ whitelist() {
     esac
 }
 
-checkjit() {
-  cmd package dump "$1" | grep -B 1 status= | grep -A 1 "base.apk" | grep status= | sed 's/.*status=\([^]]*\).*/\1/'
-}
-
-removejit() {
-  pm compile --reset "$1"
-}
-
 jit() {
-  pm compile -m "$1" -f "$2"
+    if [ $# -eq 0 ]; then
+        echo "Usage: jit [option/mode] <package_name>"
+    fi
+
+    case $1 in
+        "--check" | "-c")
+            cmd package dump "$2" | grep -B 1 status= | grep -A 1 "base.apk" | grep status= | sed 's/.*status=\([^]]*\).*/\1/'
+            ;;
+        "--reset" | "-r")
+            pm compile --reset "$2"
+            ;;
+        "--help" | "-h")
+            echo "Usage: jit <mode> <package_name>"
+            echo "Option:"
+            echo "  --check, -c <package_name>: Check if the package is JIT compiled."
+            echo "  --reset, -r <package_name>: Reset JIT compilation for the package."
+            echo "Mode:"
+            echo "  [verify/speed/etc] <package_name>: Compile package using JIT mode."
+            ;;
+        *)
+            pm compile -m "$1" -f "$2"
+            ;;
+    esac
 }
+
 
 optimize() {
   for package in $(echo $PACKAGES | cut -d ":" -f 2); do
