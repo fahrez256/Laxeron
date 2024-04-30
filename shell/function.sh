@@ -101,7 +101,7 @@ set_perm_recursive() {
 }
 
 # Clear all Cache in one command
-CClean() {
+cclean() {
     echo "Running cache cleanup..."
     available_before=$(df /data | awk 'NR==2{print $4}')
     pm trim-caches 999G
