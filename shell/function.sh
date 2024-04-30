@@ -45,6 +45,10 @@ Optione {
 EOF
 )
 
+checkcode() {
+  echo "Child exitCode: $?"
+}
+
 echo -e "$device_info"
 }
 
