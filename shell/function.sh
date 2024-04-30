@@ -169,6 +169,7 @@ whitelist() {
 jit() {
     if [ $# -eq 0 ]; then
         echo "Usage: jit [option/mode] <package_name>"
+        return 0
     fi
 
     case $1 in
