@@ -44,12 +44,11 @@ Optione {
 }
 EOF
 )
+echo -e "$device_info"
+}
 
 checkcode() {
   echo "Child exitCode: $?"
-}
-
-echo -e "$device_info"
 }
 
 shellstorm() {
