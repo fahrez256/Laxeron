@@ -212,7 +212,7 @@ setUsingAxeron() {
 }
 
 ashcore() {
-local api="https://fahrez256.github.io/Laxeron/shell/core.sh"
+  local api="https://fahrez256.github.io/Laxeron/shell/core.sh"
   am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "${THISPATH}" > /dev/null
   while [ ! -f "${THISPATH}/response" ]; do sleep 1; done;
   cp ${THISPATH}/response $2
