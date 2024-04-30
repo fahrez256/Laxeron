@@ -16,14 +16,19 @@ check_axeron() {
   fi
 }
 
-# crun() {
-#   local pathCrun="/data/local/tmp/axeron_crun"
-#   [ ! -d "$pathCrun" ] && mkdir -p $pathCrun
-#   cp $(dirname $0)/${1} $pathCrun
-#   chmod +x ${pathCrun}/${1}
-#   ${pathCrun}/${1}
-#   rm -f ${pathCrun}/${1}
-# }
+cash() {
+  if [ -z $1 ]; then
+    echo "Usage: cash <path>"
+    return 0
+  fi
+  local pathCrun="/data/local/tmp/axeron_crun"
+  [ ! -d "$pathCrun" ] && mkdir -p $pathCrun
+  cp $(dirname $0)/${1} $pathCrun
+  chmod +x ${pathCrun}/${1}
+  ${pathCrun}/${1}
+  rm -f ${pathCrun}/${1}
+}
+
 fastlaunch() {
    am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
 }
