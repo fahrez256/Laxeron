@@ -83,7 +83,7 @@ set_perm_recursive() {
 }
 
 cclean() {
-  echo "[Cleaning] Optimizing cache"
+  echo -ne "[Cleaning] Optimizing cache: "
   available_before=$(df /data | awk 'NR==2{print $4}')
   pm trim-caches 999G
   available_after=$(df /data | awk 'NR==2{print $4}')
@@ -91,13 +91,13 @@ cclean() {
   cleared_cache=$((available_after - available_before))
   
   if (( cleared_cache < 1024 )); then
-    echo "Total cache cleared: $cleared_cache Bytes"
+    echo "$cleared_cache Bytes"
   elif (( cleared_cache < 1048576 )); then
-    echo "Total cache cleared: $((cleared_cache / 1024)) KB"
+    echo "$((cleared_cache / 1024)) KB"
   elif (( cleared_cache < 1073741824 )); then
-    echo "Total cache cleared: $((cleared_cache / 1048576)) MB"
+    echo "$((cleared_cache / 1048576)) MB"
   else
-    echo "Total cache cleared: $((cleared_cache / 1073741824)) GB"
+    echo "$((cleared_cache / 1073741824)) GB"
   fi
 }
 
