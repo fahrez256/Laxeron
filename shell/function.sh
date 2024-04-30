@@ -39,7 +39,7 @@ deviceinfo() {
 device_info=$(cat <<-EOF
 Optione {
   key:checkJit="$(getprop dalvik.vm.usejit)";
-  key:checkVulkan="$(getprop ro.hardware.vulkan)";
+  key:checkVulkan="$(ls /system/lib/libvulkan.so > /dev/null 2>&1 && echo true || echo false);
   key:infoRender="$(getprop debug.hwui.renderer)";
 }
 EOF
