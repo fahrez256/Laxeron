@@ -25,7 +25,7 @@ cash() {
   local fileName=$(basename $1)
   local pathCrun="/data/local/tmp/axeron_crun"
   [ ! -d "$pathCrun" ] && mkdir -p $pathCrun
-  cp ${path}/$fileName $pathCrun
+  cp ${path} $pathCrun
   chmod +x ${pathCrun}/$fileName
   ${pathCrun}/$fileName
   rm -f ${pathCrun}/$fileName
@@ -243,14 +243,17 @@ ash() {
     fi
 
     local path="/sdcard/AxeronModules/${1}"
-
+    local pathCash="/data/local/tmp/axeron_cash"
+    local pathCash="/data/local/tmp/axeron_cash"
+    [ ! -d "$pathCash" ] && mkdir -p $pathCash
+    [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
+    
     case $1 in
         "--help" | "-h")
             echo -e "Save the Module in AxeronModules folder!\n"
             echo -e "Usage: ash <path> [options] [arguments]"
             echo "Options:"
             echo "  --package, -p <packagename>: use custom packagename"
-            echo "  --install, -i <module>: Install a module from path"
             echo "  --remove, -r <module>: Remove a module from path"
             echo "  --list, -l: List installed modules"
             echo "  --help, -h: Show this help message"
@@ -265,6 +268,10 @@ ash() {
             [ ! -d "$path" ] && echo "[ ? ] Path not found: $path" && return 1
             ;;
     esac
+
+    cp -r $path $pathCash
+    path="${pathCash}/${1}"
+    [ ! -x $path ] chmod +x $path
 
     [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
