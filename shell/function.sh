@@ -270,7 +270,7 @@ ash() {
 
     cp -r $path $pathCash
     local pathEdit="${pathCash}/${1}"
-    chmod +x $pathEdit
+    find $pathEdit -type f -exec chmod +x {} \;
 
     [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
