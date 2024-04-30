@@ -24,6 +24,9 @@ check_axeron() {
 #   ${pathCrun}/${1}
 #   rm -f ${pathCrun}/${1}
 # }
+fastlaunch() {
+   am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
+}
 
 axeroncore() {
   echo "axeroncore not supported :("
