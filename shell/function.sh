@@ -265,27 +265,43 @@ ash() {
   esac
 
   case $2 in
-    "--remove" | "-r")
-      local remove="${3:-$remove}"
-      local target="${remove:-$2}"
-      local action="remove"
-      ;;
-    *)
-      local install="${2:-$install}"
-      local target="${install:-$1}"
-      local action="install"
-      ;;
-  esac
-
-  local pathTarget="${path}/${target}"
-  if [ -z "$target" ]; then
-    echo "[ ! ] Can't $action this module"
-  elif [ ! -e "$pathTarget" ]; then
-    echo "[ ! ] Can't $action this module"
-  else
-    shift $(( ${action} == "install" ? 1 : 2 ))
-    ${pathTarget} $@
-  fi
+		"--remove" | "-r")
+			if [ -z "$remove" ]; then
+				if [ -z "${3}" ]; then
+					echo "[ ! ] Cant remove this module"
+				else
+					local pathRemove="${path}/${3}"
+					if ls "${pathRemove}" >/dev/null 2>&1; then
+						shift 3
+						${pathRemove} $@
+					else
+						echo "[ ! ] Cant remove this module"
+					fi
+				fi
+			else
+				shift 2
+				${path}/${remove} $@
+			fi
+			;;
+		*)
+			if [ -z "$install" ]; then
+				if [ -z "${2}" ]; then
+					echo "[ ! ] Cant install this module"
+				else
+					local pathInstall="${path}/${2}"
+					if ls "${pathInstall}" >/dev/null 2>&1; then
+						shift 2
+						${pathInstall} $@
+					else
+						echo "[ ! ] Cant install this module"
+					fi
+				fi
+			else
+				shift 
+				${path}/${install} $@
+			fi
+			;;
+	esac
 
   [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || ( echo "[ ? ] axeron.prop not found in $path."; return 0 )
 
