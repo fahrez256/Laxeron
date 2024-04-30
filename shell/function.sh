@@ -21,12 +21,14 @@ cash() {
     echo "Usage: cash <path>"
     return 0
   fi
+  local path=$(dirname $1)
+  local fileName=$(basename $1)
   local pathCrun="/data/local/tmp/axeron_crun"
   [ ! -d "$pathCrun" ] && mkdir -p $pathCrun
-  cp $(dirname $0)/${1} $pathCrun
-  chmod +x ${pathCrun}/${1}
-  ${pathCrun}/${1}
-  rm -f ${pathCrun}/${1}
+  cp ${path}/$fileName $pathCrun
+  chmod +x ${pathCrun}/$fileName
+  ${pathCrun}/$fileName
+  rm -f ${pathCrun}/$fileName
 }
 
 fastlaunch() {
