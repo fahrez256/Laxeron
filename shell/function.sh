@@ -194,12 +194,11 @@ jit() {
 
 
 optimize() {
+  cclean
   for package in $(echo $PACKAGES | cut -d ":" -f 2); do
       if whitelist | grep -q "$package" >/dev/null 2>&1; then
         continue
       else
-        cache_path="/sdcard/Android/data/${package}/cache"
-        [ -e "$cache_path" ] && rm -rf "$cache_path" > /dev/null 2>&1
         am force-stop "$package" > /dev/null 2>&1
         echo "[Optimized] $package"
       fi
