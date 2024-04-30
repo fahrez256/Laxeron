@@ -100,6 +100,26 @@ set_perm_recursive() {
   find "$directory" -type f -exec chmod "$file_permission" {} +
 }
 
+# Clear all Cache in one command
+CClean() {
+    echo "Running cache cleanup..."
+    available_before=$(df /data | awk 'NR==2{print $4}')
+    pm trim-caches 999G
+    available_after=$(df /data | awk 'NR==2{print $4}')
+
+    cleared_cache=$((available_after - available_before))
+
+    if (( cleared_cache < 1024 )); then
+        echo "Total cache cleared: $cleared_cache bytes"
+    elif (( cleared_cache < 1048576 )); then
+        echo "Total cache cleared: $((cleared_cache / 1024)) KB"
+    elif (( cleared_cache < 1073741824 )); then
+        echo "Total cache cleared: $((cleared_cache / 1048576)) MB"
+    else
+        echo "Total cache cleared: $((cleared_cache / 1073741824)) GB"
+    fi
+}
+
 # debloat_app <packagename>
 debloat_app() {
     package="$1"
@@ -294,6 +314,7 @@ ash() {
         ashcore "$pkg" "$path"
     fi
 }
+
 # without -r to install
 # use -r to remove
 crun(){
