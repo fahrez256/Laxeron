@@ -269,8 +269,8 @@ ash() {
     esac
 
     cp -r $path $pathCash
-    local pathEdit="${pathCash}/${1}"
-    find $pathEdit -type f -exec chmod +x {} \;
+    local path="${pathCash}/${1}"
+    find $path -type f -exec chmod +x {} \;
 
     [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
