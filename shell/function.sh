@@ -303,17 +303,6 @@ ash() {
   fi
   
   nohup=false
-  if [ -n $1 ]; then
-    if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
-      nohup=true
-      shift
-    fi
-  fi
-
-  local path="/sdcard/AxeronModules/${1}"
-  local pathCash="/data/local/tmp/axeron_cash"
-  [ ! -d "$pathCash" ] && mkdir -p $pathCash
-  [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
   
   case $1 in
     "--help" | "-h")
@@ -331,10 +320,19 @@ ash() {
       ls /sdcard/AxeronModules
       return 0
       ;;
+    "--nohup" | "-n" )
+      nohup=true
+      shift
+      ;;
     *)
       [ ! -d "$path" ] && echo "[ ? ] Path not found: $path" && return 1
       ;;
   esac
+
+  local path="/sdcard/AxeronModules/${1}"
+  local pathCash="/data/local/tmp/axeron_cash"
+  [ ! -d "$pathCash" ] && mkdir -p $pathCash
+  [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
 
   cp -r $path $pathCash
   local path="${pathCash}/${1}"
