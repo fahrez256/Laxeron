@@ -320,12 +320,11 @@ ash() {
       ls /sdcard/AxeronModules
       return 0
       ;;
-    "--nohup" | "-n" )
-      nohup=true
-      local path="/sdcard/AxeronModules/${2}"
-      shift
-      ;;
     *)
+      if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
+        nohup=true
+        shift
+      fi
       local path="/sdcard/AxeronModules/${1}"
       ;;
   esac
