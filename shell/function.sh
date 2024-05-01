@@ -320,15 +320,13 @@ ash() {
       ls /sdcard/AxeronModules
       return 0
       ;;
-    *)
-      if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
-        nohup=true
-        shift
-      fi
-      local path="/sdcard/AxeronModules/${1}"
+    "--nohup" | "-nh")
+      nohup=true
+      shift
       ;;
   esac
 
+  local path="/sdcard/AxeronModules/${1}"
   [ ! -d "$path" ] && echo "[ ? ] Path not found: $path" && return 1
   local pathCash="/data/local/tmp/axeron_cash"
   [ ! -d "$pathCash" ] && mkdir -p $pathCash
@@ -357,14 +355,14 @@ ash() {
           local pathRemove="${path}/${3}"
           if ls "${pathRemove}" >/dev/null 2>&1; then
             shift 3
-            [ $nohup = true ] && nohup ${pathRemove} $@ || ${pathRemove} $@
+            [ $nohup ] && nohup ${pathRemove} $@ || ${pathRemove} $@
           else
             echo "[ ! ] Cant remove this module"
           fi
         fi
       else
         shift 2
-        [ $nohup = true ] && nohup ${path}/${remove} $@ || ${path}/${remove} $@
+        [ $nohup ] && nohup ${path}/${remove} $@ || ${path}/${remove} $@
       fi
       ;;
     *)
@@ -375,14 +373,14 @@ ash() {
           local pathInstall="${path}/${2}"
           if ls "${pathInstall}" >/dev/null 2>&1; then
             shift 2
-            [ $nohup = true ] && nohup ${pathInstall} $@ || ${pathInstall} $@
+            [ $nohup ] && nohup ${pathInstall} $@ || ${pathInstall} $@
           else
             echo "[ ! ] Cant install this module"
           fi
         fi
       else
         shift 
-        [ $nohup = true ] nohup ${path}/${install} $@ || ${path}/${install} $@
+        [ $nohup ] && nohup ${path}/${install} $@ || ${path}/${install} $@
       fi
     ;;
   esac
