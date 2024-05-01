@@ -302,9 +302,12 @@ ash() {
     return 1
   fi
   
-  if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
-    nohup="nohup "
-    shift
+  nohup=false
+  fi [ -n $1 ]; then
+    if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
+      nohup=true
+      shift
+    fi
   fi
 
   local path="/sdcard/AxeronModules/${1}"
@@ -356,14 +359,14 @@ ash() {
           local pathRemove="${path}/${3}"
           if ls "${pathRemove}" >/dev/null 2>&1; then
             shift 3
-            ${nohup}${pathRemove} $@
+            [ $nohup ] && nohup ${pathRemove} $@ || ${pathRemove} $@
           else
             echo "[ ! ] Cant remove this module"
           fi
         fi
       else
         shift 2
-        ${nohup}${path}/${remove} $@
+        [ $nohup ] && nohup ${path}/${remove} $@ || ${path}/${remove} $@
       fi
       ;;
     *)
@@ -374,14 +377,14 @@ ash() {
           local pathInstall="${path}/${2}"
           if ls "${pathInstall}" >/dev/null 2>&1; then
             shift 2
-            ${nohup}${pathInstall} $@
+            [ $nohup ] && nohup ${pathInstall} $@ || ${pathInstall} $@
           else
             echo "[ ! ] Cant install this module"
           fi
         fi
       else
         shift 
-        ${nohup}${path}/${install} $@
+        [ $nohup ] && nohup ${path}/${install} $@ || ${path}/${install} $@
       fi
     ;;
   esac
