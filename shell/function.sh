@@ -166,6 +166,40 @@ debloat_list() {
   fi
 }
 
+# Permission Bypasser
+aperm() {
+    package=$2
+if pm list package | cut -f 2 -d : | grep "$package"
+then
+    app_permissions=$(appops get "$package" | tr ' ' '\n' | grep '_' | tr -d ':')
+    option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+
+    case $option in
+        -b|--bypass)
+            echo "Permissions bypassed for application $package:"
+            for permission in $app_permissions; do
+                appops set "$package" "$permission" allow
+                echo "- $permission"
+            done
+            am force-stop "$package"
+            ;;
+        -d|--default)
+            echo "Permissions reverted to default for application $package:"
+            for permission in $app_permissions; do
+                appops set "$package" "$permission" default
+                echo "- $permission"
+            done
+            am force-stop "$package"
+            ;;
+        *)
+            echo "Invalid option. Please use -b or -d."
+            ;;
+    esac
+else
+    echo "Invalid package name."
+fi
+}
+
 whitelist() {
   [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
   [ ! -f "$whitelist_file" ] && touch "$whitelist_file" && echo "[Created] whitelist.list"
