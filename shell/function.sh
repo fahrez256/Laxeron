@@ -17,6 +17,26 @@ check_axeron() {
   fi
 }
 
+cactus() {
+  #Rem01Gaming
+
+  # Set the path of the folder containing the files
+  folder_path=$(echo ${1} | sed 's/\/$//')
+  
+  export LINE=$(stty size | awk '{print $2}')
+  
+  # Iterate through each file in the folder
+  for file in "$folder_path"/*; do
+    # Check if the path is a file (not a subdirectory)
+    if [[ -f "$file" ]]; then
+      # Use the 'cat' command to display the contents of the file
+      echo -e "$(yes "─" | sed ${LINE}'q' | tr -d '\n')"
+      echo -e "${file}\n"
+      cat ${file}
+    fi
+  done
+}
+
 fastlaunch() {
    am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
 }
