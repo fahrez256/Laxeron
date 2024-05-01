@@ -382,7 +382,7 @@ ash() {
         fi
       else
         shift 
-        [ $nohup = true ] nohup ${path}/${install} $@ & || ${path}/${install} $@
+        [ $nohup = true ] nohup ${path}/${install} $@ || ${path}/${install} $@
       fi
     ;;
   esac
