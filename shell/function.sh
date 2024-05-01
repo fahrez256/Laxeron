@@ -81,6 +81,7 @@ shellstorm() {
 }
 
 set_perm() {
+  #RiProG
   local file=$1
   local owner=$2
   local group=$3
@@ -94,6 +95,7 @@ set_perm() {
 }
 
 set_perm_recursive() {
+  #RiProG
   local directory=$1
   local owner=$2
   local group=$3
@@ -107,6 +109,7 @@ set_perm_recursive() {
 }
 
 cclean() {
+  #RiProG
   echo -ne "[Cleaning] Optimizing cache: "
   available_before=$(df /data | awk 'NR==2{print $4}')
   pm trim-caches 999G
@@ -127,6 +130,7 @@ cclean() {
 
 # debloat_app <packagename>
 debloat_app() {
+  #RiProG
   package="$1"
   echo "Debloating system app with package name $package..."
   pm uninstall "$package" > /dev/null 2>&1
@@ -143,6 +147,7 @@ debloat_app() {
 
 # restore_app <packagename>
 restore_app() {
+  #RiProG
   package="$1"
   echo "Restoring system app with package name $package..."
   pm enable "$package" > /dev/null 2>&1
@@ -157,6 +162,7 @@ restore_app() {
 
 # debloat_list
 debloat_list() {
+  #RiProG
   echo "List of disabled packages:"
   package_list=$(pm list packages -d | cut -f 2 -d :)
   if [ "$package_list" ]; then
@@ -168,36 +174,37 @@ debloat_list() {
 
 # Permission Bypasser
 aperm() {
-    package=$2
-if pm list package | cut -f 2 -d : | grep "$package"
-then
-    app_permissions=$(appops get "$package" | tr ' ' '\n' | grep '_' | tr -d ':')
-    option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
-
-    case $option in
-        -b|--bypass)
-            echo "Permissions bypassed for application $package:"
-            for permission in $app_permissions; do
-                appops set "$package" "$permission" allow
-                echo "- $permission"
-            done
-            am force-stop "$package"
-            ;;
-        -d|--default)
-            echo "Permissions reverted to default for application $package:"
-            for permission in $app_permissions; do
-                appops set "$package" "$permission" default
-                echo "- $permission"
-            done
-            am force-stop "$package"
-            ;;
-        *)
-            echo "Invalid option. Please use -b or -d."
-            ;;
-    esac
-else
-    echo "Invalid package name."
-fi
+  #RiProG
+  package=$2
+  if pm list package | cut -f 2 -d : | grep "$package"
+  then
+      app_permissions=$(appops get "$package" | tr ' ' '\n' | grep '_' | tr -d ':')
+      option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+  
+      case $option in
+          -b|--bypass)
+              echo "Permissions bypassed for application $package:"
+              for permission in $app_permissions; do
+                  appops set "$package" "$permission" allow
+                  echo "- $permission"
+              done
+              am force-stop "$package"
+              ;;
+          -d|--default)
+              echo "Permissions reverted to default for application $package:"
+              for permission in $app_permissions; do
+                  appops set "$package" "$permission" default
+                  echo "- $permission"
+              done
+              am force-stop "$package"
+              ;;
+          *)
+              echo "Invalid option. Please use -b or -d."
+              ;;
+      esac
+  else
+      echo "Invalid package name."
+  fi
 }
 
 whitelist() {
