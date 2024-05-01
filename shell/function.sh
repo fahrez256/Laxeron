@@ -175,7 +175,11 @@ jit() {
   
   case $1 in
     "--check" | "-c")
-      cmd package dump "$2" | grep -B 1 status= | grep -A 1 "base.apk" | grep status= | sed 's/.*status=\([^]]*\).*/\1/'
+      if [ $2 == "--sdex" ]; then
+        cmd package dump "$3" | grep -B 1 status= | grep -A 1 "split_" | grep status= | sed 's/.*status=\([^]]*\).*/\1/' | head -n 1
+      else
+        cmd package dump "$2" | grep -B 1 status= | grep -A 1 "base.apk" | grep status= | sed 's/.*status=\([^]]*\).*/\1/'
+      fi
       ;;
     "--reset" | "-r")
       if [ $2 == "--sdex" ]; then
