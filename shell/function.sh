@@ -387,7 +387,7 @@ ash() {
       else
         shift 
         if [ $nohup = true ]; then
-          nohup ${path}/${install} $@
+          nohup ${path}/${install} $@ &
         else
           ${path}/${install} $@
         fi
