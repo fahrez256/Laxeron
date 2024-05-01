@@ -19,6 +19,10 @@ check_axeron() {
 
 cactus() {
   #Rem01Gaming
+  if [ $# -eq 0 ]; then
+    echo "Usage: cactus <path>"
+    return 0
+  fi
 
   # Set the path of the folder containing the files
   folder_path=$(echo ${1} | sed 's/\/$//')
