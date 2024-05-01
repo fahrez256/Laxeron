@@ -321,10 +321,10 @@ ash() {
       return 0
       ;;
     *)
-      if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
-        nohup=true
-        shift
-      fi
+      # if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
+      #   nohup=true
+      #   shift
+      # fi
       local path="/sdcard/AxeronModules/${1}"
       ;;
   esac
