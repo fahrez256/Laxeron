@@ -301,6 +301,11 @@ ash() {
     echo -e "Usage: ash <path> [options] [arguments]"
     return 1
   fi
+  
+  if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
+    nohup="nohup "
+    shift
+  fi
 
   local path="/sdcard/AxeronModules/${1}"
   local pathCash="/data/local/tmp/axeron_cash"
@@ -322,10 +327,6 @@ ash() {
       echo "List of Modules\n"
       ls /sdcard/AxeronModules
       return 0
-      ;;
-    "--nohup" | "-nh" )
-      nohup="nohup "
-      shift
       ;;
     *)
       [ ! -d "$path" ] && echo "[ ? ] Path not found: $path" && return 1
