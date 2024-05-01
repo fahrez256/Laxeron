@@ -26,15 +26,12 @@ cactus() {
 
   # Set the path of the folder containing the files
   folder_path=$(echo "$1" | sed 's/\/$//')
-
-  LINE=$(stty size | awk '{print $2}')
   
   # Iterate through each file in the folder
   for file in "$folder_path"/*; do
     # Check if the path is a file (not a subdirectory)
     if [ -f "$file" ]; then
       # Use the 'cat' command to display the contents of the file
-      printf '%.0s─' $(seq 1 "$LINE")
       echo -e "\n$file\n"
       cat "$file"
     fi
