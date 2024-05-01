@@ -357,7 +357,11 @@ ash() {
           local pathRemove="${path}/${3}"
           if ls "${pathRemove}" >/dev/null 2>&1; then
             shift 3
-            [ $nohup = true ] && nohup ${pathRemove} $@ || ${pathRemove} $@
+            if [ $nohup = true ]; then
+              nohup ${pathRemove} $@
+            else
+              ${pathRemove} $@
+            fi
           else
             echo "[ ! ] Cant remove this module"
           fi
@@ -382,7 +386,11 @@ ash() {
         fi
       else
         shift 
-        [ $nohup = true ] && nohup ${path}/${install} $@ || ${path}/${install} $@
+        if [ $nohup = true ]; then
+          nohup ${path}/${install} $@
+        else
+          ${path}/${install} $@
+        fi
       fi
     ;;
   esac
