@@ -303,7 +303,7 @@ ash() {
   fi
   
   nohup=false
-  fi [ -n $1 ]; then
+  if [ -n $1 ]; then
     if [ $1 == "--nohup" ] || [ $1 == "-nh" ]; then
       nohup=true
       shift
