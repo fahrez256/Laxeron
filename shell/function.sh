@@ -32,8 +32,10 @@ cactus() {
     # Check if the path is a file (not a subdirectory)
     if [ -f "$file" ]; then
       # Use the 'cat' command to display the contents of the file
-      echo -e "\n$file\n"
+      echo "$file"
+      echo ""
       cat "$file"
+      echo ""
     fi
   done
 }
