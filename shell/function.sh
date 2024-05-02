@@ -369,7 +369,7 @@ ash() {
     [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
     [ ! -f "$whitelist_file" ] && touch "$whitelist_file"
     grep -q "com.fhrz.axeron" "$whitelist_file" || echo "com.fhrz.axeron" >> "$whitelist_file"
-    grep -q "moe.shizuku.privileged.api" "$whitelist_file" || echo "$moe.shizuku.privileged.api" >> "$whitelist_file"
+    grep -q "moe.shizuku.privileged.api" "$whitelist_file" || echo "moe.shizuku.privileged.api" >> "$whitelist_file"
     ashcore "$pkg" "$path"
   fi
 }
