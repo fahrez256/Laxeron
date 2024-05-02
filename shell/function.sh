@@ -323,7 +323,7 @@ ash() {
   local sdpath=$(find /sdcard/ -type d -name "${1}")
   local path="/sdcard/AxeronModules/${1}"
   
-  if [ ! -z "$sdpath" ] && [ ! -d "$path" ]; then
+  if [ -d "$sdpath" ] && [ ! -d "$path" ]; then
     mv "$sdpath" "/sdcard/AxeronModules/"
     echo "[${1}] Moved to AxeronModules folder"
   else
