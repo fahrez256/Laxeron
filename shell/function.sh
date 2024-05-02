@@ -320,8 +320,14 @@ ash() {
       ;;
   esac
 
+  local sdpath="/sdcard/${1}"
   local path="/sdcard/AxeronModules/${1}"
-  [ ! -d "$path" ] && echo "[ ? ] Path not found: $path" && return 1
+  if [ ! -d "$path" ] && ls $sdpath > /dev/null 2>&1; then
+    mv $sdpath /sdcard/AxeronModules/
+  else
+    echo "[ ? ] Path not found: $path"
+    return 1
+  fi
   local pathCash="/data/local/tmp/axeron_cash"
   [ ! -d "$pathCash" ] && mkdir -p $pathCash
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
