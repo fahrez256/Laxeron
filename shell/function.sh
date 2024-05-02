@@ -320,7 +320,7 @@ ash() {
       ;;
   esac
 
-  local sdpath="/sdcard/${1}"
+  local sdpath=$(find /sdcard/ -type d -name "${1}")
   local path="/sdcard/AxeronModules/${1}"
   if [ ! -d "$path" ] && ls $sdpath > /dev/null 2>&1; then
     mv $sdpath /sdcard/AxeronModules/
