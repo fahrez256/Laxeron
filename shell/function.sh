@@ -302,8 +302,6 @@ ash() {
     return 1
   fi
   
-  nohup=false
-  
   case $1 in
     "--help" | "-h")
       echo -e "Save the Module in AxeronModules folder!\n"
@@ -320,10 +318,6 @@ ash() {
       ls /sdcard/AxeronModules
       return 0
       ;;
-    "--nohup" | "-nh")
-      nohup=true
-      shift
-      ;;
   esac
 
   local path="/sdcard/AxeronModules/${1}"
@@ -338,6 +332,9 @@ ash() {
 
   [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
+  local install=${install:-"install.sh"}
+  local remove=${remove:-"remove.sh"}
+
   case $2 in
     "--package" | "-p")
       pkg=${3:-runPackage}
@@ -349,38 +346,18 @@ ash() {
   case $2 in
     "--remove" | "-r")
       if [ -z "$remove" ]; then
-        if [ -z "${3}" ]; then
-          echo "[ ! ] Cant remove this module"
-        else
-          local pathRemove="${path}/${3}"
-          if ls "${pathRemove}" >/dev/null 2>&1; then
-            shift 3
-            [ $nohup ] && nohup ${pathRemove} $@ || ${pathRemove} $@
-          else
-            echo "[ ! ] Cant remove this module"
-          fi
-        fi
+        echo "[ ! ] Cant remove this module"
       else
         shift 2
-        [ $nohup ] && nohup ${path}/${remove} $@ || ${path}/${remove} $@
+        ${path}/${remove} $@
       fi
       ;;
     *)
       if [ -z "$install" ]; then
-        if [ -z "${2}" ]; then
-          echo "[ ! ] Cant install this module"
-        else
-          local pathInstall="${path}/${2}"
-          if ls "${pathInstall}" >/dev/null 2>&1; then
-            shift 2
-            [ $nohup ] && nohup ${pathInstall} $@ || ${pathInstall} $@
-          else
-            echo "[ ! ] Cant install this module"
-          fi
-        fi
+        echo "[ ! ] Cant install this module"
       else
         shift 
-        [ $nohup ] && nohup ${path}/${install} $@ || ${path}/${install} $@
+        ${path}/${install} $@
       fi
     ;;
   esac
