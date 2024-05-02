@@ -324,6 +324,7 @@ ash() {
   local path="/sdcard/AxeronModules/${1}"
   if [ ! -d "$path" ] && ls $sdpath > /dev/null 2>&1; then
     mv $sdpath /sdcard/AxeronModules/
+    echo "[${1}] Moved to AxeronModules folder"
   else
     echo "[ ? ] Path not found: $path"
     return 1
