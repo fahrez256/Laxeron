@@ -327,7 +327,7 @@ ash() {
     sleep 1
     if [ -d "$sdpath"]; then
       mv "$sdpath" "/sdcard/AxeronModules/"
-      echo "[${1}] Moved to AxeronModules folder"
+      echo "[${sdpath}] Moved to AxeronModules folder"
     else
       echo "[ ? ] Path not found: $path"
       return 1
