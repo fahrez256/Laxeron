@@ -228,7 +228,7 @@ aperm() {
                   appops set "$package" "$permission" deny
                   echo "- $permission"
               done
-              appops reset "$package
+              appops reset "$package"
               am force-stop "$package"
               ;;
           *)
