@@ -359,45 +359,20 @@ ash() {
   [ ! -d "$pathCash" ] && mkdir -p $pathCash
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
 
-  if [ ! -d "/sdcard/AxeronModules/$1" ]; then
-    search=$(find /sdcard/AxeronModules/*.zip) >/dev/null 2>&1
-    if [ -n "$search" ]; then
-      echo "$search" | while IFS= read -r file; do
-      axeron=$(unzip -l "$file" | awk '{print $4}' | grep -m 1 'axeron.prop')
-        if [ -n "$axeron" ]; then
-          folder=$(dirname "$axeron")
-          if [ "$folder" = "$1" ]; then
-            newpath="$pathCash/$folder"
-            rm -rf "$newpath"
-            mkdir -p "$newpath"
-            unzip "$file" "$folder/*" -d "$pathCash/" >/dev/null 2>&1
-            break
-          fi
-        fi
-      done
-    fi
-    runzip=true
-  else
-    runzip=false
-  fi
+  path="/sdcard/AxeronModules/${1}"
   
-  if [ "$runzip" = true ]; then
-    path="/data/local/tmp/axeron_cash/${1}"
-  else
-    path="/sdcard/AxeronModules/${1}"
-    if [ ! -d "$path" ]; then
-      local sdpath=$(find /sdcard/ -type d -iname "${1}")
-      if [ -n "$sdpath" ]; then
-        mv "$sdpath" "/sdcard/AxeronModules/"
-        echo "[${1}] Moved to AxeronModules folder"
-      else
-        echo "[ ? ] Path not found: $path"
-        return 1
-      fi
+  if [ ! -d "$path" ]; then
+    local sdpath=$(find /sdcard/ -type d -iname "${1}")
+    if [ -n "$sdpath" ]; then
+      mv "$sdpath" "/sdcard/AxeronModules/"
+      echo "[${1}] Moved to AxeronModules folder"
+    else
+      echo "[ ? ] Path not found: $path"
+      return 1
     fi
-    cp -r $path $pathCash
-    path="${pathCash}/${1}"
   fi
+  cp -r $path $pathCash
+  path="${pathCash}/${1}"
   
   find $path -type f -exec chmod +x {} \;
 
