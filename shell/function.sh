@@ -329,7 +329,6 @@ ashcore() {
   # am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
 }
 
-
 ash() {
   if [ $# -eq 0 ]; then
     echo -e "Usage: ash <path> [options] [arguments]"
@@ -354,13 +353,34 @@ ash() {
       ;;
   esac
 
-  local pathCash="/data/local/tmp/axeron_cash"
+  if [ ! -d "/sdcard/AxeronModules/$1" ]; then
+    search=$(find /sdcard/AxeronModules/*.zip) >/dev/null 2>&1
+    if [ -n "$search" ]; then
+      echo "$search" | while IFS= read -r file; do
+      axeron=$(unzip -l "$file" | awk '{print $4}' | grep -m 1 'axeron.prop')
+        if [ -n "$axeron" ]; then
+          folder=$(dirname "$axeron")
+          if [ "$folder" = "$1" ]; then
+            newpath="/data/local/tmp/axeron_cash/$folder"
+            rm -rf "$newpath"
+            mkdir -p "$newpath"
+            unzip "$file" "$folder/*" -d "/data/local/tmp/axeron_cash/" >/dev/null 2>&1
+            break
+          fi
+        fi
+      done
+    fi
+    runzip=true
+  else
+    runzip=false
+  fi
   
-  [ ! -d "$pathCash" ] && mkdir -p $pathCash
-  [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
+  if [ "$runzip" = true ]; then
+    local path="/data/local/tmp/axeron_cash/${1}"
+  else
+    local path="/sdcard/AxeronModules/${1}"
+  fi
 
-  path="/sdcard/AxeronModules/${1}"
-  
   if [ ! -d "$path" ]; then
     local sdpath=$(find /sdcard/ -type d -iname "${1}")
     if [ -n "$sdpath" ]; then
@@ -371,11 +391,20 @@ ash() {
       return 1
     fi
   fi
-  cp -r $path $pathCash
-  path="${pathCash}/${1}"
+
+  local pathCash="/data/local/tmp/axeron_cash"
+  
+  if [ "$runzip" = false ]; then
+    if [ ! -d "$pathCash" ]; then
+      rm -rf "$pathCash"
+      mkdir -p "$pathCash"
+    fi
+  cp -r "$path" "$pathCash"
+  fi
+  
+  local path="${pathCash}/${1}"
   
   find $path -type f -exec chmod +x {} \;
-
   [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
   local install=${install:-"install.sh"}
