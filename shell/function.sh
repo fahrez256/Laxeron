@@ -421,10 +421,28 @@ ash() {
 }
 
 zash() {
-  echo "Adding Axeron Modules"
-  if unzip -o "/sdcard/${1}" -d "/sdcard/AxeronModules/"; then
-    echo "Axeron Modules Extracted"
+  axeron=$(unzip -l "/sdcard/${1}" | awk '{print $4}' | grep -m 1 'axeron.prop')
+  if [ "${axeron}" ]; then
+    folder=$(dirname "${axeron}")
+    modpath="/sdcard/AxeronModules/${folder}"
+    if [ ! -d "${modpath}" ]; then
+      echo "Adding Axeron Modules"
+    else
+      echo "Updating Axeron Modules"
+    fi
+    unzip -o "/sdcard/${1}" -d "/sdcard/AxeronModules/" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      source "/sdcard/AxeronModules/${folder}/axeron.prop"
+      echo "name: ${name}"
+      echo "version: ${version}"
+      echo "author: ${author}"
+      echo "description: ${description}"
+      echo "useAxeron; ${useAxeron}"
+      echo "Axeron Modules Extracted"
+    else
+      echo "Axeron Modules failed to Extract"
+    fi
   else
-    echo "Axeron Modules failed to Extract"
+    echo "Zip file is not Axeron modules"
   fi
 }
