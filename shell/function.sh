@@ -329,6 +329,7 @@ ashcore() {
   # am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
 }
 
+
 ash() {
   if [ $# -eq 0 ]; then
     echo -e "Usage: ash <path> [options] [arguments]"
@@ -353,8 +354,34 @@ ash() {
       ;;
   esac
 
-  local path="/sdcard/AxeronModules/${1}"
+  if [ ! -d "/sdcard/AxeronModules/$1" ]; then
+    search=$(find /sdcard/AxeronModules/*.zip) >/dev/null 2>&1
+    if [ -n "$search" ]; then
+      echo "$search" | while IFS= read -r file; do
+      axeron=$(unzip -l "$file" | awk '{print $4}' | grep -m 1 'axeron.prop')
+        if [ -n "$axeron" ]; then
+          folder=$(dirname "$axeron")
+          if [ "$folder" = "$1" ]; then
+            newpath="/data/local/tmp/AxeronModules/$folder"
+            rm -rf "$newpath"
+            mkdir -p "$newpath"
+            unzip "$file" "$folder/*" -d "/data/local/tmp/AxeronModules/" >/dev/null 2>&1
+            break
+          fi
+        fi
+      done
+    fi
+    runzip=true
+  else
+    runzip=false
+  fi
   
+  if [ "$runzip" = true ]; then
+    path="/data/local/tmp/AxeronModules/${1}"
+  else
+    path="/sdcard/AxeronModules/${1}"
+  fi
+
   if [ ! -d "$path" ]; then
     local sdpath=$(find /sdcard/ -type d -iname "${1}")
     if [ -n "$sdpath" ]; then
@@ -365,7 +392,9 @@ ash() {
       return 1
     fi
   fi
+
   local pathCash="/data/local/tmp/axeron_cash"
+  
   [ ! -d "$pathCash" ] && mkdir -p $pathCash
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
 
