@@ -419,3 +419,12 @@ ash() {
     ashcore "$pkg" "$path"
   fi
 }
+
+zash() {
+  echo "Adding Axeron Modules"
+  if unzip "/sdcard/${1}" -d "/sdcard/AxeronModules/"; then
+    echo "Axeron Modules Extracted"
+  else
+    echo "Axeron Modules failed to Extract"
+  fi
+}
