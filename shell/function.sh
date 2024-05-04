@@ -40,8 +40,14 @@ cactus() {
   done
 }
 
-fastlaunch() {
-   am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
+flaunch() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: flaunch <package_name>"
+    return 0
+  fi
+  
+  am start --allow-background-activity-starts -n $(cmd package dump "$1" | awk '/MAIN/{getline; print $2}' | head -n 1)
+   # am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
 }
 
 axeroncore() {
