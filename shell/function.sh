@@ -150,11 +150,11 @@ cclean() {
   #RiProG
   echo -ne "[Cleaning] Optimizing cache: "
   available_before=$(df /data | awk 'NR==2{print $4}')
+  sleep 2
   pm trim-caches 999G
+  sleep 2
   available_after=$(df /data | awk 'NR==2{print $4}')
-  
   cleared_cache=$((available_after - available_before))
-  
   if (( cleared_cache < 1024 )); then
     echo "$cleared_cache Bytes"
   elif (( cleared_cache < 1048576 )); then
@@ -166,80 +166,47 @@ cclean() {
   fi
 }
 
-# debloat_app <packagename>
-debloat_app() {
-  #RiProG
-  package="$1"
-  echo "Debloating system app with package name $package..."
-  pm uninstall "$package" > /dev/null 2>&1
-  pm disable-user "$package" > /dev/null 2>&1
-  pm clear "$package" > /dev/null 2>&1
-  
-  package_list=$(pm list packages -d | cut -f 2 -d : | grep "$package")
-  if [ "$package_list" ]; then
-    echo "System app with package name $package has been successfully debloated."
-  else
-    echo "Failed to debloat system app with package name $package."
-  fi
-}
-
-# restore_app <packagename>
-restore_app() {
-  #RiProG
-  package="$1"
-  echo "Restoring system app with package name $package..."
-  pm enable "$package" > /dev/null 2>&1
-  
-  package_list=$(pm list packages -d | cut -f 2 -d : | grep "$package")
-  if [ "$package_list" ]; then
-    echo "Failed to restore system app with package name $package."
-  else
-    echo "System app with package name $package has been successfully restored."
-  fi
-}
-
-# debloat_list
-debloat_list() {
-  #RiProG
-  echo "List of disabled packages:"
-  package_list=$(pm list packages -d | cut -f 2 -d :)
-  if [ "$package_list" ]; then
-    echo "$package_list"
-  else
-    echo "No apps have been debloated yet."
-  fi
-}
-
-# Permission Bypasser
-aperm() {
+dapp() {
   #RiProG
   package=$2
-  if pm list package | cut -f 2 -d : | grep "$package"
-  then
-      app_permissions=$(appops get "$package" | tr ' ' '\n' | grep '_' | tr -d ':')
-      option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
-  
-      case $option in
-          -b|--bypass)
-              echo "Permissions bypassed for application $package:"
-              for permission in $app_permissions; do
-                  appops set "$package" "$permission" allow
-                  echo "- $permission"
-              done
-              am force-stop "$package"
-              ;;
-          -d|--default)
-              echo "Permissions reverted to default for application $package:"
-              for permission in $app_permissions; do
-                  appops set "$package" "$permission" deny
-                  echo "- $permission"
-              done
-              appops reset "$package"
-              am force-stop "$package"
-              ;;
-          *)
-              echo "Invalid option. Please use -b or -d."
-              ;;
+  package_list=$(pm list package | cut -f 2 -d : | grep -q "$package") > /dev/null 2>&1
+  if [ "$package_list" ]; then
+    option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+    case $option in
+      -d|--debloat)
+        echo "Debloating system app with package name $package..."
+        pm uninstall "$package" > /dev/null 2>&1
+        pm disable-user "$package" > /dev/null 2>&1
+        pm clear "$package" > /dev/null 2>&1
+        package_list=$(pm list packages -d | cut -f 2 -d : | grep "$package") > /dev/null 2>&1
+        if [ "$package_list" ]; then
+          echo "System app with package name $package has been successfully debloated."
+        else
+          echo "Failed to debloat system app with package name $package ."
+        fi
+        ;;
+     -r|--restore)
+        echo "Restoring system app with package name $package..."
+        pm enable "$package" > /dev/null 2>&1
+        package_list=$(pm list packages -d | cut -f 2 -d : | grep "$package") > /dev/null 2>&1
+        if [ "$package_list" ]; then
+          echo "Failed to restore system app with package name $package ."
+        else
+          echo "System app with package name $package has been successfully restored."
+        fi
+        ;;
+      -l|--list)
+        echo "List of disabled packages:"
+        package_list=$(pm list packages -d | cut -f 2 -d :) > /dev/null 2>&1
+        if [ "$package_list" ]; then
+          echo "$package_list"
+        else
+          echo "No apps have been debloated yet."
+        fi
+        ;;
+      *)
+       echo "Invalid option."
+        ;;
       esac
   else
       echo "Invalid package name."
