@@ -366,14 +366,6 @@ ash() {
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
 
   path="/sdcard/AxeronModules/${1}"
-
-  case $2 in
-    "--package" | "-p")
-      pkg=${3:-runPackage}
-      sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${path}/axeron.prop
-      shift 2
-      ;;
-  esac
   
   if [ ! -d "$path" ]; then
     local sdpath=$(find /sdcard/ -type d -iname "${1}")
@@ -385,6 +377,15 @@ ash() {
       return 1
     fi
   fi
+
+  case $2 in
+    "--package" | "-p")
+      pkg=${3:-runPackage}
+      sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${path}/axeron.prop
+      shift 2
+      ;;
+  esac
+  
   cp -r $path $pathCash
   path="${pathCash}/${1}"
   
