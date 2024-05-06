@@ -169,7 +169,7 @@ cclean() {
 dapp() {
   #RiProG
   package=$2
-  package_list=$(pm list package | cut -f 2 -d : | grep -q "$package") > /dev/null 2>&1
+  package_list=$(pm list package | cut -f 2 -d : | grep "$package") > /dev/null 2>&1
   if [ "$package_list" ]; then
     option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
     case $option in
@@ -213,6 +213,40 @@ dapp() {
   fi
 }
 
+aperm() {
+  #RiProG
+  package=$2
+  package_list=$(pm list package | cut -f 2 -d : | grep "$package") > /dev/null 2>&1
+  if [ "$package_list" ]; then
+      app_permissions=$(appops get "$package" | tr ' ' '\n' | grep '_' | tr -d ':')
+      option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+  
+      case $option in
+          -b|--bypass)
+              echo "Permissions bypassed for application $package:"
+              for permission in $app_permissions; do
+                  appops set "$package" "$permission" allow
+                  echo "- $permission"
+              done
+              am force-stop "$package"
+              ;;
+          -d|--default)
+              echo "Permissions reverted to default for application $package:"
+              for permission in $app_permissions; do
+                  appops set "$package" "$permission" deny
+                  echo "- $permission"
+              done
+              appops reset "$package"
+              am force-stop "$package"
+              ;;
+          *)
+              echo "Invalid option. Please use -b or -d."
+              ;;
+      esac
+  else
+      echo "Invalid package name."
+  fi
+}
 whitelist() {
   [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
   [ ! -f "$whitelist_file" ] && touch "$whitelist_file" && echo "[Created] whitelist.list"
