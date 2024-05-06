@@ -4,7 +4,6 @@ export CORE="d8a97692ad1e71b1"
 export EXECPATH=$(dirname $0)
 local THISPATH="/sdcard/Android/data/com.fhrz.axeron/files"
 export PACKAGES=$(cat ${THISPATH}/packages.list)
-export COMMANDS=$(echo -e "$(cat ${THISPATH}/axeron.commands)")
 export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
