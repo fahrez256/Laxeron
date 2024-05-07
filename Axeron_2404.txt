@@ -1,9 +1,9 @@
 Json {
   key:axeronCode = 20240505;
-  key:title = "?";
-  key:subtitle = "Like, opened soon!";
+  key:title = "Like lah kocak";
+  key:subtitle = "Pencet mana aja buat masuk";
   key:btnVisible = true;
   key:btnText = "Like";
   key:url = "https://t.me/fahrezone_ch/2103";
-  key:cancelable = false;
+  key:cancelable = true;
 }
