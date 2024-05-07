@@ -399,6 +399,11 @@ ash() {
 
   [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
+  cp -r $path $pathCash
+  path="${pathCash}/${1}"
+
+  find $path -type f -exec chmod +x {} \;
+
   case $2 in
     "--package" | "-p")
       pkg=${3:-runPackage}
@@ -406,11 +411,6 @@ ash() {
       shift 2
       ;;
   esac
-
-  cp -r $path $pathCash
-  path="${pathCash}/${1}"
-
-  find $path -type f -exec chmod +x {} \;
 
   local install=${install:-"install.sh"}
   local remove=${remove:-"remove.sh"}
