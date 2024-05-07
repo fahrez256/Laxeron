@@ -399,7 +399,7 @@ ash() {
 
   [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
-  cp -r $path $pathCash
+  cp -r "$path" "$pathCash"
   path="${pathCash}/${1}"
 
   find $path -type f -exec chmod +x {} \;
