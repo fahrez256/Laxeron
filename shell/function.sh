@@ -151,7 +151,7 @@ cclean() {
   available_before=$(df /data | awk 'NR==2{print $4}')
   pm trim-caches 999G
   available_after=$(df /data | awk 'NR==2{print $4}')
-  cleared_cache=$((available_before - available_after))
+  cleared_cache=$((available_after - available_before))
   if [ "$cleared_cache" -ge 0 ]; then
     if [ "$cleared_cache" -lt 1024 ]; then
       echo "$cleared_cache MB"
