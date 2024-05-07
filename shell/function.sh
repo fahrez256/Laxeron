@@ -385,7 +385,6 @@ ash() {
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
 
   path="/sdcard/AxeronModules/${1}"
-  oriPath="$path"     
   
   if [ ! -d "$path" ]; then
     local sdpath=$(find /sdcard/ -type d -iname "${1}")
@@ -397,16 +396,8 @@ ash() {
       return 1
     fi
   fi
-  
-  cp -r $path $pathCash
-  path="${pathCash}/${1}"
-  
-  find $path -type f -exec chmod +x {} \;
 
-  [ -f "${oriPath}/axeron.prop" ] && source "${oriPath}/axeron.prop" || echo "[ ? ] axeron.prop not found in $oriPath."
-
-  local install=${install:-"install.sh"}
-  local remove=${remove:-"remove.sh"}
+  [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
 
   case $2 in
     "--package" | "-p")
@@ -415,6 +406,14 @@ ash() {
       shift 2
       ;;
   esac
+
+  cp -r $path $pathCash
+  path="${pathCash}/${1}"
+
+  find $path -type f -exec chmod +x {} \;
+
+  local install=${install:-"install.sh"}
+  local remove=${remove:-"remove.sh"}
   
   case $2 in
     "--remove" | "-r")
