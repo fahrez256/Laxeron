@@ -154,14 +154,17 @@ cclean() {
   cleared_cache=$((available_after - available_before))
   if [ "$cleared_cache" -ge 0 ]; then
     if [ "$cleared_cache" -lt 1024 ]; then
-      echo "$cleared_cache MB"
+      echo "$((cleared_cache / 1)) KB"
     elif [ "$cleared_cache" -lt 1048576 ]; then
-      echo "$((cleared_cache / 1024)) GB"
+      echo "$((cleared_cache / 1024)) MB"
+    elif [ "$cleared_cache" -lt 1073741824 ]; then
+      echo "$((cleared_cache / 1048576)) GB"
     fi
   else
     echo "No cache found or cleaned."
   fi
 }
+
 dapp() {
   #RiProG
   package=$2
