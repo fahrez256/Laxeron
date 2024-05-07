@@ -384,7 +384,7 @@ ash() {
   [ ! -d "$pathCash" ] && mkdir -p $pathCash
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
 
-  path="/sdcard/AxeronModules/${1}"
+  local path="/sdcard/AxeronModules/${1}"
   
   if [ ! -d "$path" ]; then
     local sdpath=$(find /sdcard/ -type d -iname "${1}")
