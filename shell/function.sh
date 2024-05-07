@@ -379,11 +379,6 @@ ash() {
       ;;
   esac
 
-  local pathCash="/data/local/tmp/axeron_cash"
-  
-  [ ! -d "$pathCash" ] && mkdir -p $pathCash
-  [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
-
   local path="/sdcard/AxeronModules/${1}"
   
   if [ ! -d "$path" ]; then
@@ -398,6 +393,11 @@ ash() {
   fi
 
   [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
+
+  local pathCash="/data/local/tmp/axeron_cash"
+  
+  [ ! -d "$pathCash" ] && mkdir -p $pathCash
+  [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
 
   cp -r "$path" "$pathCash"
   path="${pathCash}/${1}"
