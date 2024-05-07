@@ -417,7 +417,7 @@ ash() {
     ;;
   esac
 
-  [ -f "${oriPath}/axeron.prop" ] && source "${oriPath}/axeron.prop" || ( echo "[ ? ] axeron.prop not found in $oriPath."; return 0 )
+  [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || ( echo "[ ? ] axeron.prop not found in $path."; return 0 )
 
   if [ $useAxeron ] && [ $useAxeron = true ]; then
     pm grant com.fhrz.axeron android.permission.SYSTEM_ALERT_WINDOW
