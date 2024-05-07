@@ -147,24 +147,21 @@ set_perm_recursive() {
 
 cclean() {
   #RiProG
-  echo -ne "[Cleaning] Optimizing cache: "
+  echo "[Cleaning] Optimizing cache: "
   available_before=$(df /data | awk 'NR==2{print $4}')
-  sleep 2
   pm trim-caches 999G
-  sleep 2
   available_after=$(df /data | awk 'NR==2{print $4}')
-  cleared_cache=$((available_after - available_before))
-  if (( cleared_cache < 1024 )); then
-    echo "$cleared_cache Bytes"
-  elif (( cleared_cache < 1048576 )); then
-    echo "$((cleared_cache / 1024)) KB"
-  elif (( cleared_cache < 1073741824 )); then
-    echo "$((cleared_cache / 1048576)) MB"
+  cleared_cache=$((available_before - available_after))
+  if [ "$cleared_cache" -ge 0 ]; then
+    if [ "$cleared_cache" -lt 1024 ]; then
+      echo "$cleared_cache MB"
+    elif [ "$cleared_cache" -lt 1048576 ]; then
+      echo "$((cleared_cache / 1024)) GB"
+    fi
   else
-    echo "$((cleared_cache / 1073741824)) GB"
+    echo "No cache found or cleaned."
   fi
 }
-
 dapp() {
   #RiProG
   package=$2
@@ -246,6 +243,7 @@ aperm() {
       echo "Invalid package name."
   fi
 }
+
 whitelist() {
   [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
   [ ! -f "$whitelist_file" ] && touch "$whitelist_file" && echo "[Created] whitelist.list"
