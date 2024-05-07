@@ -49,11 +49,24 @@ flaunch() {
    # am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
 }
 
-axeroncore() {
-  echo "axeroncore not supported :("
-  sleep 1
-  link="https://t.me/fahrezone_gc"
-  am start -a android.intent.action.VIEW -d "$link" > /dev/null 2>&1
+cclean() {
+  #RiProG
+  echo "[Cleaning] Optimizing cache: "
+  available_before=$(df /data | awk 'NR==2{print $4}')
+  pm trim-caches 999G
+  available_after=$(df /data | awk 'NR==2{print $4}')
+  cleared_cache=$((available_after - available_before))
+  if [ "$cleared_cache" -ge 0 ]; then
+    if [ "$cleared_cache" -lt 1024 ]; then
+      echo "$((cleared_cache / 1)) KB"
+    elif [ "$cleared_cache" -lt 1048576 ]; then
+      echo "$((cleared_cache / 1024)) MB"
+    elif [ "$cleared_cache" -lt 1073741824 ]; then
+      echo "$((cleared_cache / 1048576)) GB"
+    fi
+  else
+    echo "No cache found or cleaned."
+  fi
 }
 
 autocfg() {
@@ -98,10 +111,6 @@ Optione {
 EOF
 )
 echo -e "$device_info"
-}
-
-checkcode() {
-  echo "Child exitCode: $?"
 }
 
 shellstorm() {
