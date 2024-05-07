@@ -117,52 +117,61 @@ shellstorm() {
   am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
 }
 
-set_perm() {
-  #RiProG
-  local file=$1
-  local owner=$2
-  local group=$3
-  local permission=$4
-  local context=$5
-
-  chown "$owner":"$group" "$file" || return 1
-  chmod "$permission" "$file" || return 1
-  [ -z "$context" ] && context=u:object_r:system_file:s0
-  chcon "$context" "$file" || return 1
-}
-
-set_perm_recursive() {
-  #RiProG
-  local directory=$1
-  local owner=$2
-  local group=$3
-  local dir_permission=$4
-  local file_permission=$5
-
-  find "$directory" -type d -exec chown "$owner":"$group" {} +
-  find "$directory" -type d -exec chmod "$dir_permission" {} +
-  find "$directory" -type f -exec chown "$owner":"$group" {} +
-  find "$directory" -type f -exec chmod "$file_permission" {} +
-}
-
-cclean() {
-  #RiProG
-  echo "[Cleaning] Optimizing cache: "
-  available_before=$(df /data | awk 'NR==2{print $4}')
-  pm trim-caches 999G
-  available_after=$(df /data | awk 'NR==2{print $4}')
-  cleared_cache=$((available_after - available_before))
-  if [ "$cleared_cache" -ge 0 ]; then
-    if [ "$cleared_cache" -lt 1024 ]; then
-      echo "$((cleared_cache / 1)) KB"
-    elif [ "$cleared_cache" -lt 1048576 ]; then
-      echo "$((cleared_cache / 1024)) MB"
-    elif [ "$cleared_cache" -lt 1073741824 ]; then
-      echo "$((cleared_cache / 1048576)) GB"
-    fi
-  else
-    echo "No cache found or cleaned."
-  fi
+xperm() {
+    #RiProG
+    option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+    case $option in
+        --help | -h)
+            echo "Usage: xperm [OPTIONS]"
+            echo "OPTIONS:"
+            echo "  --help, -h                   Display this help message"
+            echo "  --recursive, -r <DIRECTORY>  Set permissions recursively for a directory"
+            echo "                               <DIRECTORY>: Path to the directory"
+            echo "  <FILE> <OWNER> <GROUP> <PERMISSION> <CONTEXT>"
+            echo "  Example usage:"
+            echo "    xperm /path/to/file.txt user1 group1 644"
+            echo "    xperm -r /path/to/directory user1 group1 755 644"
+            return 0
+            ;;
+        --recursive | -r)
+            directory="$2"
+            if [ ! -d "$directory" ]; then
+                echo "Directory not found"
+                exit 1
+            fi
+            owner="$3"
+            group="$4"
+            dir_permission="$5"
+            file_permission="$6"
+            find "$directory" -type d -exec chown "$owner":"$group" {} +
+            find "$directory" -type d -exec chmod "$dir_permission" {} +
+            find "$directory" -type f -exec chown "$owner":"$group" {} +
+            find "$directory" -type f -exec chmod "$file_permission" {} +
+            ;;
+        *)
+            file="$1"
+            if [ ! -f "$file" ]; then
+                echo "File not found"
+                exit 1
+            fi
+            owner="$2"
+            group="$3"
+            permission="$4"
+            context="$5"
+            if ! chown "$owner":"$group" "$file"; then
+                return 1
+            fi
+            if ! chmod "$permission" "$file"; then
+                return 1
+            fi
+            if [ -z "$context" ]; then
+                context=u:object_r:system_file:s0
+            fi
+            if ! chcon "$context" "$file"; then
+                return 1
+            fi
+            ;;
+    esac
 }
 
 dapp() {
