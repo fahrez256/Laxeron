@@ -350,14 +350,8 @@ ash() {
   local path="/sdcard/AxeronModules/${1}"
   
   if [ ! -d "$path" ]; then
-    local sdpath=$(find /sdcard/ -type d -iname "${1}")
-    if [ -n "$sdpath" ]; then
-      mv "$sdpath" "/sdcard/AxeronModules/"
-      echo "[${1}] Moved to AxeronModules folder"
-    else
-      echo "[ ? ] Path not found: $path"
-      return 1
-    fi
+    echo "[ ? ] Path not found: $path"
+    return 1
   fi
 
   [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
