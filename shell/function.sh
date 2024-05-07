@@ -402,7 +402,7 @@ ash() {
   case $2 in
     "--package" | "-p")
       pkg=${3:-runPackage}
-      sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${oriPath}/axeron.prop
+      sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${path}/axeron.prop
       shift 2
       ;;
   esac
