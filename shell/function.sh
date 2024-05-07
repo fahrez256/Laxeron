@@ -412,8 +412,8 @@ ash() {
       ;;
   esac
 
-  local install=${install:-"install.sh"}
-  local remove=${remove:-"remove.sh"}
+  local install=${install:-"$(find /data/local/tmp/axeron_cash/Calefactor -type f -iname "install*")"}
+  local remove=${remove:-"$(find /data/local/tmp/axeron_cash/Calefactor -type f -iname "remove*")"}
   
   case $2 in
     "--remove" | "-r")
