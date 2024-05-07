@@ -1,5 +1,5 @@
 Json {
-  key:axeronCode = 20240505;
+  key:axeronCode = 20240422;
   key:title = "Try new module";
   key:subtitle = "Click anywhere to use Axeron";
   key:btnVisible = true;
