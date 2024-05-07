@@ -69,38 +69,6 @@ cclean() {
   fi
 }
 
-autocfg() {
-    # Move folders containing axeron.prop to AxeronModules
-    search=$(find /sdcard/*/axeron.prop) >/dev/null 2>&1
-    if [ -n "$search" ]; then
-        echo "$search" | xargs -n 1 dirname | xargs -n 1 basename | while IFS= read -r folder; do
-            if [ -d "/sdcard/AxeronModules/$folder" ]; then
-                echo "Duplicate - $folder"
-            else
-                mv "/sdcard/$folder" /sdcard/AxeronModules
-                echo "Successfully installed - $folder"
-            fi
-        done
-    fi
-
-    # Extract folders with axeron.prop from zip files to AxeronModules
-    search=$(find /sdcard/*.zip) >/dev/null 2>&1
-    if [ -n "$search" ]; then
-        echo "$search" | while IFS= read -r file; do
-            axeron=$(unzip -l "$file" | awk '{print $4}' | grep -m 1 'axeron.prop')
-            if [ -n "$axeron" ]; then
-            folder=$(dirname "$axeron")
-                if [ -d "/sdcard/AxeronModules/$folder" ]; then
-                    echo "Duplicate - $folder"
-                else
-                    unzip "$file" "$folder/*" -d "/sdcard/AxeronModules/" >/dev/null 2>&1
-                    echo "Successfully installed - $folder"
-                fi
-            fi
-        done
-    fi
-}
-
 deviceinfo() {
 device_info=$(cat <<-EOF
 Optione {
