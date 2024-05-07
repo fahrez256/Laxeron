@@ -296,7 +296,6 @@ jit() {
   esac
 }
 
-
 optimize() {
   cclean
   for package in $(echo $PACKAGES | cut -d ":" -f 2); do
@@ -321,7 +320,6 @@ ashcore() {
   sh ${2}/response $1
   # am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
 }
-
 
 ash() {
   if [ $# -eq 0 ]; then
