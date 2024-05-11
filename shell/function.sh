@@ -81,29 +81,29 @@ EOF
 echo -e "$device_info"
 }
 
-shellstorm() {
-  api=$1
-  if [ -n $2 ]; then
-    path=$2
-  else
-    path=$EXECPATH
-  fi
+storm() {
+  api="$1"
+  path="${2:-$EXECPATH}"  # Menggunakan nilai default $EXECPATH jika $2 tidak ada atau kosong
+  
   am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "$path" > /dev/null
+  
   while true; do
     if [ -e "$path/response" ]; then
-        cat "$path/response"
-        break
+      cat "$path/response"
+      break
     fi
 
     if [ -e "$path/error" ]; then
-        cat "$path/error"
-        break
+      cat "$path/error"
+      break
     fi
 
     sleep 1
   done
+  
   am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
 }
+
 
 xperm() {
     #RiProG
