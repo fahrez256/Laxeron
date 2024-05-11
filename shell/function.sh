@@ -83,16 +83,16 @@ echo -e "$device_info"
 
 storm() {
   api="$1" # Menggunakan nilai default $EXECPATH jika $2 tidak ada atau kosong
-  rm -f ${path}/response
-  rm -f ${path}/error
+  rm -f ${THISPATH}/response
+  rm -f ${THISPATH}/error
   
   am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" > /dev/null
   while true; do
-    if [ -e ${path}/response ]; then
-      cat ${path}/response
+    if [ -e ${THISPATH}/response ]; then
+      cat ${THISPATH}/response
       break
-    elif [ -e ${path}/error ]; then
-      cat ${path}/error
+    elif [ -e ${THISPATH}/error ]; then
+      cat ${THISPATH}/error
       break
     else 
       sleep 1
