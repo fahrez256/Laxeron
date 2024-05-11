@@ -90,7 +90,7 @@ storm() {
   rm -f ${THISPATH}/response
   rm -f ${THISPATH}/error
   
-  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" > /dev/null
+  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "$THISPATH" > /dev/null
   while true; do
     if [ -e ${THISPATH}/response ]; then
       cat ${THISPATH}/response
