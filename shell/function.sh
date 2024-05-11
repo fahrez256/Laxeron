@@ -88,10 +88,10 @@ storm() {
   
   am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" > /dev/null
   while true; do
-    if [ -f ${path}/response ]; then
+    if [ -e ${path}/response ]; then
       cat ${path}/response
       break
-    elif [ -f ${path}/error ]; then
+    elif [ -e ${path}/error ]; then
       cat ${path}/error
       break
     else 
