@@ -82,6 +82,10 @@ echo -e "$device_info"
 }
 
 storm() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: storm <URL>"
+    return 0
+  fi
   api="$1" # Menggunakan nilai default $EXECPATH jika $2 tidak ada atau kosong
   rm -f ${THISPATH}/response
   rm -f ${THISPATH}/error
