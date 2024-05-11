@@ -82,23 +82,20 @@ echo -e "$device_info"
 }
 
 storm() {
-  api="$1"
-  path="${2:-$EXECPATH}"  # Menggunakan nilai default $EXECPATH jika $2 tidak ada atau kosong
+  api="$1" # Menggunakan nilai default $EXECPATH jika $2 tidak ada atau kosong
   
-  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "$path" > /dev/null
+  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" > /dev/null
   
   while true; do
-    if [ -e "$path/response" ]; then
+    if [ ! -f "$path/response" ]; then
       cat "$path/response"
       break
-    fi
-
-    if [ -e "$path/error" ]; then
+    elif [ ! -f "$path/error" ]; then
       cat "$path/error"
       break
+    else 
+      sleep 1
     fi
-
-    sleep 1
   done
   
   am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
