@@ -91,7 +91,7 @@ storm() {
   case $1 in
     --exec | -x )
       exec=true
-      shift 1
+      shift
       ;;
     * )
       ;;
@@ -108,7 +108,7 @@ storm() {
       if [ $exec = true ]; then
         cp "${THISPATH}/response" "$runPath"
         chmod +x "$runPath/response"
-        shift 2
+        shift
         $runPath/response $@
       else
         cat ${THISPATH}/response
