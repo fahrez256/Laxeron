@@ -108,7 +108,7 @@ storm() {
       if [ $exec = true ]; then
         cp "${THISPATH}/response" "$runPath"
         chmod +x "$runPath/response"
-        echo $#
+        [ $# -ge 1 ] && shift $(( $# - 1 ))
         $runPath/response $@
       else
         cat ${THISPATH}/response
