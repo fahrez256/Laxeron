@@ -102,27 +102,30 @@ storm() {
   rm -f ${THISPATH}/response
   rm -f ${THISPATH}/error
   
-  am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$THISPATH" > /dev/null
-  while true; do
-    if [ -e ${THISPATH}/response ]; then
-      if [ $exec = true ]; then
-        cp "${THISPATH}/response" "$runPath"
-        chmod +x "$runPath/response"
-        [ $# -gt 1 ] && shift
-        $runPath/response $@
-      else
-        cat ${THISPATH}/response
+  if am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$THISPATH" > /dev/null; then
+    while true; do
+      if [ -e ${THISPATH}/response ]; then
+        if [ $exec = true ]; then
+          cp "${THISPATH}/response" "$runPath"
+          chmod +x "$runPath/response"
+          [ $# -gt 1 ] && shift
+          $runPath/response $@
+        else
+          cat ${THISPATH}/response
+        fi
+        break
+      elif [ -e ${THISPATH}/error ]; then
+        cat ${THISPATH}/error
+        break
+      else 
+        sleep 1
       fi
-      break
-    elif [ -e ${THISPATH}/error ]; then
-      cat ${THISPATH}/error
-      break
-    else 
-      sleep 1
-    fi
-  done
+    done
+  else
+    echo "Error: Storm not supported"
+  fi
   
-  am stopservice -n com.fhrz.axeron/.Storm > /dev/null 2>&1
+  #am stopservice -n com.fhrz.axeron/.Storm > /dev/null 2>&1
 }
 
 
