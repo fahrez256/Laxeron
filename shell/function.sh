@@ -82,18 +82,37 @@ echo -e "$device_info"
 }
 
 storm() {
+  exec=false
   if [ $# -eq 0 ]; then
     echo "Usage: storm <URL>"
     return 0
   fi
-  api="$1" # Menggunakan nilai default $EXECPATH jika $2 tidak ada atau kosong
+
+  case $1 in
+    --exec | -x )
+      exec=true
+      shift 1
+      ;;
+    * )
+      ;;
+  esac
+  
+  api="$1"
+  local runPath="${dirname $0}"
   rm -f ${THISPATH}/response
   rm -f ${THISPATH}/error
   
   am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "$THISPATH" > /dev/null
   while true; do
     if [ -e ${THISPATH}/response ]; then
-      cat ${THISPATH}/response
+      if [ $exec = true ]; then
+        cp "${THISPATH}/response" "$runPath"
+        chmod +x "$runPath/response"
+        shift 2
+        $runPath/response $@
+      else
+        cat ${THISPATH}/response
+      fi
       break
     elif [ -e ${THISPATH}/error ]; then
       cat ${THISPATH}/error
