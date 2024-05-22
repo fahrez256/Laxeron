@@ -108,8 +108,7 @@ storm() {
         if [ $exec = true ]; then
           cp "${THISPATH}/response" "$runPath"
           chmod +x "$runPath/response"
-          dos2unix "$runPath/response"
-          [ $# -gt 1 ] && shift
+          shift
           $runPath/response $@
         else
           cat ${THISPATH}/response
