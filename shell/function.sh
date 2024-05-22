@@ -353,33 +353,33 @@ ash() {
       ;;
   esac
 
-  local path="/sdcard/AxeronModules/${1}"
-  local savedPath="$path"
+  local nameDir="$1"
+  local path="/sdcard/AxeronModules/${nameDir}"
+  local pathCash="/data/local/tmp/axeron_cash"
+  #local savedPath="$path"
   
   if [ ! -d "$path" ]; then
     echo "[ ? ] Path not found: $path"
     return 1
   fi
 
-  [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
+  case $2 in
+    "--package" | "-p")
+      pkg=${3:-runPackage}
+      sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${path}/axeron.prop
+      shift 2
+      ;;
+  esac
 
-  local pathCash="/data/local/tmp/axeron_cash"
-  
   [ ! -d "$pathCash" ] && mkdir -p $pathCash
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
 
   cp -r "$path" "$pathCash"
-  path="${pathCash}/${1}"
+  path="${pathCash}/${nameDir}"
 
   find $path -type f -exec chmod +x {} \;
 
-  case $2 in
-    "--package" | "-p")
-      pkg=${3:-runPackage}
-      sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${savedPath}/axeron.prop
-      shift 2
-      ;;
-  esac
+  [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
   
   local install=${install:-"$(basename "$(find "$path" -type f -iname "install*")")"}
   local remove=${remove:-"$(basename "$(find "$path" -type f -iname "remove*")")"}
