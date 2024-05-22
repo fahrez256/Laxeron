@@ -325,15 +325,6 @@ setUsingAxeron() {
   sed -i "s/useAxeron=.*/useAxeron=$1/g" $(dirname $0)/axeron.prop
 }
 
-ashcore() {
-  local api="https://fahrez256.github.io/Laxeron/shell/core.sh"
-  am startservice -n com.fhrz.axeron/.ShellStorm --es api "$api" --es path "${THISPATH}" > /dev/null
-  while [ ! -f "${THISPATH}/response" ]; do sleep 1; done;
-  cp ${THISPATH}/response $2
-  sh ${2}/response $1
-  # am stopservice -n com.fhrz.axeron/.ShellStorm > /dev/null 2>&1
-}
-
 ash() {
   if [ $# -eq 0 ]; then
     echo -e "Usage: ash <path> [options] [arguments]"
@@ -416,11 +407,10 @@ ash() {
 
   if [ $useAxeron ] && [ $useAxeron = true ]; then
     pm grant com.fhrz.axeron android.permission.SYSTEM_ALERT_WINDOW
-    [ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
-    [ ! -f "$whitelist_file" ] && touch "$whitelist_file"
-    grep -q "com.fhrz.axeron" "$whitelist_file" || echo "com.fhrz.axeron" >> "$whitelist_file"
-    grep -q "moe.shizuku.privileged.api" "$whitelist_file" || echo "moe.shizuku.privileged.api" >> "$whitelist_file"
-    ashcore "$pkg" "$path"
+    echo ""
+    echo "useAxeron Sudah tidak bisa digunakan, hubungin developer module untuk mendapatkan Update"
+    echo ""
+    echo "use Axeron Can no longer be used, contact the module developer to get an update"
   fi
 }
 
