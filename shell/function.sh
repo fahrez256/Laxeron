@@ -352,8 +352,12 @@ ash() {
       return 0
       ;;
     "--list" | "-l")
-      echo "List of Modules\n"
-      ls /sdcard/AxeronModules
+      echo "List of AxeronModules\n"
+      find /sdcard/AxeronModules -type f -name "axeron.prop" -print0 | while IFS= read -r -d '' file; do
+        dirname "$file"
+      done | while IFS= read -r dir; do
+        basename "$dir"
+      done | sort | uniq
       return 0
       ;;
   esac
