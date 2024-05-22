@@ -7,7 +7,7 @@ p="[ • ]" #process
 s="[ ✓ ]" #success
 cd $(dirname $0)
 #[ -f "response" ] && rm -f "response" > /dev/null 2>&1
-dos2unix axeron.prop
+#dos2unix axeron.prop
 source axeron.prop
 axeron="com.fhrz.axeron"
 host="fahrez256.github.io"
