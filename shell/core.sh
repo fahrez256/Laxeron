@@ -25,6 +25,8 @@ if [ -n "$1" ]; then
   runPackage="$1"
 fi
 
+echo $runPackage | od -An -t dC
+
 axeron_core=$(cat <<-EOF
 Optione {
   key:id="$id";
