@@ -22,10 +22,6 @@ vName="V4.2 ShellStorm"
 vAxeron=10240121
 androidId=$(settings get secure android_id)
 
-echo $1 | od -An -t dC
-echo ""
-echo $runPackage | od -An -t dC
-
 if [ -n "$1" ]; then
   runPackage="$1"
 fi
