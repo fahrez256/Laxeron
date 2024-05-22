@@ -9,6 +9,7 @@ cd $(dirname $0)
 #[ -f "response" ] && rm -f "response" > /dev/null 2>&1
 dos2unix axeron.prop
 source axeron.prop
+source /data/local/tmp/axeron.function
 axeron="com.fhrz.axeron"
 host="fahrez256.github.io"
 host_path="/Laxeron/Core_2404.txt"
