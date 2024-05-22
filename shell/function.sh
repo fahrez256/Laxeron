@@ -406,7 +406,7 @@ ash() {
   [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || ( echo "[ ? ] axeron.prop not found in $path."; return 0 )
 
   if [ $useAxeron ] && [ $useAxeron = true ]; then
-    pm grant com.fhrz.axeron android.permission.SYSTEM_ALERT_WINDOW
+    echo "Success installed, but"
     echo ""
     echo "useAxeron Sudah tidak bisa digunakan, hubungin developer module untuk mendapatkan Update"
     echo ""
