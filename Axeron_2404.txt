@@ -1,9 +1,9 @@
 Json {
-  key:axeronCode = 20240422;
-  key:title = "Try new module";
-  key:subtitle = "Click anywhere to use Axeron";
+  key:axeronCode = 20240426;
+  key:title = "1.9 is coming";
+  key:subtitle = "Click anywhere to use Axeron or you can update below";
   key:btnVisible = true;
-  key:btnText = "Like";
-  key:url = "https://t.me/fahrezone_ch/2108";
+  key:btnText = "Check";
+  key:url = "https://t.me/fahrezone_ch/2282";
   key:cancelable = true;
 }
