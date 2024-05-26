@@ -10,7 +10,7 @@ whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
 check_axeron() {
-  [[ -z $1 || $1 != "com.fhrz.axeron" ]] && echo "Bisa make Axeron? Gacor" && exit 0
+  [[ -z $1 || $1 != "com.fhrz.axeron" ]] && echo "Chermods (Aldo) ganteng" && exit 0
   if ! echo "$CORE" | grep -q "$this_core"; then
     echo "Axeron Not Original"
     exit 0
