@@ -123,5 +123,5 @@ else
   c_exit
 fi
 
-sleep 1 && am start -a android.intent.action.VIEW -d "axeron:adaptor" -n "com.fhrz.axeron/.Process" --es AXERON "$axeron_core" --es CORE "$core_info" #> /dev/null 2>&1 || echo "$w Failed to open Axeron"
+sleep 1 && am start -n "com.fhrz.axeron/.Process" --es AXERON "$axeron_core" --es CORE "$core_info" #> /dev/null 2>&1 || echo "$w Failed to open Axeron"
 c_exit
