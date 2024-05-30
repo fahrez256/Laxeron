@@ -12,7 +12,7 @@ this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -
 
 r17() {
   if [ -n "$1" ] && [ "$1" == "-d" ]; then
-    [ -z "$2" ] && "Error" || shift
+    [ -n "$2" ] || "Error"
     echo -n "$2" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
     exit 0
   fi
