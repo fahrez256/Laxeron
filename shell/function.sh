@@ -15,9 +15,9 @@ r17() {
     if [ -n "$2" ]; then
       if [ "$(echo "$2" | cut -c 1-3)" == "r17" ]; then
         var=$(echo "$2" | cut -c 4-)
-        echo -n "$var" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
+        echo "$var" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
       else
-        echo -n "$2" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
+        echo "$2"
       fi
     else
       echo "Error: No text provided to decode."
