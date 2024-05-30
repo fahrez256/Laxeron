@@ -18,16 +18,16 @@ r17() {
       if [ "$first_three_chars" = "r17" ]; then
         var=$(echo "$2" | cut -c 4-)
         echo $var | tr 'A-Za-z' 'R-ZA-Qr-za-q'
-        echo -n "$(echo $var | tr 'A-Za-z' 'R-ZA-Qr-za-q')" | base64 -d
+        echo "$(echo $var | tr 'A-Za-z' 'R-ZA-Qr-za-q')" | base64 -d
       else
-        echo -n "$2"
+        echo "$2"
       fi
     else
       echo "Error: No text provided to decode."
       return 1
     fi
   else
-    echo "r17$(echo -n "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
+    echo "r17$(echo "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
   fi
 }
 
