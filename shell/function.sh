@@ -10,24 +10,38 @@ export FUNCTION="/data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
+# r17() {
+#   if [ -n "$1" ] && [ "$1" = "-d" ]; then
+#     if [ -n "$2" ]; then
+#       f3c=$(echo "$2" | cut -c 1-3)
+#       if [ "$f3c" = "r17" ]; then
+#         var=$(echo "$2" | cut -c 4-)
+#         echo "$(echo $var | tr 'R-ZA-Qr-za-q' 'A-Za-z')" | base64 -d
+#       else
+#         echo "$2"
+#       fi
+#     else
+#       echo "Error: No text provided to decode."
+#       return 1
+#     fi
+#   else
+#     echo "r17$(echo "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
+#   fi
+# }
+
 r17() {
-  if [ -n "$1" ] && [ "$1" = "-d" ]; then
-    if [ -n "$2" ]; then
-      f3c=$(echo "$2" | cut -c 1-3)
-      if [ "$f3c" = "r17" ]; then
-        var=$(echo "$2" | cut -c 4-)
-        echo "$(echo $var | tr 'R-ZA-Qr-za-q' 'A-Za-z')" | base64 -d
-      else
-        echo "$2"
-      fi
-    else
-      echo "Error: No text provided to decode."
-      return 1
-    fi
+  if [ -z "$1" ]; then
+    echo "Error: No text provided."
+    return 1
+  fi
+  
+  if [ "$1" = "-d" ] && [ -n "$2" ]; then
+    [[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr 'R-ZA-Qr-za-q' 'A-Za-z' | base64 -d || echo "$2"
   else
-    echo "r17$(echo "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
+    echo "r17$(echo -n "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
   fi
 }
+
 
 check_axeron() {
   #[[ -z $1 || $1 != "com.fhrz.axeron" ]] && echo "Hacked by Aldo (Chermods)" && exit 0
