@@ -13,13 +13,18 @@ this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -
 r17() {
   if [ -n "$1" ] && [ "$1" = "-d" ]; then
     if [ -n "$2" ]; then
-      echo -n "$2" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
+      if [ $(echo "$2" | cut -c 1-3) == "r17" ]; then
+        var=$(echo "$2" | cut -c 4-)
+        echo -n "$var" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
+      else
+        echo -n "$2" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
+      fi
     else
       echo "Error: No text provided to decode."
       return 1
     fi
   else
-    echo -n "r17$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q'
+    echo -n "r17$(echo -n "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
   fi
 }
 
