@@ -132,7 +132,7 @@ storm() {
       ;;
   esac
   
-  api="$1"
+  api=$(rozaq -d "$1")
   local runPath="$(dirname $0)"
   rm -f ${THISPATH}/response
   rm -f ${THISPATH}/error
