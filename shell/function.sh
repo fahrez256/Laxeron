@@ -29,16 +29,16 @@ this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -
 #   fi
 # }
 
-r17() {
+rozaq() {
   if [ -z "$1" ]; then
     echo "Error: No text provided."
     return 1
   fi
   
   if [ "$1" = "-d" ] && [ -n "$2" ]; then
-    [[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr 'R-ZA-Qr-za-q' 'A-Za-z' | base64 -d || echo "$2"
+    [[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"
   else
-    echo "r17$(echo -n "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
+    echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
   fi
 }
 
