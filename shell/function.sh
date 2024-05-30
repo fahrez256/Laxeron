@@ -11,12 +11,16 @@ whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
 r17() {
-  if [ -n "$1" ] && [ "$1" == "-d" ]; then
-    [ -n "$2" ] || "Error"
-    echo -n "$2" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
-    exit 0
+  if [ -n "$1" ] && [ "$1" = "-d" ]; then
+    if [ -n "$2" ]; then
+      echo -n "$2" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
+    else
+      echo "Error: No text provided to decode."
+      return 1
+    fi
+  else
+    echo -n "r17$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q'
   fi
-  echo -n "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q'
 }
 
 check_axeron() {
