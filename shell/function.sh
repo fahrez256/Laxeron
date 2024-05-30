@@ -14,6 +14,7 @@ r17() {
   if [ -n "$1" ] && [ "$1" = "-d" ]; then
     if [ -n "$2" ]; then
       first_three_chars=$(echo "$2" | cut -c 1-3)
+      echo $first_three_chars
       if [ "$first_three_chars" = "r17" ]; then
         var=$(echo "$2" | cut -c 4-)
         echo -n "$var" | tr 'A-Za-z' 'R-ZA-Qr-za-q' | base64 -d
