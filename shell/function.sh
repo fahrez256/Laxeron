@@ -13,12 +13,10 @@ this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -
 r17() {
   if [ -n "$1" ] && [ "$1" = "-d" ]; then
     if [ -n "$2" ]; then
-      first_three_chars=$(echo "$2" | cut -c 1-3)
-      echo $first_three_chars
-      if [ "$first_three_chars" = "r17" ]; then
+      f3c=$(echo "$2" | cut -c 1-3)
+      if [ "$f3c" = "r17" ]; then
         var=$(echo "$2" | cut -c 4-)
-        echo $var | tr 'A-Za-z' 'R-ZA-Qr-za-q'
-        echo "$(echo $var | tr 'A-Za-z' 'R-ZA-Qr-za-q')" | base64 -d
+        echo "$(echo $var | tr 'R-ZA-Qr-za-q' 'A-Za-z')" | base64 -d
       else
         echo "$2"
       fi
