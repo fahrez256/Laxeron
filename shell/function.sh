@@ -24,7 +24,7 @@ r17() {
       return 1
     fi
   else
-    echo "r17$(echo -n "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
+    echo "r17$(echo "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
   fi
 }
 
