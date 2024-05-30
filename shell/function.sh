@@ -2,6 +2,7 @@ export AXERON=true
 export EXPIRED=true
 export CORE="d8a97692ad1e71b1"
 export EXECPATH=$(dirname $0)
+export APROPS=${EXECPATH}/axeron.prop
 local THISPATH="/sdcard/Android/data/com.fhrz.axeron/files"
 export PACKAGES=$(cat ${THISPATH}/packages.list)
 export TMPFUNC="${THISPATH}/axeron.function"
