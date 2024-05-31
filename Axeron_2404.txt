@@ -3,7 +3,7 @@ Json {
   key:title = "Do you like LAxeron?";
   key:subtitle = "Click anywhere to use Axeron or you can join new telegram channel below";
   key:btnVisible = true;
-  key:btnText = "Check";
+  key:btnText = "Join";
   key:url = "https://t.me/fahrezone_ch2";
   key:cancelable = true;
 }
