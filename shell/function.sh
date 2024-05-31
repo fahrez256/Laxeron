@@ -10,24 +10,9 @@ export FUNCTION="/data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
-# r17() {
-#   if [ -n "$1" ] && [ "$1" = "-d" ]; then
-#     if [ -n "$2" ]; then
-#       f3c=$(echo "$2" | cut -c 1-3)
-#       if [ "$f3c" = "r17" ]; then
-#         var=$(echo "$2" | cut -c 4-)
-#         echo "$(echo $var | tr 'R-ZA-Qr-za-q' 'A-Za-z')" | base64 -d
-#       else
-#         echo "$2"
-#       fi
-#     else
-#       echo "Error: No text provided to decode."
-#       return 1
-#     fi
-#   else
-#     echo "r17$(echo "$1" | base64 | tr 'A-Za-z' 'R-ZA-Qr-za-q')"
-#   fi
-# }
+import() {
+  . $(dirname $0)/"$1"
+}
 
 rozaq() {
   if [ -z "$1" ]; then
@@ -376,10 +361,6 @@ optimize() {
       echo "[Optimized] $package"
     fi
   done
-}
-  
-setUsingAxeron() {
-  sed -i "s/useAxeron=.*/useAxeron=$1/g" $(dirname $0)/axeron.prop
 }
 
 ash() {
