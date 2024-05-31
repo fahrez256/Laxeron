@@ -401,13 +401,13 @@ ash() {
     return 1
   fi
 
-  # case $2 in
-  #   "--package" | "-p")
-  #     pkg=${3:-runPackage}
-  #     sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${path}/axeron.prop
-  #     shift 2
-  #     ;;
-  # esac
+  case $2 in
+    "--package" | "-p")
+      pkg=${3:-runPackage}
+      sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${path}/axeron.prop
+      shift 2
+      ;;
+  esac
 
   [ ! -d "$pathCash" ] && mkdir -p $pathCash
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
