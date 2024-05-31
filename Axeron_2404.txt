@@ -1,9 +1,9 @@
 Json {
-  key:axeronCode = 20240426;
-  key:title = "1.9 is coming";
-  key:subtitle = "Click anywhere to use Axeron or you can update below";
+  key:axeronCode = 20240531;
+  key:title = "Do you like LAxeron?";
+  key:subtitle = "Click anywhere to use Axeron or you can join new telegram channel below";
   key:btnVisible = true;
   key:btnText = "Check";
-  key:url = "https://t.me/fahrezone_ch/2282";
+  key:url = "https://t.me/fahrezone_ch2";
   key:cancelable = true;
 }
