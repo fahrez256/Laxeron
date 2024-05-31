@@ -374,7 +374,7 @@ ash() {
       echo -e "Save the Module in AxeronModules folder!\n"
       echo -e "Usage: ash <path> [options] [arguments]"
       echo "Options:"
-      echo "  --package, -p <packagename>: use custom packagename"
+      #echo "  --package, -p <packagename>: use custom packagename"
       echo "  --remove, -r <module>: Remove a module from path"
       echo "  --list, -l: List installed modules"
       echo "  --help, -h: Show this help message"
@@ -401,13 +401,13 @@ ash() {
     return 1
   fi
 
-  case $2 in
-    "--package" | "-p")
-      pkg=${3:-runPackage}
-      sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${path}/axeron.prop
-      shift 2
-      ;;
-  esac
+  # case $2 in
+  #   "--package" | "-p")
+  #     pkg=${3:-runPackage}
+  #     sed -i "s/runPackage=\"[^\"]*\"/runPackage=\"${pkg}\"/g" ${path}/axeron.prop
+  #     shift 2
+  #     ;;
+  # esac
 
   [ ! -d "$pathCash" ] && mkdir -p $pathCash
   [ -n "$(ls -A $pathCash)" ] && rm -r ${pathCash}/*
@@ -440,16 +440,6 @@ ash() {
       fi
     ;;
   esac
-
-  [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || ( echo "[ ? ] axeron.prop not found in $path."; return 0 )
-
-  if [ $useAxeron ] && [ $useAxeron = true ]; then
-    echo "Success installed, but"
-    echo ""
-    echo "useAxeron Sudah tidak bisa digunakan, hubungin developer module untuk mendapatkan Update"
-    echo ""
-    echo "use Axeron Can no longer be used, contact the module developer to get an update"
-  fi
 }
 
 zash() {
