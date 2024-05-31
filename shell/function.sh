@@ -417,7 +417,7 @@ ash() {
 
   find $path -type f -exec chmod +x {} \;
 
-  [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop" || echo "[ ? ] axeron.prop not found in $path."
+  [ -f "${path}/axeron.prop" ] && source "${path}/axeron.prop"
   
   local install=${install:-"$(basename "$(find "$path" -type f -iname "install*")")"}
   local remove=${remove:-"$(basename "$(find "$path" -type f -iname "remove*")")"}
