@@ -118,14 +118,13 @@ storm() {
       ;;
   esac
 
-  case $1 in
+  case $2 in
     --fname | -fn )
-      file_name="$2"
+      file_name="$3"
       echo $file_name
       shift 2
       ;;
     * )
-      echo $file_name
       ;;
   esac
 
