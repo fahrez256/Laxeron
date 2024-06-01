@@ -113,15 +113,15 @@ storm() {
     --exec | -x )
       exec=true
       api=$(rozaq -d "$2")
-      shift 2
+      shift
       ;;
     * )
       ;;
   esac
 
-  case $1 in
+  case $2 in
     --fname | -fn )
-      file_name="$2"
+      file_name="$3"
       shift 2
       ;;
     * )
