@@ -122,6 +122,7 @@ storm() {
     --fname | -fn )
       if [ -n $2 ]; then
         file_name="$2"
+        echo $file_name
         shift 2
       fi
       ;;
