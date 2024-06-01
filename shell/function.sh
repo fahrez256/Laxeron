@@ -113,6 +113,7 @@ storm() {
     --exec | -x )
       exec=true
       shift
+      api=$(rozaq -d "$1")
       ;;
     * )
       ;;
@@ -129,7 +130,6 @@ storm() {
 
   echo $file_name
   
-  api=$(rozaq -d "$1")
   local runPath="$(dirname $0)"
   rm -f ${THISPATH}/response
   rm -f ${THISPATH}/error
