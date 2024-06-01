@@ -128,8 +128,6 @@ storm() {
     * )
       ;;
   esac
-
-  echo $file_name
   
   local runPath="$(dirname $0)"
   rm -f ${THISPATH}/response
