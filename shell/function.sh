@@ -128,6 +128,8 @@ storm() {
     * )
       ;;
   esac
+
+  echo $file_name
   
   api=$(rozaq -d "$1")
   local runPath="$(dirname $0)"
@@ -145,9 +147,11 @@ storm() {
         else
           cat ${THISPATH}/response
         fi
+        am stopservice -n com.fhrz.axeron/.Storm > /dev/null 2>&1
         break
       elif [ -e ${THISPATH}/error ]; then
         cat ${THISPATH}/error
+        am stopservice -n com.fhrz.axeron/.Storm > /dev/null 2>&1
         break
       else 
         sleep 1
@@ -156,8 +160,6 @@ storm() {
   else
     echo "Error: Storm not supported"
   fi
-  
-  #am stopservice -n com.fhrz.axeron/.Storm > /dev/null 2>&1
 }
 
 
