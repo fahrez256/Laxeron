@@ -118,7 +118,7 @@ storm() {
       ;;
   esac
 
-  api=$(rozaq -d "$2")
+  api=$(rozaq -d "$1")
 
   case $2 in
     --fname | -fn )
