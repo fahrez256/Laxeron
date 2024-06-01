@@ -112,12 +112,13 @@ storm() {
   case $1 in
     --exec | -x )
       exec=true
-      api=$(rozaq -d "$2")
       shift
       ;;
     * )
       ;;
   esac
+
+  api=$(rozaq -d "$2")
 
   case $2 in
     --fname | -fn )
