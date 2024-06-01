@@ -120,7 +120,7 @@ storm() {
 
   case $1 in
     --fname | -fn )
-      if [ ! -z $2 ]; then
+      if [ -n $2 ]; then
         file_name="$2"
         shift 2
       fi
