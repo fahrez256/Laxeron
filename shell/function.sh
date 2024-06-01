@@ -112,17 +112,18 @@ storm() {
   case $1 in
     --exec | -x )
       exec=true
-      shift
+      api=$(rozaq -d "$2")
+      shift 2
       ;;
     * )
+      api=$(rozaq -d "$1")
+      shift
       ;;
   esac
 
-  api=$(rozaq -d "$1")
-
-  case $2 in
+  case $1 in
     --fname | -fn )
-      file_name="$3"
+      file_name="$2"
       shift 2
       ;;
     * )
@@ -140,7 +141,6 @@ storm() {
           mv "${THISPATH}/response" "${THISPATH}/${file_name}"
           cp "${THISPATH}/${file_name}" "${runPath}/${file_name}"
           chmod +x "$runPath/${file_name}"
-          shift
           ${runPath}/${file_name} $@
         else
           cat ${THISPATH}/response
