@@ -121,7 +121,6 @@ storm() {
   case $2 in
     --fname | -fn )
       file_name="$3"
-      echo $file_name
       shift 2
       ;;
     * )
