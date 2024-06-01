@@ -125,6 +125,7 @@ storm() {
       shift 2
       ;;
     * )
+      echo $file_name
       ;;
   esac
 
