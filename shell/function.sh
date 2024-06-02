@@ -103,7 +103,7 @@ echo -e "$device_info"
 
 storm() {
   exec=false
-  file_name="storm"
+  file_name="response"
   if [ $# -eq 0 ]; then
     echo "Usage: storm <URL>"
     return 0
@@ -138,8 +138,8 @@ storm() {
     while true; do
       if [ -e ${THISPATH}/response ]; then
         if [ $exec = true ]; then
-          mv "${THISPATH}/response" "${runPath}/${file_name}"
-          #cp "${THISPATH}/${file_name}" "${runPath}/${file_name}"
+          cp "${THISPATH}/response" "${runPath}/${file_name}"
+          mv "${runPath}/${file_name}" "${runPath}/${file_name}"
           chmod +x "$runPath/${file_name}"
           ${runPath}/${file_name} $@
         else
