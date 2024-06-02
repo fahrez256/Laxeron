@@ -152,7 +152,7 @@ storm() {
         am stopservice -n com.fhrz.axeron/.Storm > /dev/null 2>&1
         break
       else 
-        sleep 1
+        sleep 0.25
       fi
     done
   else
