@@ -8,7 +8,6 @@ export PACKAGES=$(cat ${THISPATH}/packages.list)
 export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
-this_core=$(dumpsys package "$AXERONPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
 import() {
   dos2unix $(dirname $0)/"$1"
@@ -25,14 +24,6 @@ rozaq() {
     [[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"
   else
     echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
-  fi
-}
-
-check_axeron() {
-  [[ -z $1 || $1 != "com.fhrz.axeron" ]] && echo "Hacked by Aldo (Chermods) (Maintenance)" && exit 0
-  if ! echo "$CORE" | grep -q "$this_core"; then
-    echo "Axeron Not Original"
-    exit 0
   fi
 }
 
