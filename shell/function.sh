@@ -8,7 +8,7 @@ export PACKAGES=$(cat ${THISPATH}/packages.list)
 export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
-this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
+this_core=$(dumpsys package "$AXERONPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
 import() {
   dos2unix $(dirname $0)/"$1"
