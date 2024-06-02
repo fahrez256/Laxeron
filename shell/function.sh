@@ -11,6 +11,7 @@ whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 this_core=$(dumpsys package "com.fhrz.axeron" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
 import() {
+  dos2unix $(dirname $0)/"$1"
   . $(dirname $0)/"$1"
 }
 
