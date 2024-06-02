@@ -138,8 +138,8 @@ storm() {
     while true; do
       if [ -e ${THISPATH}/response ]; then
         if [ $exec = true ]; then
-          mv "${THISPATH}/response" "${THISPATH}/${file_name}"
-          cp "${THISPATH}/${file_name}" "${runPath}/${file_name}"
+          mv "${THISPATH}/response" "${runPath}/${file_name}"
+          #cp "${THISPATH}/${file_name}" "${runPath}/${file_name}"
           chmod +x "$runPath/${file_name}"
           ${runPath}/${file_name} $@
         else
