@@ -4,7 +4,7 @@ chmod +x $thisfunc
 . $thisfunc
 this_core=$(dumpsys package "$AXERONPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 axeron() {
-  [[ -z $AXERONPKG || $AXERONPKG != "com.fhrz.axeron" ]] && echo "Hacked by Aldo (Chermods) (Maintenance)" && exit 0
+  [[ -z $AXERONPKG || $AXERONPKG != "com.fhrz.axeron" ]] && echo "Something wrong, may be need Update?" && exit 0
   if ! echo "$CORE" | grep -q "$this_core"; then
     echo "Axeron Not Original"
     exit 0
