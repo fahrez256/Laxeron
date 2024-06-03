@@ -10,7 +10,7 @@ export FUNCTION="/data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 pkglist() {
-  echo $(cat ${THISPATH}/packages.list)
+  cat ${THISPATH}/packages.list
 }
 
 import() {
