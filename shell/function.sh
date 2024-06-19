@@ -371,6 +371,7 @@ optimize() {
 }
 
 ash() {
+  echo "You want to buy Axeron VIP? here \033[93mhttps://bit.ly/AXERONVIP\033[0m\n"
   if [ $# -eq 0 ]; then
     echo -e "Usage: ash <path> [options] [arguments]"
     return 1
