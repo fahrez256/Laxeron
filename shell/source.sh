@@ -10,3 +10,6 @@ if ! echo "$CORE" | grep -q "$this_core"; then
   echo "Axeron Not Original"
   exit 0
 fi
+echo "
+You want to buy Axeron VIP? here https://bit.ly/AXERONVIP
+"
