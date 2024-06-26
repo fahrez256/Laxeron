@@ -24,11 +24,7 @@ rozaq() {
     return 1
   fi
   
-  if [ "$1" = "-d" ] && [ -n "$2" ]; then
-    [[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"
-  else
-    echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
-  fi
+  echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
 }
 
 cactus() {
@@ -107,11 +103,11 @@ storm() {
   case $1 in
     --exec | -x )
       exec=true
-      api=$(rozaq -d "$2")
+      api=$([[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2")
       shift 2
       ;;
     * )
-      api=$(rozaq -d "$1")
+      api=$([[ "${1:0:3}" = "r17" ]] && echo "${1:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$1")
       shift
       ;;
   esac
