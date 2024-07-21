@@ -10,6 +10,3 @@ if ! echo "$CORE" | grep -q "$this_core"; then
   echo "Axeron Not Original"
   exit 0
 fi
-
-echo "Hacked by Aldo @Chermodsc"
-exit
