@@ -103,11 +103,11 @@ storm() {
   case $1 in
     --exec | -x )
       exec=true
-      api=$([[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2")
+      api=$2
       shift 2
       ;;
     * )
-      api=$([[ "${1:0:3}" = "r17" ]] && echo "${1:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$1")
+      api=$1
       shift
       ;;
   esac
@@ -151,6 +151,9 @@ storm() {
   fi
 }
 
+xtorm() {
+  storm -x $([[ "${1:0:3}" = "r17" ]] && echo "${1:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$1")
+}
 
 xperm() {
     #RiProG
