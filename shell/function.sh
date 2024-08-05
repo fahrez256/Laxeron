@@ -27,24 +27,6 @@ rozaq() {
   echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
 }
 
-encode_string() {
-    local str="$1"
-    local shift_char='Λ'
-    local shift_val=$(printf "%d" "'$shift_char")
-    local enc=""
-
-    # Loop untuk menambahkan nilai shift ke setiap karakter
-    for i in $(seq 0 $(($(echo -n "$str" | wc -c) - 1))); do
-        local char=$(echo -n "$str" | cut -c $((i + 1)))
-        local char_val=$(printf "%d" "'$char")
-        local encoded_char=$(printf "\\$(printf '%03o' $((char_val + shift_val)))")
-        enc+="$encoded_char"
-    done
-
-    # Encode hasilnya ke Base64
-    echo -n "$enc" | base64
-}
-
 cactus() {
   #Rem01Gaming
   if [ $# -eq 0 ]; then
