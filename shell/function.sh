@@ -2,6 +2,7 @@ import() {
   file=find $(dirname $0) -iname "*$1*"
   dos2unix $file
   . $file
+  echo $file
 }
 
 export AXERON=true
