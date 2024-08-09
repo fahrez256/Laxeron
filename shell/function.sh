@@ -522,6 +522,81 @@ ash() {
   esac
 }
 
+ax() {
+	if [ $# -eq 0 ]; then
+    echo -e "Usage: ash <path> [options] [arguments]"
+    exit 1
+	fi
+  
+	case $1 in
+    --help|-h)
+      echo -e "Save the Module in AxeronModules folder!\n"
+      echo -e "Usage: ax <path> [options] [arguments]"
+      echo "Options:"
+      #echo "  --package, -p <packagename>: use custom packagename"
+      echo "  --remove, -r <module>: Remove a module from path"
+      echo "  --list, -l: List installed modules"
+      echo "  --help, -h: Show this help message"
+      return 0
+		  ;;
+    --list|-l)
+      echo "List of AxeronModules\n"
+      find /sdcard/AxeronModules -type f -name "axeron.prop" -print0 | while IFS= read -r -d '' file; do
+        dirname "$file"
+      done | while IFS= read -r dir; do
+        basename "$dir"
+      done | sort | uniq
+      return 0
+      ;;
+	esac
+	
+	local nameDir="$1"
+	local path="/sdcard/AxeronModules/${nameDir}"
+	local cash="/data/local/tmp/axeron_cash"
+	local pathCash="${pathCash}/${nameDir}"
+	
+	#Buat cash
+	[ ! -d "$cash" ] && mkdir -p $cash
+	
+	#Membersihkan cash
+	[ -n "$(ls -A $cash)" ] && rm -r ${cash}/*
+	
+	#Cek path
+	if [ ! -d "$path" ]; then
+    	echo "[ ? ] Path not found: $path"
+    	exit 404
+	fi
+	
+	cp -r "$path" "$cash"
+	find $pathCash -type f -exec chmod +x {} \;
+	
+	pathProp=$(find $pathCash -type f -name "axeron.prop")
+	dos2unix $pathProp
+	source $pathProp
+	
+	local install=${install:-"$(basename "$(find "$path" -type f -iname "install*")")"}
+	local remove=${remove:-"$(basename "$(find "$path" -type f -iname "remove*")")"}
+	
+	case $2 in
+    -r|--remove)
+			if [ -z "$remove" ]; then
+				echo "[ ! ] Cant remove this module"
+			else
+        shift 2
+        ${pathCash}/${remove} $@
+			fi
+			;;
+		*)
+			if [ -z "$install" ]; then
+				echo "[ ! ] Cant install this module"
+			else
+				shift 
+				${pathCash}/${install} $@
+			fi
+			;;
+	esac
+}
+
 zash() {
   axeron=$(unzip -l "/sdcard/${1}" | awk '{print $4}' | grep -m 1 'axeron.prop')
   if [ "${axeron}" ]; then
