@@ -1,9 +1,3 @@
-import() {
-  file=$(find $(dirname $0) -type f -name "$1")
-  dos2unix $file
-  source $file
-}
-
 export AXERON=true
 export EXPIRED=true
 export CORE="d8a97692ad1e71b1"
@@ -15,6 +9,12 @@ export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 export AXFUN="source $FUNCTION"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
+
+import() {
+  file=$(find $(dirname $0) -type f -name "$1")
+  dos2unix $file
+  source $file
+}
 
 toast() {
   case $# in
