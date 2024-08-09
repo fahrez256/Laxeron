@@ -1,9 +1,7 @@
 import() {
-  echo $(dirname $0)
-  file=find $(dirname $0) -iname "*$1*"
-  #dos2unix $file
-  #. $file
-  echo $file
+  file=$(find $(dirname $0) -type f -name "$1")
+  dos2unix $file
+  . $file
 }
 
 export AXERON=true
