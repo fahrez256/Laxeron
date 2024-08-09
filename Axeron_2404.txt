@@ -1,9 +1,9 @@
 Json {
-  key:axeronCode = 20240721;
+  key:axeronCode = 24080901;
   key:title = "UPDATE";
   key:subtitle = "You need update";
   key:btnVisible = true;
   key:btnText = "Update";
-  key:url = "https://t.me/fahrezone_ch2/114";
+  key:url = "https://sfl.gl/V6spDae";
   key:cancelable = false;
 }
