@@ -18,9 +18,15 @@ toast() {
       duration=3000
       ;;
     2)
-      title="$1"
-      msg="$2"
-      duration=3000
+      if [[ $2 =~ ^[0-9]+$ ]]; then
+        title=""
+        msg="$1"
+        duration="$2"
+      else
+        title="$1"
+        msg="$2"
+        duration=3000
+      fi
       ;;
     3)
       title="$1"
