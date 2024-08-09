@@ -11,7 +11,7 @@ export AXFUNCTION=". /data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 toast() {
-  am broadcast -a axeron.show.TOAST --es msg "$1" > /dev/null
+  am broadcast -a axeron.show.TOAST --es $@ > /dev/null
 }
 
 openlink() {
