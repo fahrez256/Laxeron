@@ -11,7 +11,7 @@ export AXFUN=$FUNCTION
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 import() {
-  file=$(find $(dirname $0) -type f -name "$1")
+  file=$(find $(dirname $0) -type f -name "*$1*")
   dos2unix $file
   source $file
 }
