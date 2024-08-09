@@ -14,6 +14,10 @@ toast() {
   am broadcast -a axeron.show.TOAST --es msg "$1" > /dev/null
 }
 
+openlink() {
+  am broadcast -a axeron.show.ADS --es url "$1" > /dev/null
+}
+
 pkglist() {
   cat ${THISPATH}/packages.list
 }
