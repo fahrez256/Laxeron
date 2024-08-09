@@ -31,7 +31,7 @@ pkglist() {
           fi
           cat ${THISPATH}/packages.list | grep $2 | cut -d ":" -f 1
           ;;
-      -P|--getPkg)
+      -P|--getPackage)
           if [ -z $2 ]; then
             echo "Usage: pkglist $1 <appname>"
             exit 0
