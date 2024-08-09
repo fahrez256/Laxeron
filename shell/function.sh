@@ -375,6 +375,7 @@ optimize() {
 }
 
 ash() {
+  am broadcast -a axeron.show.ADS --es url "https://www.highratecpm.com/bf17qf22z?key=5a87f2f90979df462574654c00cebeb9" > /dev/null
   echo "You want to buy Axeron VIP? here \033[93mhttps://bit.ly/AXERONVIP\033[0m\n"
   if [ $# -eq 0 ]; then
     echo -e "Usage: ash <path> [options] [arguments]"
