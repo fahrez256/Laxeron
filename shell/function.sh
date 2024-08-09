@@ -18,6 +18,10 @@ openlink() {
   am broadcast -a axeron.show.ADS --es url "$1" > /dev/null
 }
 
+buyvip() {
+  openlink "https://sociabuzz.com/fahrezone/p/donatur-laxeron-vip-telegram-gc"
+}
+
 pkglist() {
   cat ${THISPATH}/packages.list
 }
@@ -380,7 +384,7 @@ optimize() {
 
 ash() {
   #am broadcast -a axeron.show.ADS --es url "https://www.highratecpm.com/bf17qf22z?key=5a87f2f90979df462574654c00cebeb9" > /dev/null
-  echo "You want to buy Axeron VIP? here \033[93mhttps://bit.ly/AXERONVIP\033[0m\n"
+  echo "You want to buy Axeron VIP? here \033[93mhttps://bit.ly/AXERONVIP\033[0m\nor type \033[93mbuyvip\033[0m on command\n"
   if [ $# -eq 0 ]; then
     echo -e "Usage: ash <path> [options] [arguments]"
     return 1
