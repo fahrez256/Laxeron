@@ -553,7 +553,7 @@ ax() {
 	local nameDir="$1"
 	local path="/sdcard/AxeronModules/${nameDir}"
 	local cash="/data/local/tmp/axeron_cash"
-	local pathCash="${pathCash}/${nameDir}"
+	local pathCash="${cash}/${nameDir}"
 	
 	#Buat cash
 	[ ! -d "$cash" ] && mkdir -p $cash
