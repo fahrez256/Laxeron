@@ -1,4 +1,5 @@
 import() {
+  echo $(dirname $0)
   file=find $(dirname $0) -iname "*$1*"
   #dos2unix $file
   #. $file
