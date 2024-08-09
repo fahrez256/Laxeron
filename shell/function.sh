@@ -18,15 +18,18 @@ toast() {
       duration=3000
       ;;
     2)
-      if [[ $2 =~ ^[0-9]+$ ]]; then
-        title=""
-        msg="$1"
-        duration="$2"
-      else
-        title="$1"
-        msg="$2"
-        duration=3000
-      fi
+      case $2 in
+        ''|*[!0-9]*)
+          title="$1"
+          msg="$2"
+          duration=0
+          ;;
+        *)
+          title=""
+          msg="$1"
+          duration="$2"
+          ;;
+      esac
       ;;
     3)
       title="$1"
