@@ -10,6 +10,11 @@ export FUNCTION="/data/local/tmp/axeron.function"
 export AXFUN=". /data/local/tmp/axeron.function; $@"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
+import() {
+  dos2unix $(dirname $0)/"$1"
+  . $(dirname $0)/"$1"
+}
+
 toast() {
   case $# in
     1)
@@ -82,11 +87,6 @@ pkglist() {
           cat ${THISPATH}/${pkgfile} | cut -d '|' -f 2
           ;;
   esac
-}
-
-import() {
-  dos2unix $(dirname $0)/"$1"
-  . $(dirname $0)/"$1"
 }
 
 rozaq() {
