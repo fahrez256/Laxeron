@@ -25,11 +25,11 @@ buyvip() {
 pkglist() {
   case $1 in
       -L|--getLabel)
-          if [ $2 -z ]; then
+          if [ -z $2 ]; then
             echo "Usage: pkglist $1 <package>"
             exit 0
           fi
-          cat ${THISPATH}/packages.list | grep $1 | cut -d ":" -f 1
+          cat ${THISPATH}/packages.list | grep $2 | cut -d ":" -f 1
           ;;
       *)
           cat ${THISPATH}/packages.list | cut -d ":" -f 2
