@@ -42,12 +42,11 @@ toast() {
       ;;
   esac
 
-  am broadcast -a axeron.show.TOAST --es title "$title" --es msg "$msg" --ei duration "$duration" > /dev/null
+  am broadcast -a axeron.show.TOAST --es title "$title" --es msg "$msg" --ei duration "$duration" > /dev/null 2>&1
 }
 
-
 openlink() {
-  am broadcast -a axeron.show.ADS --es url "$1" > /dev/null
+  am broadcast -a axeron.show.ADS --es url "$1" > /dev/null 2>&1
 }
 
 buyvip() {
@@ -128,7 +127,7 @@ flaunch() {
     return 0
   fi
   
-  am start --activity-no-animation -n $(cmd package dump "$1" | awk '/MAIN/{getline; print $2}' | head -n 1) > /dev/null
+  am start --activity-no-animation -n $(cmd package dump "$1" | awk '/MAIN/{getline; print $2}' | head -n 1) > /dev/null 2>&1
    # am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
 }
 
