@@ -7,11 +7,11 @@ local THISPATH="/sdcard/Android/data/com.fhrz.axeron/files"
 export PACKAGES=$(echo -e $(cat ${THISPATH}/packages.list))
 export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
-export AXFUN=$FUNCTION
+export AXFUN=". $FUNCTION"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 import() {
-  file=$(find $(dirname $0) -type f -name "*$1*")
+  file=$(find $(dirname $0) -type f -name "$1")
   dos2unix $file
   source $file
 }
