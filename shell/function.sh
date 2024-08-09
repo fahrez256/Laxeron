@@ -1,7 +1,7 @@
 import() {
   file=$(find $(dirname $0) -type f -name "$1")
   dos2unix $file
-  . $file
+  source $file
 }
 
 export AXERON=true
@@ -13,7 +13,7 @@ local THISPATH="/sdcard/Android/data/com.fhrz.axeron/files"
 export PACKAGES=$(echo -e $(cat ${THISPATH}/packages.list))
 export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
-export AXFUN=". /data/local/tmp/axeron.function"
+export AXFUN="source $FUNCTION"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 toast() {
