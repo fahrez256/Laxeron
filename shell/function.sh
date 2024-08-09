@@ -34,7 +34,7 @@ toast() {
       duration="$3"
       ;;
     *)
-      echo "Usage: toast <msg> | toast <title> <msg> | toast <title> <msg> <duration>"
+      echo "Usage: toast <msg> | toast <title> <msg> | toast <msg> <duration> | toast <title> <msg> <duration>"
       return 1
       ;;
   esac
