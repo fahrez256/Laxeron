@@ -11,8 +11,31 @@ export AXFUNCTION=". /data/local/tmp/axeron.function"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 toast() {
-  am broadcast -a axeron.show.TOAST --es $@ > /dev/null
+  case $# in
+    1)
+      title=""
+      msg="$1"
+      duration=3000
+      ;;
+    2)
+      title="$1"
+      msg="$2"
+      duration=3000
+      ;;
+    3)
+      title="$1"
+      msg="$2"
+      duration="$3"
+      ;;
+    *)
+      echo "Usage: toast <msg> | toast <title> <msg> | toast <title> <msg> <duration>"
+      return 1
+      ;;
+  esac
+
+  am broadcast -a axeron.show.TOAST --es title "$title" --es msg "$msg" --ei duration "$duration" > /dev/null
 }
+
 
 openlink() {
   am broadcast -a axeron.show.ADS --es url "$1" > /dev/null
