@@ -23,7 +23,18 @@ buyvip() {
 }
 
 pkglist() {
-  cat ${THISPATH}/packages.list
+  case $1 in
+      -L|--getLabel)
+          if [ $2 -z ]; then
+            echo "Usage: pkglist $1 <package>"
+            exit 0
+          fi
+          cat ${THISPATH}/packages.list | grep $1 | cut -d ":" -f 1
+          ;;
+      *)
+          cat ${THISPATH}/packages.list | cut -d ":" -f 2
+          ;;
+  esac
 }
 
 import() {
