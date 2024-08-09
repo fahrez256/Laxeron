@@ -23,7 +23,7 @@ buyvip() {
 }
 
 pkglist() {
-  if [ $1 -eq "-F" || $1 -eq "--full" ]; then
+  if [[ $1 -eq "-F" ] || [ $1 -eq "--full" ]]; then
     pkgfile="packages_full.list"
     shift
   else
