@@ -31,6 +31,13 @@ pkglist() {
           fi
           cat ${THISPATH}/packages.list | grep $2 | cut -d ":" -f 1
           ;;
+      -P|--getPkg)
+          if [ -z $2 ]; then
+            echo "Usage: pkglist $1 <appname>"
+            exit 0
+          fi
+          cat ${THISPATH}/packages.list | grep -1 $2 | cut -d ":" -f 2
+          ;;
       *)
           cat ${THISPATH}/packages.list | cut -d ":" -f 2
           ;;
