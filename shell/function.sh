@@ -23,12 +23,15 @@ buyvip() {
 }
 
 pkglist() {
-  if [[ $1 -eq "-F" ] || [ $1 -eq "--full" ]]; then
+  case $1 in
+  -F|--full)
     pkgfile="packages_full.list"
     shift
-  else
+    ;;
+  *)
     pkgfile="packages.list"
-  fi
+    ;;
+  esac
   case $1 in
       -L|--getLabel)
           if [ -z $2 ]; then
