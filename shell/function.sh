@@ -421,6 +421,8 @@ ax() {
 		exit 1
 	fi
 
+ 	showLog=true
+
 	function log {
 		[ "$showLog" == true ] && echo "$1"
 	}
