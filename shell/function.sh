@@ -502,7 +502,7 @@ ax() {
 		fi
 
 		if echo "$id" | grep -iq "$nameDir"; then
-			idFound=true
+			export idFound=true
      			log "003$counter ID found $idFound"
 			if [ "$versionCode" -ge "$tmpVCode" ] && [ "$timeStamp" -gt "$tmpTStamp" ]; then
 				tmpVCode=$versionCode
