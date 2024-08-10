@@ -464,6 +464,7 @@ ax() {
 		timeStamp=$(stat -c %Y "$file")
 		echo "${counter} tc:$timeStamp"
 		echo "${counter} pProp:$pathProp"
+  		echo "${counter} file:$file"
 		
 		if [ -z "$pathProp" ]; then
 			echo "axeron.prop not found in $file"
