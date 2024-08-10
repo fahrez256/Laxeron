@@ -407,6 +407,10 @@ axprop() {
 	esac
 }
 
+axfix() {
+	rm -r "/data/local/tmp/axeron_cash/*"
+}
+
 ax() {
 	if [ $# -eq 0 ]; then
 		echo -e "Usage: ax <id_module> [options] [arguments]"
