@@ -359,6 +359,25 @@ optimize() {
 	done
 }
 
+axprop() {
+	if [ "$#" -lt 2 ]; then
+		echo "Usage: axprop <filename> <key> [-s|--String] <value> | axprop <filename> -d <key>"
+		return 1
+	fi
+
+	local filename=$1 key=$2 value
+	[ ! -f "$filename" ] && echo "File $filename not found!" && return 1
+
+	if [ "$key" = "-d" ] || [ "$key" = "--delete" ]; then
+		key=$3
+		grep -q "^$key=" "$filename" && sed -i "/^$key=/d" "$filename" && echo "Deleted key $key" || echo "Key $key not found"
+	else
+		[ "$3" = "-s" ] || [ "$3" = "--String" ] && value="\"$4\"" || value=$3
+		grep -q "^$key=" "$filename" && sed -i "s/^$key=.*/$key=$value/" "$filename" || echo "$key=$value" >> "$filename"
+		echo "Updated $filename with $key=$value"
+	fi
+}
+
 ax() {
 	if [ $# -eq 0 ]; then
 		echo -e "Usage: ax <path> [options] [arguments]"
