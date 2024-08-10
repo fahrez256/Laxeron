@@ -14,7 +14,7 @@ import() {
 	file=$(find $(dirname $0) -type f -name "$1")
 	dos2unix $file
 	source $file
-  eval path_$(echo "$1" | tr -cd '[:alnum:]_-')="$file"
+ 	eval path_$(echo "$1" | tr -cd '[:alnum:]_-')="$file"
 }
 
 toast() {
