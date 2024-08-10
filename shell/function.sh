@@ -431,7 +431,7 @@ ax() {
 	esac
 }
 
-ash {
+ash() {
 	ax $@
 }
 
