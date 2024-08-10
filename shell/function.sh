@@ -433,11 +433,12 @@ ax() {
 			done | sort | uniq
 			return 0
 			;;
-   		*)
-     			if [ ! -f "$1" ]; then
-			    echo "File $1 not found in AxeronModules."
+		*)
+			if [ ! -f "$1" ]; then
+				echo "File $1 not found in AxeronModules."
+				exit 404
 			fi
-     			;;
+			;;
 	esac
 	
 	echo "AX Processing"
