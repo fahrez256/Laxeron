@@ -473,8 +473,8 @@ ax() {
 	counter=0
 	idFound=false
 
-	find "/sdcard/AxeronModules" -type f -iname "*.zip*" | while IFS= read -r file; do
-		counter=$((counter + 1))
+	IFS=$'\n'  # Set Internal Field Separator untuk memisahkan berdasarkan baris, bukan spasi
+	for file in $(find "/sdcard/AxeronModules" -type f -iname "*.zip*"); do		counter=$((counter + 1))
 		pathProp=$(unzip -l "$file" | awk '/axeron.prop/ {print $4; exit}')
 		timeStamp=$(stat -c %Y "$file")
 		log "${counter} ts:$timeStamp"
@@ -515,6 +515,7 @@ ax() {
 			fi
 		fi
 	done
+ 	unset IFS
 
  	log "0004 out:${idFound}"
 
