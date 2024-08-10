@@ -472,9 +472,9 @@ ax() {
 		fi
 		
 		cachePathProc="$cachePath/proc${counter}"
-		unzip -o "$file" "$pathProp" -d "$cachePathProc" #> /dev/null 2>&1
+		unzip -o "$file" "$pathProp" -d "$cachePathProc" > /dev/null 2>&1
 		cachePathProp="${cachePathProc}/${pathProp}"
-  		echo "0000 $cachePathProp"
+  		echo "000$counter $cachePathProp"
 		
 		if [ -f "$cachePathProp" ]; then
 			source "$cachePathProp"
@@ -537,7 +537,7 @@ zash() {
 		else
 			echo "Updating Axeron Modules"
 		fi
-		unzip -o "/sdcard/${1}" -d "/sdcard/AxeronModules/" >/dev/null 2>&1
+		unzip -o "/sdcard/${1}" -d "/sdcard/AxeronModules/" > /dev/null 2>&1
 		if [ $? -eq 0 ]; then
 			source "/sdcard/AxeronModules/${folder}/axeron.prop"
 			echo "name: ${name}"
