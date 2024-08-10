@@ -494,6 +494,7 @@ ax() {
 		fi
 
 		source "$cachePathProp"
+  		echo "002$counter ${id}:${nameDir}"
 		if [ -z "$id" ]; then
 			log "ID not set from axeron.prop"
 			continue
