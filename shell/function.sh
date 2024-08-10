@@ -473,7 +473,7 @@ ax() {
 	counter=0
 	idFound=false
 
-	while IFS= read -r file; do
+	find "/sdcard/AxeronModules" -type f -iname "*.zip*" | while IFS= read -r file; do
 		counter=$((counter + 1))
 		pathProp=$(unzip -l "$file" | awk '/axeron.prop/ {print $4; exit}')
 		timeStamp=$(stat -c %Y "$file")
@@ -514,7 +514,7 @@ ax() {
 				log "${counter} fFile:$file"
 			fi
 		fi
-	done < <(find "/sdcard/AxeronModules" -type f -iname "*.zip*")
+	done
 
 	if [ "$idFound" = false ]; then
 		log "AX Done\n"
