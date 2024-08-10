@@ -1,9 +1,11 @@
 export AXERONPKG="!axPkg"
 export AXERONID="!axId"
 thisfunc="/data/local/tmp/axeron.function"
+thiscfg="/sdcard/AxeronModules/.config/config.prop"
 cp /sdcard/Android/data/com.fhrz.axeron/files/axeron.function /data/local/tmp
 chmod +x $thisfunc
 . $thisfunc
+. $thiscfg
 this_core=$(dumpsys package "$AXERONPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 [[ -z $AXERONPKG || $AXERONPKG != "com.fhrz.axeron" ]] && echo "Something wrong, may be need Update?" && exit 0
 if ! echo "$CORE" | grep -q "$this_core"; then
