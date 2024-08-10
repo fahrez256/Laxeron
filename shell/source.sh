@@ -13,6 +13,6 @@ if ! echo "$CORE" | grep -q "$this_core"; then
   exit 0
 fi
 if storm "https://raw.githubusercontent.com/fahrez256/Laxeron/main/ban_list.txt" | grep -iq "$AXERONID"; then
-  echo "Banned"
+  echo "You has ben banned"
   exit 999
 fi
