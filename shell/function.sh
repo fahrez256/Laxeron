@@ -493,6 +493,7 @@ ax() {
 			continue
 		fi
 
+		dos2unix "$pathCashProp"
 		source "$cachePathProp"
   		echo "002$counter ${id}:${nameDir}"
 		if [ -z "$id" ]; then
