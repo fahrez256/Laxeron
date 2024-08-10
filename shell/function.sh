@@ -434,7 +434,8 @@ ax() {
 			return 0
 			;;
 		*)
-			if [ ! -f "$1" ]; then
+			$isFile=$(find "/sdcard/AxeronModules" -type f -iname "$nameDir")
+			if [ -z "$isFile" ]; then
 				echo "File $1 not found in AxeronModules."
 				exit 404
 			fi
