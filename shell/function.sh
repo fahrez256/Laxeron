@@ -14,6 +14,7 @@ import() {
 	file=$(find $(dirname $0) -type f -name "$1")
 	dos2unix $file
 	source $file
+  eval path_$(echo "$1" | tr -cd '[:alnum:]_-')="$file"
 }
 
 toast() {
@@ -366,15 +367,18 @@ axprop() {
 	fi
 
 	local filename=$1 key=$2 value
+	local sanitized_key=$(echo "$key" | tr -cd '[:alnum:]_-')
+
 	[ ! -f "$filename" ] && echo "File $filename not found!" && return 1
 
 	if [ "$key" = "-d" ] || [ "$key" = "--delete" ]; then
 		key=$3
-		grep -q "^$key=" "$filename" && sed -i "/^$key=/d" "$filename" && echo "Deleted key $key" || echo "Key $key not found"
+		sanitized_key=$(echo "$key" | tr -cd '[:alnum:]_-')
+		grep -q "^$sanitized_key=" "$filename" && sed -i "/^$sanitized_key=/d" "$filename" && echo "Deleted key $key" || echo "Key $key not found"
 	else
 		[ "$3" = "-s" ] || [ "$3" = "--String" ] && value="\"$4\"" || value=$3
-		grep -q "^$key=" "$filename" && sed -i "s/^$key=.*/$key=$value/" "$filename" || echo "$key=$value" >> "$filename"
-		echo "Updated $filename with $key=$value"
+		grep -q "^$sanitized_key=" "$filename" && sed -i "s/^$sanitized_key=.*/$sanitized_key=$value/" "$filename" || echo "$sanitized_key=$value" >> "$filename"
+		echo "Updated $filename with $sanitized_key=$value"
 	fi
 }
 
