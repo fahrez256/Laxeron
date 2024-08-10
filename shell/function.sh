@@ -472,7 +472,7 @@ ax() {
 		fi
 		
 		cachePathProc="$cachePath/proc${counter}"
-		unzip -j -o "$file" "$pathProp" -d "$cachePathProc" > /dev/null 2>&1
+		unzip -j -o "$file" "$pathProp" -d "$cachePathProc" #> /dev/null 2>&1
 		cachePathProp="${cachePathProc}/axeron.prop"
 		
 		if [ -f "$cachePathProp" ]; then
