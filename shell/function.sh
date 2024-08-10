@@ -495,13 +495,14 @@ ax() {
 
 		dos2unix "$pathCashProp"
 		source "$cachePathProp"
-  		echo "002$counter ${id}:${nameDir}"
+  		log "002$counter ${id}:${nameDir}"
 		if [ -z "$id" ]; then
 			log "ID not set from axeron.prop"
 			continue
 		fi
 
 		if echo "$id" | grep -iq "$nameDir"; then
+  			log "003$counter ID found"
 			idFound=true
 			if [ "$versionCode" -ge "$tmpVCode" ] && [ "$timeStamp" -gt "$tmpTStamp" ]; then
 				tmpVCode=$versionCode
