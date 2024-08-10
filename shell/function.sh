@@ -516,6 +516,8 @@ ax() {
 		fi
 	done
 
+ 	log "004 out:${idFound}"
+
 	if [ "$idFound" = false ]; then
 		log "AX Done\n"
 		echo "ID not Found"
