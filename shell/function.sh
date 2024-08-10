@@ -409,7 +409,7 @@ axprop() {
 
 ax() {
 	if [ $# -eq 0 ]; then
-		echo -e "Usage: ax <zipname> [options] [arguments]"
+		echo -e "Usage: ax <id_module> [options] [arguments]"
 		exit 1
 	fi
 
@@ -426,7 +426,7 @@ ax() {
 	case $1 in
 		--help|-h)
 			echo -e "Save the Module in AxeronModules folder!\n"
-			echo -e "Usage: ax <zipname> [options] [arguments]"
+			echo -e "Usage: ax <id_module> [options] [arguments]"
 			echo "Options:"
 			echo "	--remove, -r <module>: Remove a module from path"
 			echo "	--list, -l: List installed modules"
