@@ -17,6 +17,12 @@ vName="V4.2 ShellStorm"
 vAxeron=10240121
 androidId=$(settings get secure android_id)
 
+if [ -n "$1" ] && [ "$1" == "-p" ];then
+    axprop $path_axeronprop runPackage -s "$2"
+    runPackage="$2"
+    shift 2
+fi
+
 axeron_core=$(cat <<-EOF
 Optione {
   key:id="$id";
