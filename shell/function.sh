@@ -408,130 +408,138 @@ axprop() {
 }
 
 ax() {
-	if [ $# -eq 0 ]; then
-		echo -e "Usage: ax <zipname> [options] [arguments]"
-		exit 1
-	fi
-	
-	case $1 in
-		--help|-h)
-			echo -e "Save the Module in AxeronModules folder!\n"
-			echo -e "Usage: ax <zipname> [options] [arguments]"
-			echo "Options:"
-			#echo "	--package, -p <packagename>: use custom packagename"
-			echo "	--remove, -r <module>: Remove a module from path"
-			echo "	--list, -l: List installed modules"
-			echo "	--help, -h: Show this help message"
-			return 0
-			;;
-		--list|-l)
-			echo "List of AxeronModules\n"
-			find /sdcard/AxeronModules -type f -name "axeron.prop" -print0 | while IFS= read -r -d '' file; do
-				dirname "$file"
-			done | while IFS= read -r dir; do
-				basename "$dir"
-			done | sort | uniq
-			return 0
-			;;
-		*)
-			isFile=$(find "/sdcard/AxeronModules" -type f -iname "*$1*")
-			if [ -z "$isFile" ]; then
-				echo "File $1 not found in AxeronModules."
-				exit 404
-			fi
-			;;
-	esac
-	
-	echo "AX Processing"
-	local nameDir="$1"
-	local cachePath="/sdcard/AxeronModules/.cache"
-	rm -rf "$cachePath"
-	mkdir -p "$cachePath"
-	local cash="/data/local/tmp/axeron_cash"
-	local pathCash=$(find "$cash" -type d -iname "$nameDir")
-	echo "001 $pathCash"
-	if [ -z $pathCash ]; then
-		pathCash="${cash}/${nameDir}"
-	else
-		local pathCashProp=$(find $pathCash -type f -iname "axeron.prop")
-		echo "011 $pathCashProp"
-		if [ -f "${pathCashProp}" ]; then
-			dos2unix "${pathCashProp}"
-			source "${pathCashProp}"
-		fi
-	fi
-	tmpVCode=${versionCode:-0}
-	tmpTStamp=${timeStamp:-0}
-	echo "102 vc:$tmpVCode"
-	echo "103 ts:$tmpTStamp"
-	counter=0
-	for file in $(find "/sdcard/AxeronModules" -type f -iname "*$nameDir*"); do
-		counter=$((counter + 1))
-		pathProp=$(unzip -l "$file" | grep -m 1 'axeron.prop' | awk '{print $4}')
-		timeStamp=$(stat -c %Y "$file")
-		echo "${counter} ts:$timeStamp"
-		echo "${counter} pProp:$pathProp"
-  	echo "${counter} file:$file"
-		
-		if [ -z "$pathProp" ]; then
-			echo "axeron.prop not found in $file"
-			continue
-		fi
-		
-		cachePathProc="$cachePath/proc${counter}"
-		unzip -o "$file" "$pathProp" -d "$cachePathProc" > /dev/null 2>&1
-		cachePathProp="${cachePathProc}/${pathProp}"
-  		echo "000$counter $cachePathProp"
-		
-		if [ -f "$cachePathProp" ]; then
-			source "$cachePathProp"
-		else
-			echo "Failed to extract axeron.prop from $file"
-			continue
-		fi
-		
-		if [ "$versionCode" -ge "$tmpVCode" ] && [ "$timeStamp" -gt "$tmpTStamp" ]; then
-			tmpVCode=$versionCode
-			tmpTStamp=$timeStamp
-			pathCashProp="$cachePathProp"
-			unzip -o "$file" -d "$cash" > /dev/null 2>&1
-			pathCash=$(find "$cash" -type d -iname "$nameDir")
-			pathCashProp=$(find $pathCash -type f -iname "axeron.prop")
-			axprop "$pathCashProp" timeStamp "$tmpTStamp"
-			echo "${counter} fFile:$file"
-		fi
-	done
+    if [ $# -eq 0 ]; then
+        echo -e "Usage: ax <zipname> [options] [arguments]"
+        exit 1
+    fi
 
-	dos2unix "$pathCashProp"
-	source "$pathCashProp"
-	echo "002 $pathCash"
-	find "$pathCash" -type f -exec chmod +x {} \;
-	echo "102 vc:$versionCode"
-	echo "103 ts:$timeStamp"
-	
-	local install=${install:-"$(basename "$(find "$pathCash" -type f -iname "install*")")"}
-	local remove=${remove:-"$(basename "$(find "$pathCash" -type f -iname "remove*")")"}
-	echo "AX Done\n"
-	
-	case $2 in
-		-r|--remove)
-			if [ -z "$remove" ]; then
-				echo "[ ! ] Cant remove this module"
-			else
-				shift 2
-				${pathCash}/${remove} $@
-				rm -r $pathCash
-			fi
-			;;
-		*)
-			if [ -z "$install" ]; then
-				echo "[ ! ] Cant install this module"
-			else
-				shift 
-				${pathCash}/${install} $@
-			fi
-			;;
-	esac
+    function log {
+        [ "$showLog" == true ] && echo "$1"
+    }
+
+    [ "$1" == "--log" ] && showLog=true && shift
+    
+    local nameDir="$1"
+    local cachePath="/sdcard/AxeronModules/.cache"
+    local cash="/data/local/tmp/axeron_cash"
+
+    case $1 in
+        --help|-h)
+            echo -e "Save the Module in AxeronModules folder!\n"
+            echo -e "Usage: ax <zipname> [options] [arguments]"
+            echo "Options:"
+            echo "    --remove, -r <module>: Remove a module from path"
+            echo "    --list, -l: List installed modules"
+            echo "    --help, -h: Show this help message"
+            return 0
+            ;;
+        --list|-l)
+            echo "List of AxeronModules"
+            find "$cash" -type f -name "axeron.prop" | while read -r prop; do
+            	basename "$(dirname "$(dirname "$prop")")"
+        	done
+            return 0
+            ;;
+    esac
+
+    log "AX Processing"
+  
+    rm -rf "$cachePath"
+    mkdir -p "$cachePath"
+
+    pathCash=$(find "$cash" -type d -iname "$nameDir")
+    log "001 $pathCash"
+    if [ -n "$pathCash" ]; then
+        pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
+        log "011 $pathCashProp"
+        [ -f "$pathCashProp" ] && dos2unix "$pathCashProp" && source "$pathCashProp"
+    else
+        pathCash="${cash}/${nameDir}"
+    fi
+
+    tmpVCode=${versionCode:-0}
+    tmpTStamp=${timeStamp:-0}
+    log "102 vc:$tmpVCode"
+    log "103 ts:$tmpTStamp"
+    counter=0
+    idFound=false
+
+    for file in $(find "/sdcard/AxeronModules" -type f -iname "*.zip*"); do
+        counter=$((counter + 1))
+        pathProp=$(unzip -l "$file" | awk '/axeron.prop/ {print $4; exit}')
+        timeStamp=$(stat -c %Y "$file")
+        log "${counter} ts:$timeStamp"
+        log "${counter} pProp:$pathProp"
+        log "${counter} file:$file"
+
+        [ -z "$pathProp" ] && log "axeron.prop not found in $file" && continue
+
+        cachePathProc="$cachePath/proc${counter}"
+        unzip -o "$file" "$pathProp" -d "$cachePathProc" > /dev/null 2>&1
+        cachePathProp="${cachePathProc}/${pathProp}"
+        log "000$counter $cachePathProp"
+
+        if [ ! -f "$cachePathProp" ]; then
+            log "Failed to extract axeron.prop from $file"
+            continue
+        fi
+
+        source "$cachePathProp"
+        if [ -z "$id" ]; then
+            log "ID not set from axeron.prop"
+            continue
+        fi
+
+        if echo "$id" | grep -iq "$nameDir"; then
+            idFound=true
+            if [ "$versionCode" -ge "$tmpVCode" ] && [ "$timeStamp" -gt "$tmpTStamp" ]; then
+                tmpVCode=$versionCode
+                tmpTStamp=$timeStamp
+                unzip -o "$file" -d "${cash}/$id" > /dev/null 2>&1
+                pathCash=$(find "$cash" -type d -iname "$nameDir")
+                pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
+                axprop "$pathCashProp" timeStamp "$tmpTStamp"
+                log "${counter} fFile:$file"
+            fi
+        fi
+    done
+
+    if [ "$idFound" = false ]; then
+    	log "AX Done\n"
+        echo "ID not Found"
+        exit 404
+    fi
+
+    dos2unix "$pathCashProp"
+    source "$pathCashProp"
+    log "002 $pathCash"
+    find "$pathCash" -type f -exec chmod +x {} \;
+    log "102 vc:$versionCode"
+    log "103 ts:$timeStamp"
+
+    local install=${install:-"$(basename "$(find "$pathCash" -type f -iname "install*")")"}
+    local remove=${remove:-"$(basename "$(find "$pathCash" -type f -iname "remove*")")"}
+    log "AX Done\n"
+    
+    case $2 in
+        -r|--remove)
+            if [ -z "$remove" ]; then
+                echo "[ ! ] Cant remove this module"
+            else
+                shift 2
+                "${pathCash}/${remove}" "$@"
+                rm -r "$pathCash"
+            fi
+            ;;
+        *)
+            if [ -z "$install" ]; then
+                echo "[ ! ] Cant install this module"
+            else
+                shift 
+                "${pathCash}/${install}" "$@"
+            fi
+            ;;
+    esac
 }
 
 zash() {
