@@ -407,11 +407,11 @@ axprop() {
 	esac
 }
 
-axclear() {
-	if rm -r "/data/local/tmp/axeron_cash/*"; then
- 		echo "AX: Cash cleared"
+cashclear() {
+	if rm -rf "/data/local/tmp/axeron_cash"; then
+ 		echo "CASH: Success to clear"
    	else
-    		echo "AX: Failed to clear"
+    		echo "CASH: Failed to clear"
     	fi
 }
 
