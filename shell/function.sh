@@ -362,7 +362,7 @@ optimize() {
 
 axprop() {
 	if [ "$#" -lt 2 ]; then
-		echo "Usage: axprop <filename> <key> [-s|--String] <value> | axprop <filename> -d <key>"
+		echo "Usage: axprop <filename> <key> [-s|--String] <value> | axprop <filename> -d <key> | axprop <filename> -g <key>"
 		return 1
 	fi
 
@@ -371,15 +371,40 @@ axprop() {
 
 	[ ! -f "$filename" ] && echo "File $filename not found!" && return 1
 
-	if [ "$key" = "-d" ] || [ "$key" = "--delete" ]; then
-		key=$3
-		sanitized_key=$(echo "$key" | tr -cd '[:alnum:]_-')
-		grep -q "^$sanitized_key=" "$filename" && sed -i "/^$sanitized_key=/d" "$filename" && echo "Deleted key $key" || echo "Key $key not found"
-	else
-		[ "$3" = "-s" ] || [ "$3" = "--String" ] && value="\"$4\"" || value=$3
-		grep -q "^$sanitized_key=" "$filename" && sed -i "s/^$sanitized_key=.*/$sanitized_key=$value/" "$filename" || echo "$sanitized_key=$value" >> "$filename"
-		echo "Updated $filename with $sanitized_key=$value"
-	fi
+	case $key in
+		-d|--delete)
+			key=$3
+			sanitized_key=$(echo "$key" | tr -cd '[:alnum:]_-')
+			if grep -q "^$sanitized_key=" "$filename"; then
+				sed -i "/^$sanitized_key=/d" "$filename"
+				echo "Deleted key $key"
+			else
+				echo "Key $key not found"
+			fi
+			;;
+		-g|--get)
+			key=$3
+			sanitized_key=$(echo "$key" | tr -cd '[:alnum:]_-')
+			if grep -q "^$sanitized_key=" "$filename"; then
+				grep "^$sanitized_key=" "$filename" | cut -d '=' -f2-
+			else
+				echo "Key $key not found"
+			fi
+			;;
+		*)
+			if [ "$3" = "-s" ] || [ "$3" = "--String" ]; then
+				value="\"$4\""
+			else
+				value=$3
+			fi
+			if grep -q "^$sanitized_key=" "$filename"; then
+				sed -i "s/^$sanitized_key=.*/$sanitized_key=$value/" "$filename"
+			else
+				echo "$sanitized_key=$value" >> "$filename"
+			fi
+			echo "Updated $(basename $filename) with $sanitized_key=$value"
+			;;
+	esac
 }
 
 ax() {
