@@ -1,7 +1,7 @@
 export AXERONPKG="!axPkg"
 export AXERONID="!axId"
 thisfunc="/data/local/tmp/axeron.function"
-thiscfg="/sdcard/AxeronModules/.config/config.prop"
+thiscfg="/sdcard/AxeronModules/.prop"
 cp /sdcard/Android/data/com.fhrz.axeron/files/axeron.function /data/local/tmp
 chmod +x $thisfunc
 . $thisfunc
