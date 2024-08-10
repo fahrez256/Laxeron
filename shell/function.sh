@@ -515,7 +515,6 @@ ax() {
 			fi
 		fi
 	done
- 	unset IFS
 
  	log "0004 out:${idFound}"
 
