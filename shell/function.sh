@@ -462,7 +462,7 @@ ax() {
 		counter=$((counter + 1))
 		pathProp=$(unzip -l "$file" | grep -m 1 'axeron.prop' | awk '{print $4}')
 		timeStamp=$(stat -c %Y "$file")
-		echo "${counter} tc:$timeStamp"
+		echo "${counter} ts:$timeStamp"
 		echo "${counter} pProp:$pathProp"
   		echo "${counter} file:$file"
 		
