@@ -430,7 +430,8 @@ ax() {
 	local nameDir="$1"
 	local cachePath="/sdcard/AxeronModules/.cache"
 	local cash="/data/local/tmp/axeron_cash"
-
+ 	mkdir -p "$cash"
+  
 	case $1 in
 		--help|-h)
 			echo -e "Save the Module in AxeronModules folder!\n"
