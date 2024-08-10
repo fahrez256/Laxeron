@@ -473,7 +473,7 @@ ax() {
 	counter=0
 	idFound=false
 
-	for file in $(find "/sdcard/AxeronModules" -type f -iname "*.zip*"); do
+	find "/sdcard/AxeronModules" -type f -iname "*.zip*" | while IFS= read -r file; do
 		counter=$((counter + 1))
 		pathProp=$(unzip -l "$file" | awk '/axeron.prop/ {print $4; exit}')
 		timeStamp=$(stat -c %Y "$file")
