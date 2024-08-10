@@ -502,8 +502,8 @@ ax() {
 		fi
 
 		if echo "$id" | grep -iq "$nameDir"; then
-  			log "003$counter ID found"
 			idFound=true
+     			log "003$counter ID found $idFound"
 			if [ "$versionCode" -ge "$tmpVCode" ] && [ "$timeStamp" -gt "$tmpTStamp" ]; then
 				tmpVCode=$versionCode
 				tmpTStamp=$timeStamp
@@ -516,7 +516,7 @@ ax() {
 		fi
 	done
 
- 	log "004 out:${idFound}"
+ 	log "0004 out:${idFound}"
 
 	if [ "$idFound" = false ]; then
 		log "AX Done\n"
