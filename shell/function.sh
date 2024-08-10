@@ -411,7 +411,7 @@ axclear() {
 	if rm -r "/data/local/tmp/axeron_cash/*"; then
  		echo "AX: Cash cleared"
    	else
-    		echo "AX: Failed to clear
+    		echo "AX: Failed to clear"
     	fi
 }
 
