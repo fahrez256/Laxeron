@@ -162,7 +162,7 @@ storm() {
      	local runPath="$(dirname $0)"
     	local responsePath="${THISPATH}/response"
     	local errorPath="${THISPATH}/error"
-     	echo "start $@"
+     	#echo "start $@"
 
     	if [ $# -eq 0 ]; then
         	echo "Usage: storm <URL> [options]"
@@ -177,7 +177,7 @@ storm() {
 	case $1 in
 		--fname|-fn) file_name="$2"; rm -f "{$runPath}/$file_name"; shift 2 ;;
 	esac
- 	echo "after case $@"
+ 	#echo "after case $@"
 
     	if [ -z "$api" ]; then
         	echo "Error: No API URL provided."
@@ -194,7 +194,7 @@ storm() {
 
     	if [ -e "$responsePath" ]; then
         	if [ "$exec" = true ]; then
-	 		echo "storm -x $@"
+	 		#echo "storm -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
             		"$runPath/$file_name" "$@"
@@ -349,7 +349,7 @@ ax() {
     local ORANGE='\033[38;2;255;85;3m'
     local GREY='\033[38;2;105;105;105m' # Kode warna ANSI untuk oranye
     local NC='\033[0m'         # Kode untuk mengatur ulang warna (no color)
-    local showLog=true
+    local showLog=false
 
     log() { 
         [ "$showLog" = true ] && echo -e "${ORANGE}[$1]${NC} ${GREY}$2${NC}"; 
