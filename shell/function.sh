@@ -430,7 +430,7 @@ ax() {
     IFS=$'\n'
     for file in $(find "/sdcard/AxeronModules" -type f -iname "*.zip*"); do
         ctr=$((counter + 1))
-        log "[${ctr}] [Processing file]" "$file"
+        log "\n[${ctr}] [Processing file]" "$file"
 
         pathProp=$(unzip -l "$file" | awk '/axeron.prop/ {print $4; exit}')
         timeStamp=$(stat -c %Y "$file")
@@ -486,7 +486,7 @@ ax() {
                 pathCash=$(find "$cash" -type d -iname "$nameDir")
                 pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
                 axprop --log "$showLog" "$pathCashProp" timeStamp "$tmpTStamp"
-                log "[\$] [Module successfully updated.]"
+                log "[\$] [Module successfully updated.]\n"
             else
                 log "[!] [Version code or timestamp not updated.]"
             fi
@@ -495,7 +495,7 @@ ax() {
         fi
     done
 
-    log "[ID found successfully]" "$idFound"
+    log "\n[ID found successfully]" "$idFound"
 
 		if [ "$idFound" = false ]; then
         log "[AX processing complete. No matching ID found.]"
