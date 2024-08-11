@@ -157,55 +157,58 @@ echo -e "$device_info"
 }
 
 storm() {
-    exec=false
-    file_name="response"
+    	exec=false
+    	file_name="response"
+    	echo "start storm $@"
 
-    # Validate input
-    if [ $# -eq 0 ]; then
-        echo "Usage: storm <URL> [options]"
-        return 0
-    fi
+    	# Validate input
+    	if [ $# -eq 0 ]; then
+        	echo "Usage: storm <URL> [options]"
+        	return 0
+    	fi
 
-    # Parse command-line arguments
-    while [ $# -gt 0 ]; do
-        case $1 in
-            --exec|-x) exec=true; api=$2; shift 2 ;;
-            --fname|-fn) file_name=$2; shift 2 ;;
-            *) if [ -z "$api" ]; then api=$1; fi; shift ;;
-        esac
-    done
+    	# Parse command-line arguments
+    	case $1 in
+		--exec|-x) exec=true; api=$2; shift 2 ;;
+		* ) api=$1; shift ;;
+	esac
 
-    if [ -z "$api" ]; then
-        echo "Error: No API URL provided."
-        return 1
-    fi
+	case $1 in
+		--fname|-fn) file_name="$2"; shift 2 ;;
+	esac
+ 	echo "after case $@"
 
-    local runPath="$(dirname $0)"
-    local responsePath="${THISPATH}/response"
-    local errorPath="${THISPATH}/error"
+    	if [ -z "$api" ]; then
+        	echo "Error: No API URL provided."
+        	return 1
+    	fi
 
-    # Remove old files
-    rm -f "$responsePath" "$errorPath"
+    	local runPath="$(dirname $0)"
+    	local responsePath="${THISPATH}/response"
+    	local errorPath="${THISPATH}/error"
 
-    # Start request and handle response
-    am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" || echo "Error fetching API" > "$errorPath"
+    	# Remove old files
+    	rm -f "$responsePath" "$errorPath"
 
-    while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-        sleep 0.25
-    done
+    	# Start request and handle response
+    	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" || echo "Error fetching API" > /dev/null 2>&1
 
-    if [ -e "$responsePath" ]; then
+    	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
+        	sleep 0.25
+    	done
+
+    	if [ -e "$responsePath" ]; then
         	if [ "$exec" = true ]; then
-			echo "stream $@"
+			echo "stream -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
             		"$runPath/$file_name" "$@"
         	else
             		cat "$responsePath"
         	fi
-    elif [ -e "$errorPath" ]; then
+    	elif [ -e "$errorPath" ]; then
         	cat "$errorPath"
-    fi
+    	fi
 }
 
 xtorm() {
