@@ -419,12 +419,12 @@ ax() {
     IFS=$'\n'
     for file in $(find "/sdcard/AxeronModules" -type f -iname "*.zip*"); do
         counter=$((counter + 1))
-        log "Processing file (${counter})" "$file"
+        log "${counter}] [Processing file" "$file"
 
         pathProp=$(unzip -l "$file" | awk '/axeron.prop/ {print $4; exit}')
         timeStamp=$(stat -c %Y "$file")
-        log "File Timestamp" "$timeStamp"
-        log "Path to axeron.prop" "$pathProp"
+        log "${counter}] [File Timestamp" "$timeStamp"
+        log "${counter}] [Path to axeron.prop" "$pathProp"
 
         if [ -z "$pathProp" ]; then
             log "axeron.prop not found in $file"
@@ -435,20 +435,20 @@ ax() {
         mkdir -p "$cachePathProc"
         unzip -o "$file" "$pathProp" -d "$cachePathProc" > /dev/null 2>&1
         cachePathProp="${cachePathProc}/${pathProp}"
-        log "Extracted axeron.prop to" "$cachePathProp"
+        log "${counter}] [Extracted axeron.prop to" "$cachePathProp"
 
         if [ ! -f "$cachePathProp" ]; then
-            log "Failed to extract axeron.prop from" "$file"
+            log "${counter}] [Failed to extract axeron.prop from" "$file"
             continue
         fi
 
         dos2unix "$cachePathProp"
         . "$cachePathProp"
-        log "Loaded prop from" "$cachePathProp"
+        log "${counter}] [Loaded prop from" "$cachePathProp"
 
         if [ -n "$id" ] && echo "$id" | grep -iq "$nameDir"; then
             idFound=true
-            log "ID $id matches $nameDir. Checking version and timestamp."
+            log "${counter}] [ID $id matches $nameDir. Checking version and timestamp."
 
             if [ "$versionCode" -ge "$tmpVCode" ] && [ "$timeStamp" -gt "$tmpTStamp" ]; then
                 tmpVCode=$versionCode
@@ -456,7 +456,7 @@ ax() {
 
                 pathParent=$(dirname $(unzip -l "$file" | awk '{print $4}' | grep 'axeron.prop' | head -n 1))
                 if [ -n "$pathParent" ]; then
-                    log "Found parent folder" "$pathParent"
+                    log "${counter}] [Found parent folder" "$pathParent"
                     mkdir -p "${cash}/${id}/tmp"
                     unzip -o "$file" -d "${cash}/${id}/tmp" > /dev/null 2>&1
                     for item in "${cash}/${id}/tmp/${pathParent%/}/"*; do
@@ -465,21 +465,21 @@ ax() {
                         fi
                     done
                     rm -rf "${cash}/${id}/tmp"
-                    log "Moved files from parent folder to" "${cash}/${id}/"
+                    log "${counter}] [Moved files from parent folder to" "${cash}/${id}/"
                 else
                     unzip -o "$file" -d "${cash}/${id}" > /dev/null 2>&1
-                    log "No parent folder. Extracted files directly to" "${cash}/${id}/"
+                    log "${counter}] [No parent folder. Extracted files directly to" "${cash}/${id}/"
                 fi
 
                 pathCash=$(find "$cash" -type d -iname "$nameDir")
                 pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
                 axprop "$pathCashProp" timeStamp "$tmpTStamp"
-                log "Updated prop with timestamp" "$tmpTStamp"
+                log "${counter}] [Updated prop with timestamp" "$tmpTStamp"
             else
-                log "Version code or timestamp not updated."
+                log "${counter}] [Version code or timestamp not updated."
             fi
         else
-            log "ID $id does not match $nameDir."
+            log "${counter}] [ID $id does not match $nameDir."
         fi
     done
 
