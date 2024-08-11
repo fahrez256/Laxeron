@@ -159,15 +159,12 @@ echo -e "$device_info"
 storm() {
     	exec=false
     	file_name="response"
-    	echo "start storm $@"
 
-    	# Validate input
     	if [ $# -eq 0 ]; then
         	echo "Usage: storm <URL> [options]"
         	return 0
     	fi
 
-    	# Parse command-line arguments
     	case $1 in
 		--exec|-x) exec=true; api=$([[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"); shift 2 ;;
 		* ) api=$1; shift ;;
@@ -176,7 +173,6 @@ storm() {
 	case $1 in
 		--fname|-fn) file_name="$2"; shift 2 ;;
 	esac
- 	echo "after case $@"
 
     	if [ -z "$api" ]; then
         	echo "Error: No API URL provided."
@@ -187,11 +183,9 @@ storm() {
     	local responsePath="${THISPATH}/response"
     	local errorPath="${THISPATH}/error"
 
-    	# Remove old files
     	rm -f "$responsePath" "$errorPath"
 
-    	# Start request and handle response
-    	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" || echo "Error fetching API" > /dev/null 2>&1
+    	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
 
     	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
         	sleep 0.25
@@ -199,7 +193,6 @@ storm() {
 
     	if [ -e "$responsePath" ]; then
         	if [ "$exec" = true ]; then
-			echo "stream -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
             		"$runPath/$file_name" "$@"
