@@ -581,7 +581,7 @@ ax() {
     		log "Remove script" "$remove"
     		log "AX processing complete."
 
-                pathParent=$(unzip -l "$file" | awk '{print $4}' | grep "$(dirname $install)" | head -n 1)
+                pathParent=$(dirname $(unzip -l "$file" | awk '{print $4}' | grep "$install" | head -n 1))
                 if [ -n "$pathParent" ]; then
                     log "Found parent folder" "$pathParent"
                     mkdir -p "${cash}/${id}/tmp"
