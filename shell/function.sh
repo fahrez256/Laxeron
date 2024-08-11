@@ -459,9 +459,9 @@ ax() {
                     log "${counter}] [Found parent folder" "$pathParent"
                     mkdir -p "${cash}/${id}/tmp"
                     unzip -o "$file" -d "${cash}/${id}/tmp" > /dev/null 2>&1
-                    for item in "${cash}/${id}/tmp/${pathParent%/}/"*; do
+                    for item in "${cash}/${id}/tmp/${pathParent%/}"*; do
                         if [ -e "$item" ]; then
-                            mv "$item" "${cash}/${id}/"
+                            mv -f "$item" "${cash}/${id}/"
                         fi
                     done
                     rm -rf "${cash}/${id}/tmp"
