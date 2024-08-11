@@ -575,9 +575,9 @@ ax() {
                 tmpVCode=$versionCode
                 tmpTStamp=$timeStamp
                 
-                install=${install:-$(find "$pathCash" -type f -iname "install*";)
-    		remove=${remove:-$(find "$pathCash" -type f -iname "remove*";)
-    		log "Install script" "$install"
+                install=${install:-$(find "$pathCash" -type f -iname "install*")}
+		remove=${remove:-$(find "$pathCash" -type f -iname "remove*")}
+		log "Install script" "$install"
     		log "Remove script" "$remove"
     		log "AX processing complete."
 
