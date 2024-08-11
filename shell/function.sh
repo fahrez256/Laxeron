@@ -396,7 +396,8 @@ ax() {
             return 0
             ;;
     esac
-
+    
+    start_time=$(date +%s%3N)
     log "[Starting AX]" "$nameDir"
 
     rm -rf "$cachePath"
@@ -513,7 +514,10 @@ ax() {
     remove=$(find "$pathCash" -type f -iname "${remove:-"remove"}*")
     log "[Install script]" "$install"
     log "[Remove script]" "$remove"
-    log "[AX processing complete.]\n"
+    log "[AX processing complete.]"
+    end_time=$(date +%s%3N)
+    execution_time=$((end_time - start_time))
+    log "[Execution time:]" "$execution_time milliseconds\n"
     
     case $2 in
         -r|--remove)
