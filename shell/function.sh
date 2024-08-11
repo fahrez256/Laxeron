@@ -18,7 +18,7 @@ import() {
 		    dir="$(dirname "$0")"
 		    while [ "$dir" != "/data/local/tmp/axeron_cash" ]; do
 			        # Cari file di direktori saat ini
-			        file=$(find "$dir" -maxdepth 1 -name "$filename" -print -quit)
+			        file=$(find "$dir" -maxdepth 1 -name "$filename")
 			        if [ -n "$file" ]; then
 			            file="$file"
 			            break
@@ -112,29 +112,6 @@ rozaq() {
 	fi
 	
 	echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
-}
-
-cactus() {
-	#Rem01Gaming
-	if [ $# -eq 0 ]; then
-		echo "Usage: cactus <path>"
-		return 0
-	fi
-
-	# Set the path of the folder containing the files
-	folder_path=$(echo "$1" | sed 's/\/$//')
-	
-	# Iterate through each file in the folder
-	for file in "$folder_path"/*; do
-		# Check if the path is a file (not a subdirectory)
-		if [ -f "$file" ]; then
-			# Use the 'cat' command to display the contents of the file
-			echo "$file"
-			echo ""
-			cat "$file"
-			echo ""
-		fi
-	done
 }
 
 flaunch() {
@@ -231,123 +208,11 @@ stream() {
 }
 
 storm() {
-	exec=false
-	file_name="response"
-	if [ $# -eq 0 ]; then
-		echo "Usage: storm <URL>"
-		return 0
-	fi
-
-	case $1 in
-		--exec|-x)
-			exec=true
-			api=$2
-			shift 2
-			;;
-		* )
-			api=$1
-			shift
-			;;
-	esac
-
-	case $1 in
-		--fname|-fn)
-			file_name="$2"
-			shift 2
-			;;
-		* )
-			;;
-	esac
-	
-	local runPath="$(dirname $0)"
-	rm -f ${THISPATH}/response
-	rm -f ${THISPATH}/error
-	
-	if am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$THISPATH" > /dev/null; then
-		while true; do
-			if [ -e ${THISPATH}/response ]; then
-				if [ $exec = true ]; then
-					cp "${THISPATH}/response" "${runPath}/${file_name}"
-					mv "${runPath}/${file_name}" "${runPath}/${file_name}"
-					chmod +x "$runPath/${file_name}"
-					${runPath}/${file_name} $@
-				else
-					cat ${THISPATH}/response
-				fi
-				am stopservice -n com.fhrz.axeron/.Storm > /dev/null 2>&1
-				break
-			elif [ -e ${THISPATH}/error ]; then
-				cat ${THISPATH}/error
-				am stopservice -n com.fhrz.axeron/.Storm > /dev/null 2>&1
-				break
-			else 
-				sleep 0.25
-			fi
-		done
-	else
-		echo "Error: Storm not supported"
-	fi
+	stream $@
 }
 
 xtorm() {
-	storm -x $([[ "${1:0:3}" = "r17" ]] && echo "${1:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$1")
-}
-
-xperm() {
-	#RiProG
-	option=$(echo "$1" | tr '[:upper:]' '[:lower:]')
-	case $option in
-		--help|-h)
-			echo "Usage: xperm [OPTIONS]"
-			echo "OPTIONS:"
-			echo "	--help, -h									 Display this help message"
-			echo "	--recursive, -r <DIRECTORY>	Set permissions recursively for a directory"
-			echo "															 <DIRECTORY>: Path to the directory"
-			echo "	<FILE> <OWNER> <GROUP> <PERMISSION> <CONTEXT>"
-			echo "	Example usage:"
-			echo "		xperm /path/to/file.txt user1 group1 644"
-			echo "		xperm -r /path/to/directory user1 group1 755 644"
-			return 0
-			;;
-		--recursive|-r)
-			directory="$2"
-			if [ ! -d "$directory" ]; then
-				echo "Directory not found"
-				exit 1
-			fi
-			owner="$3"
-			group="$4"
-			dir_permission="$5"
-			file_permission="$6"
-			find "$directory" -type d -exec chown "$owner":"$group" {} +
-			find "$directory" -type d -exec chmod "$dir_permission" {} +
-			find "$directory" -type f -exec chown "$owner":"$group" {} +
-			find "$directory" -type f -exec chmod "$file_permission" {} +
-			;;
-		*)
-			file="$1"
-			if [ ! -f "$file" ]; then
-				echo "File not found"
-				exit 1
-			fi
-			owner="$2"
-			group="$3"
-			permission="$4"
-			context="$5"
-			if ! chown "$owner":"$group" "$file"; then
-				return 1
-			fi
-			if ! chmod "$permission" "$file"; then
-				return 1
-			fi
-			if [ -z "$context" ]; then
-				context=u:object_r:system_file:s0
-			fi
-			if ! chcon "$context" "$file"; then
-				return 1
-			fi
-			;;
-	esac
+	stream -x $([[ "${1:0:3}" = "r17" ]] && echo "${1:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$1")
 }
 
 whitelist() {
@@ -658,31 +523,4 @@ ax() {
             fi
             ;;
     esac
-}
-
-zash() {
-	axeron=$(unzip -l "/sdcard/${1}" | awk '{print $4}' | grep -m 1 'axeron.prop')
-	if [ "${axeron}" ]; then
-		folder=$(dirname "${axeron}")
-		modpath="/sdcard/AxeronModules/${folder}"
-		if [ ! -d "${modpath}" ]; then
-			echo "Adding Axeron Modules"
-		else
-			echo "Updating Axeron Modules"
-		fi
-		unzip -o "/sdcard/${1}" -d "/sdcard/AxeronModules/" > /dev/null 2>&1
-		if [ $? -eq 0 ]; then
-			source "/sdcard/AxeronModules/${folder}/axeron.prop"
-			echo "name: ${name}"
-			echo "version: ${version}"
-			echo "author: ${author}"
-			echo "description: ${description}"
-			echo "useAxeron; ${useAxeron}"
-			echo "Axeron Modules Extracted"
-		else
-			echo "Axeron Modules failed to Extract"
-		fi
-	else
-		echo "Zip file is not Axeron modules"
-	fi
 }
