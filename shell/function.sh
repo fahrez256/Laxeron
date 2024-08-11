@@ -212,8 +212,7 @@ storm() {
 }
 
 xtorm() {
-	storm -x $([[ "${1:0:3}" = "r17" ]] && echo "${1:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$1") $@
-}
+	storm -x $@ }
 
 whitelist() {
 	[ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
