@@ -586,10 +586,10 @@ ax() {
                         fi
                     done
                     rm -rf "${cash}/${id}/tmp"
-                    log "Moved files from parent folder to ${cash}/${id}/"
+                    log "Moved files from parent folder to" "${cash}/${id}/"
                 else
                     unzip -o "$file" -d "${cash}/${id}" > /dev/null 2>&1
-                    log "No parent folder. Extracted files directly to ${cash}/${id}/"
+                    log "No parent folder. Extracted files directly to" "${cash}/${id}/"
                 fi
 
                 pathCash=$(find "$cash" -type d -iname "$nameDir")
