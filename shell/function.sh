@@ -162,6 +162,7 @@ storm() {
      	local runPath="$(dirname $0)"
     	local responsePath="${THISPATH}/response"
     	local errorPath="${THISPATH}/error"
+     	echo "start $@"
 
     	if [ $# -eq 0 ]; then
         	echo "Usage: storm <URL> [options]"
