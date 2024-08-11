@@ -171,7 +171,7 @@ storm() {
 	esac
 
 	case $1 in
-		--fname|-fn) file_name="$2"; shift 2 ;;
+		--fname|-fn) file_name="$2"; rm -f "$file_name"; shift 2 ;;
 	esac
 
     	if [ -z "$api" ]; then
@@ -193,7 +193,7 @@ storm() {
 
     	if [ -e "$responsePath" ]; then
         	if [ "$exec" = true ]; then
-	 		"storm -x $@"
+	 		echo "storm -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
             		"$runPath/$file_name" "$@"
