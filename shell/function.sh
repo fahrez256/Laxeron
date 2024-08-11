@@ -15,15 +15,16 @@ import() {
 	file=$(find "$(dirname "$0")" -type f -name "$filename")
 	
 	if [ -z "$file" ]; then
-	    	dir="$(dirname "$0")"
-	    	while [ "$(dirname "$dir")" != "/data/local/tmp/axeron_cash" ]; do
-	        	searchPath=$(dirname "$dir" -maxdepth 1 -name "$filename" -print -quit)
-	  		file=$(find "$searchPath" -type f -name "$filename")
-	        	[ -n "$file" ] && break
-	        	dir="$(dirname "$dir")"
-	        	echo "$dir"
-	    	done
-      		echo $file
+		    dir="$(dirname "$0")"
+		    while [ "$dir" != "/" ]; do
+			        # Cari file di direktori saat ini
+			        file=$(find "$dir" -maxdepth 1 -name "$filename" -print -quit)
+			        if [ -n "$file" ]; then
+			            file="$file"
+			            break
+			        fi
+			        dir="$(dirname "$dir")"
+		    done
 	fi
 	dos2unix $file
 	source $file
