@@ -574,14 +574,8 @@ ax() {
             if [ "$versionCode" -ge "$tmpVCode" ] && [ "$timeStamp" -gt "$tmpTStamp" ]; then
                 tmpVCode=$versionCode
                 tmpTStamp=$timeStamp
-                
-                install=${install:-$(find "$pathCash" -type f -iname "install*")}
-		remove=${remove:-$(find "$pathCash" -type f -iname "remove*")}
-		log "Install script" "$install"
-    		log "Remove script" "$remove"
-    		log "AX processing complete."
 
-                pathParent=$(dirname $(unzip -l "$file" | awk '{print $4}' | grep "$install" | head -n 1))
+                pathParent=$(dirname $(unzip -l "$file" | awk '{print $4}' | grep 'axeron.prop' | head -n 1))
                 if [ -n "$pathParent" ]; then
                     log "Found parent folder" "$pathParent"
                     mkdir -p "${cash}/${id}/tmp"
@@ -600,13 +594,8 @@ ax() {
 
                 pathCash=$(find "$cash" -type d -iname "$nameDir")
                 pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
-                
-                find "$pathCash" -type f -exec chmod +x {} \;
-                log "Set executable permissions on files."
-                
                 axprop "$pathCashProp" timeStamp "$tmpTStamp"
                 log "Updated prop with timestamp" "$tmpTStamp"
-                break
             else
                 log "Version code or timestamp not updated."
             fi
@@ -615,12 +604,25 @@ ax() {
         fi
     done
 
+    log "ID found" "$idFound"
+
     if [ "$idFound" = false ]; then
         log "AX processing complete. No matching ID found."
         echo "ID not Found"
         exit 404
     fi
 
+    dos2unix "$pathCashProp"
+    . "$pathCashProp"
+    log "Final prop from" "$pathCashProp"
+    find "$pathCash" -type f -exec chmod +x {} \;
+    log "Set executable permissions on files."
+
+    local install=$(find "$pathCash" -type f -iname "install*" -exec basename {} \;)
+    local remove=$(find "$pathCash" -type f -iname "remove*" -exec basename {} \;)
+    log "Install script" "$install"
+    log "Remove script" "$remove"
+    log "AX processing complete."
     echo
     
     case $2 in
@@ -642,4 +644,31 @@ ax() {
             fi
             ;;
     esac
+}
+
+zash() {
+	axeron=$(unzip -l "/sdcard/${1}" | awk '{print $4}' | grep -m 1 'axeron.prop')
+	if [ "${axeron}" ]; then
+		folder=$(dirname "${axeron}")
+		modpath="/sdcard/AxeronModules/${folder}"
+		if [ ! -d "${modpath}" ]; then
+			echo "Adding Axeron Modules"
+		else
+			echo "Updating Axeron Modules"
+		fi
+		unzip -o "/sdcard/${1}" -d "/sdcard/AxeronModules/" > /dev/null 2>&1
+		if [ $? -eq 0 ]; then
+			source "/sdcard/AxeronModules/${folder}/axeron.prop"
+			echo "name: ${name}"
+			echo "version: ${version}"
+			echo "author: ${author}"
+			echo "description: ${description}"
+			echo "useAxeron; ${useAxeron}"
+			echo "Axeron Modules Extracted"
+		else
+			echo "Axeron Modules failed to Extract"
+		fi
+	else
+		echo "Zip file is not Axeron modules"
+	fi
 }
