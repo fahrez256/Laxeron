@@ -12,6 +12,14 @@ whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 import() {
 	file=$(find "$(dirname $0)" -type f -name "$1")
+ 	if [ -z "$file" ]; then
+  		dir=".."
+		while [ "$(realpath "$dir")" != "/data/local/tmp/axeron_cash" ]; do
+	        	file=$(find "$dir" -maxdepth 1 -name "$filename" -print -quit)
+	        	[ -n "$file" ] && break
+	  		dir="$dir/.."
+		done
+	fi
 	dos2unix $file
 	source $file
  	eval path_$(echo "$1" | tr -cd '[:alnum:]_-')="$file"
