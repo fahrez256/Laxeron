@@ -11,19 +11,21 @@ export AXFUN=". $FUNCTION"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 import() {
-	file=$(find "$(dirname $0)" -type f -name "$1")
- 	if [ -z "$file" ]; then
-  		dir="$(dirname $0)"
-		while [ "$(dirname "$dir")" != "/data/local/tmp/axeron_cash" ]; do
+	filename="$1"
+	file=$(find "$(dirname "$0")" -type f -name "$filename")
+	
+	if [ -z "$file" ]; then
+	    	dir="$(dirname "$0")"
+	    	while [ "$(dirname "$dir")" != "/data/local/tmp/axeron_cash" ]; do
 	        	file=$(find "$dir" -maxdepth 1 -name "$filename" -print -quit)
 	        	[ -n "$file" ] && break
-	  		dir="$dir/.."
-     			echo $dir
-		done
+	        	dir="$(dirname "$dir")"
+	        	echo "$dir"
+	    	done
 	fi
 	dos2unix $file
 	source $file
- 	eval path_$(echo "$1" | tr -cd '[:alnum:]_-')="$file"
+ 	eval path_$(echo "$filename" | tr -cd '[:alnum:]_-')="$file"
 }
 
 toast() {
