@@ -454,7 +454,7 @@ ax() {
                 if [ -n "$pathParent" ]; then
                     log "${counter}] [Found parent folder" "$pathParent"
                     unzip -o "$file" -d "${cash}/${id}/tmp" > /dev/null 2>&1
-                    for item in "${cash}/${id}/tmp/${pathParent%/}"*; do
+                    for item in "${cash}/${id}/tmp/${pathParent%/}"/*; do
                         if [ -e "$item" ]; then
                             mv -f "$item" "${cash}/${id}/"
                         fi
