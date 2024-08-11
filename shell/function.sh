@@ -618,8 +618,8 @@ ax() {
     find "$pathCash" -type f -exec chmod +x {} \;
     log "Set executable permissions on files."
 
-    install=$(basename $(find "$pathCash" -type f -iname "${install:-"install"}*"))
-    remove=$(basename $(find "$pathCash" -type f -iname "${remove:-"remove"}*"))
+    install=$(find "$pathCash" -type f -iname "${install:-"install"}*")
+    remove=$(find "$pathCash" -type f -iname "${remove:-"remove"}*")
     log "Install script" "$install"
     log "Remove script" "$remove"
     log "AX processing complete."
@@ -629,7 +629,7 @@ ax() {
         -r|--remove)
             if [ -n "$remove" ]; then
                 shift 2
-                "${pathCash}/${remove}" "$@"
+                "${remove}" "$@"
                 rm -rf "$pathCash"
             else
                 echo "[ ! ] Cannot remove this module: Remove script not found."
@@ -638,7 +638,7 @@ ax() {
         *)
             if [ -n "$install" ]; then
                 shift
-                "${pathCash}/${install}" "$@"
+                "${install}" "$@"
             else
                 echo "[ ! ] Cannot install this module: Install script not found."
             fi
