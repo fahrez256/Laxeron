@@ -449,10 +449,10 @@ ax() {
                 tmpVCode=$versionCode
                 tmpTStamp=$timeStamp
 
+  		mkdir -p "${cash}/${id}/tmp"
                 pathParent=$(dirname $(unzip -l "$file" | awk '{print $4}' | grep 'axeron.prop' | head -n 1))
                 if [ -n "$pathParent" ]; then
                     log "${counter}] [Found parent folder" "$pathParent"
-                    mkdir -p "${cash}/${id}/tmp"
                     unzip -o "$file" -d "${cash}/${id}/tmp" > /dev/null 2>&1
                     for item in "${cash}/${id}/tmp/${pathParent%/}"*; do
                         if [ -e "$item" ]; then
