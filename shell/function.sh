@@ -15,11 +15,11 @@ import() {
 	file=$(find "$(dirname "$0")" -type f -name "$filename")
 	
 	if [ -z "$file" ]; then
-	    	dir="$(realpath "$0")"
-	    	while [ "$(realpath "$dir")" != "/data/local/tmp/axeron_cash" ]; do
-	        	file=$(realpath "$dir" -maxdepth 1 -name "$filename" -print -quit)
+	    	dir="$(dirname "$0")"
+	    	while [ "$(dirname "$dir")" != "/data/local/tmp/axeron_cash" ]; do
+	        	file=$(dirname "$dir" -maxdepth 1 -name "$filename" -print -quit)
 	        	[ -n "$file" ] && break
-	        	dir="$(realpath "$dir")"
+	        	dir="$(dirname "$dir")"
 	        	echo "$dir"
 	    	done
       		echo $file
