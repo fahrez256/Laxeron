@@ -156,7 +156,7 @@ EOF
 echo -e "$device_info"
 }
 
-stream() {
+storm() {
     exec=false
     file_name="response"
 
@@ -195,24 +195,21 @@ stream() {
     done
 
     if [ -e "$responsePath" ]; then
-        if [ "$exec" = true ]; then
-            cp "$responsePath" "$runPath/$file_name"
-            chmod +x "$runPath/$file_name"
-            "$runPath/$file_name" "$@"
-        else
-            cat "$responsePath"
-        fi
+        	if [ "$exec" = true ]; then
+			echo "stream $@"
+            		cp "$responsePath" "$runPath/$file_name"
+            		chmod +x "$runPath/$file_name"
+            		"$runPath/$file_name" "$@"
+        	else
+            		cat "$responsePath"
+        	fi
     elif [ -e "$errorPath" ]; then
-        cat "$errorPath"
+        	cat "$errorPath"
     fi
 }
 
-storm() {
-	stream $@
-}
-
 xtorm() {
-	stream -x $([[ "${1:0:3}" = "r17" ]] && echo "${1:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$1")
+	storm -x $([[ "${1:0:3}" = "r17" ]] && echo "${1:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$1") -fn "xtorm.sh" $@
 }
 
 whitelist() {
