@@ -212,7 +212,8 @@ storm() {
 }
 
 xtorm() {
-	storm -x $@ }
+	storm -x $@
+}
 
 whitelist() {
 	[ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
