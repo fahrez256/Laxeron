@@ -449,7 +449,7 @@ ax() {
                 tmpVCode=$versionCode
                 tmpTStamp=$timeStamp
 
-		rm -rf "${cash}/${id}/*" && log "${counter}] [Old module removed."
+		rm -rf "${cash}/${id}" && log "${counter}] [Old module removed."
   		mkdir -p "${cash}/${id}/tmp" && log "${counter}] [Tmp folder created."
                 pathParent=$(dirname $(unzip -l "$file" | awk '{print $4}' | grep 'axeron.prop' | head -n 1))
                 if [ -n "$pathParent" ]; then
