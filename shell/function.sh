@@ -618,8 +618,8 @@ ax() {
     find "$pathCash" -type f -exec chmod +x {} \;
     log "Set executable permissions on files."
 
-    local install=$(find "$pathCash" -type f -iname "install*" -exec basename {} \;)
-    local remove=$(find "$pathCash" -type f -iname "remove*" -exec basename {} \;)
+    install=${install:-$(find "$pathCash" -type f -iname "install*")}
+    remove=${remove:-$(find "$pathCash" -type f -iname "remove*")}
     log "Install script" "$install"
     log "Remove script" "$remove"
     log "AX processing complete."
