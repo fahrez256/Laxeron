@@ -629,7 +629,7 @@ ax() {
         -r|--remove)
             if [ -n "$remove" ]; then
                 shift 2
-                "${remove}" "$@"
+                "${remove}" $@
                 rm -rf "$pathCash"
             else
                 echo "[ ! ] Cannot remove this module: Remove script not found."
@@ -638,7 +638,7 @@ ax() {
         *)
             if [ -n "$install" ]; then
                 shift
-                "${install}" "$@"
+                "${install}" $@
             else
                 echo "[ ! ] Cannot install this module: Install script not found."
             fi
