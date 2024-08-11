@@ -442,7 +442,7 @@ ax() {
             continue
         fi
 
-        cachePathProc="$cachePath/proc${counter}"
+        cachePathProc="$cachePath/proc${ctr}"
         mkdir -p "$cachePathProc"
         unzip -o "$file" "$pathProp" -d "$cachePathProc" > /dev/null 2>&1
         cachePathProp="${cachePathProc}/${pathProp}"
