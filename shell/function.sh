@@ -159,6 +159,9 @@ echo -e "$device_info"
 storm() {
     	exec=false
     	file_name="response"
+     	local runPath="$(dirname $0)"
+    	local responsePath="${THISPATH}/response"
+    	local errorPath="${THISPATH}/error"
 
     	if [ $# -eq 0 ]; then
         	echo "Usage: storm <URL> [options]"
@@ -171,17 +174,13 @@ storm() {
 	esac
 
 	case $1 in
-		--fname|-fn) file_name="$2"; rm -f "$file_name"; shift 2 ;;
+		--fname|-fn) file_name="$2"; rm -f "{$runPath}/$file_name"; shift 2 ;;
 	esac
 
     	if [ -z "$api" ]; then
         	echo "Error: No API URL provided."
         	return 1
     	fi
-
-    	local runPath="$(dirname $0)"
-    	local responsePath="${THISPATH}/response"
-    	local errorPath="${THISPATH}/error"
 
     	rm -f "$responsePath" "$errorPath"
 
