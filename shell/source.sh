@@ -1,5 +1,7 @@
 export AXERONPKG="!axPkg"
 export AXERONID="!axId"
+export AXERONVNAME="!axVName"
+export AXERONVCODE=!axVCode
 thisfunc="/data/local/tmp/axeron.function"
 thiscfg="/sdcard/AxeronModules/.prop"
 cp /sdcard/Android/data/com.fhrz.axeron/files/axeron.function /data/local/tmp
