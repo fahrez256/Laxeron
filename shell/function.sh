@@ -429,7 +429,7 @@ ax() {
 
     IFS=$'\n'
     for file in $(find "/sdcard/AxeronModules" -type f -iname "*.zip*"); do
-        ctr=$((counter + 1))
+        ctr=$((ctr + 1))
         log "\n[${ctr}] [Processing file]" "$file"
 
         pathProp=$(unzip -l "$file" | awk '/axeron.prop/ {print $4; exit}')
