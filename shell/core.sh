@@ -1,6 +1,6 @@
 $AXFUN
 import axeron.prop
-echo $1
+#echo $(realpath $0)
 w="[ ! ]" #warn
 i="[ ? ]" #info
 p="[ • ]" #process
@@ -18,9 +18,13 @@ vAxeron=10240121
 androidId=$(settings get secure android_id)
 
 if [ -n "$1" ] && [ "$1" == "-p" ];then
-    axprop $path_axeronprop runPackage -s "$2"
-    runPackage="$2"
-    shift 2
+        if [ -n $2 ]; then
+            axprop $path_axeronprop runPackage -s "$2"
+            runPackage="$2"
+            shift 2
+        else
+            shift
+        fi
 fi
 
 axeron_core=$(cat <<-EOF
