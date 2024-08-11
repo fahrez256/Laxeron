@@ -486,7 +486,7 @@ ax() {
                 pathCash=$(find "$cash" -type d -iname "$nameDir")
                 pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
                 axprop --log "$showLog" "$pathCashProp" timeStamp "$tmpTStamp"
-                log "[\$] [Module successfully updated.]\n"
+                log "[\$] [Module successfully updated.]"
             else
                 log "[!] [Version code or timestamp not updated.]"
             fi
