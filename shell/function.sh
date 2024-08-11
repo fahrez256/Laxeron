@@ -497,8 +497,7 @@ ax() {
     remove=$(find "$pathCash" -type f -iname "${remove:-"remove"}*")
     log "Install script" "$install"
     log "Remove script" "$remove"
-    log "AX processing complete."
-    echo
+    log "AX processing complete.\n"
     
     case $2 in
         -r|--remove)
