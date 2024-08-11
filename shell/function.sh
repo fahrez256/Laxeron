@@ -17,7 +17,8 @@ import() {
 	if [ -z "$file" ]; then
 	    	dir="$(dirname "$0")"
 	    	while [ "$(dirname "$dir")" != "/data/local/tmp/axeron_cash" ]; do
-	        	file=$(realpath "$dir" -maxdepth 1 -name "$filename" -print -quit)
+	        	searchPath=$(dirname "$dir" -maxdepth 1 -name "$filename" -print -quit)
+	  		file=$(find "$searchPath" -type f -name "$filename")
 	        	[ -n "$file" ] && break
 	        	dir="$(dirname "$dir")"
 	        	echo "$dir"
