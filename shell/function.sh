@@ -13,8 +13,8 @@ whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 import() {
 	file=$(find "$(dirname $0)" -type f -name "$1")
  	if [ -z "$file" ]; then
-  		dir=".."
-		while [ "$(realpath "$dir")" != "/data/local/tmp/axeron_cash" ]; do
+  		dir="$(dirname $0)"
+		while [ "$(dirname "$dir")" != "/data/local/tmp/axeron_cash" ]; do
 	        	file=$(find "$dir" -maxdepth 1 -name "$filename" -print -quit)
 	        	[ -n "$file" ] && break
 	  		dir="$dir/.."
