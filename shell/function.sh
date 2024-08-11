@@ -291,6 +291,22 @@ axprop() {
 		return 1
 	fi
 
+	local ORANGE='\033[38;2;255;85;3m'
+    	local GREY='\033[38;2;105;105;105m' # Kode warna ANSI untuk oranye
+    	local NC='\033[0m'
+ 	local showLog=false
+
+    	log() { 
+        	[ "$showLog" = true ] && echo -e "${ORANGE}[$1]${NC} ${GREY}$2${NC}"; 
+    	}
+
+    	if [ "$1" = "--log" ]; then
+     		case $2 in
+        		"true"|"false") showLog=$2; shift 2 ;;
+	  		*) shift ;;
+	 	esac
+    	fi
+
 	local filename=$1 key=$2 value
 	local sanitized_key=$(echo "$key" | tr -cd '[:alnum:]_-')
 
@@ -302,9 +318,9 @@ axprop() {
 			sanitized_key=$(echo "$key" | tr -cd '[:alnum:]_-')
 			if grep -q "^$sanitized_key=" "$filename"; then
 				sed -i "/^$sanitized_key=/d" "$filename"
-				echo "Deleted key $key"
+				log "Deleted key" "$key"
 			else
-				echo "Key $key not found"
+				log "Key $key not found"
 			fi
 			;;
 		-g|--get)
@@ -313,7 +329,7 @@ axprop() {
 			if grep -q "^$sanitized_key=" "$filename"; then
 				grep "^$sanitized_key=" "$filename" | cut -d '=' -f2-
 			else
-				echo "Key $key not found"
+				log "Key $key not found"
 			fi
 			;;
 		*)
@@ -327,7 +343,7 @@ axprop() {
 			else
 				echo "$sanitized_key=$value" >> "$filename"
 			fi
-			echo "Updated $(basename $filename) with $sanitized_key=$value"
+			log "Updated $(basename $filename) with" "$sanitized_key=$value"
 			;;
 	esac
 }
@@ -469,7 +485,7 @@ ax() {
 
                 pathCash=$(find "$cash" -type d -iname "$nameDir")
                 pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
-                axprop "$pathCashProp" timeStamp "$tmpTStamp"
+                axprop --log "$showLog" "$pathCashProp" timeStamp "$tmpTStamp"
                 log "${counter}] [Updated prop with timestamp" "$tmpTStamp"
             else
                 log "${counter}] [Version code or timestamp not updated."
