@@ -300,7 +300,7 @@ axprop() {
         	[ "$showLog" = true ] && echo -e "${ORANGE}${1}${NC} ${GREY}${2}${NC}"; 
     	}
 
-    	if [ "$1" = "--log" ]; then
+    	if [ "$1" == "--log" ]; then
      		case $2 in
         		"true"|"false") showLog=$2; shift 2 ;;
 	  		*) shift ;;
