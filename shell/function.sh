@@ -188,7 +188,7 @@ stream() {
     rm -f "$responsePath" "$errorPath"
 
     # Start request and handle response
-    curl -s "$api" -o "$responsePath" || echo "Error fetching API" > "$errorPath"
+    am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" || echo "Error fetching API" > "$errorPath"
 
     while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
         sleep 0.25
