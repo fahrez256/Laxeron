@@ -1,6 +1,6 @@
 $AXFUN
 import axeron.prop
-
+echo $1
 w="[ ! ]" #warn
 i="[ ? ]" #info
 p="[ • ]" #process
