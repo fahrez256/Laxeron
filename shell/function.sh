@@ -193,6 +193,7 @@ storm() {
 
     	if [ -e "$responsePath" ]; then
         	if [ "$exec" = true ]; then
+	 		"storm -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
             		"$runPath/$file_name" "$@"
