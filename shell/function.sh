@@ -449,6 +449,7 @@ ax() {
                 tmpVCode=$versionCode
                 tmpTStamp=$timeStamp
 
+		rm -rf "${cash}/${id}/*" && log "${counter}] [Old module removed."
   		mkdir -p "${cash}/${id}/tmp" && log "${counter}] [Tmp folder created."
                 pathParent=$(dirname $(unzip -l "$file" | awk '{print $4}' | grep 'axeron.prop' | head -n 1))
                 if [ -n "$pathParent" ]; then
@@ -456,7 +457,7 @@ ax() {
                     unzip -o "$file" -d "${cash}/${id}/tmp" > /dev/null 2>&1
                     for item in "${cash}/${id}/tmp/${pathParent%/}"/*; do
                         if [ -e "$item" ]; then
-                            mv -u "$item" "${cash}/${id}/"
+                            mv -f "$item" "${cash}/${id}/"
                         fi
                     done
                     rm -rf "${cash}/${id}/tmp"
