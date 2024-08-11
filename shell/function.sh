@@ -16,7 +16,7 @@ import() {
 	
 	if [ -z "$file" ]; then
 		    dir="$(dirname "$0")"
-		    while [ "$dir" != "/" ]; do
+		    while [ "$dir" != "/data/local/tmp/axeron_cash" ]; do
 			        # Cari file di direktori saat ini
 			        file=$(find "$dir" -maxdepth 1 -name "$filename" -print -quit)
 			        if [ -n "$file" ]; then
