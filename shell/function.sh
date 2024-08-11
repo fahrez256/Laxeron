@@ -177,6 +177,7 @@ storm() {
 	case $1 in
 		--fname|-fn) file_name="$2"; rm -f "{$runPath}/$file_name"; shift 2 ;;
 	esac
+ 	echo "after case $@"
 
     	if [ -z "$api" ]; then
         	echo "Error: No API URL provided."
