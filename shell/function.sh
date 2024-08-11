@@ -18,6 +18,7 @@ import() {
 	        	file=$(find "$dir" -maxdepth 1 -name "$filename" -print -quit)
 	        	[ -n "$file" ] && break
 	  		dir="$dir/.."
+     			echo $dir
 		done
 	fi
 	dos2unix $file
