@@ -165,6 +165,57 @@ EOF
 echo -e "$device_info"
 }
 
+stream() {
+    exec=false
+    file_name="response"
+
+    # Validate input
+    if [ $# -eq 0 ]; then
+        echo "Usage: storm <URL> [options]"
+        return 0
+    fi
+
+    # Parse command-line arguments
+    while [ $# -gt 0 ]; do
+        case $1 in
+            --exec|-x) exec=true; api=$2; shift 2 ;;
+            --fname|-fn) file_name=$2; shift 2 ;;
+            *) if [ -z "$api" ]; then api=$1; fi; shift ;;
+        esac
+    done
+
+    if [ -z "$api" ]; then
+        echo "Error: No API URL provided."
+        return 1
+    fi
+
+    local runPath="$(dirname $0)"
+    local responsePath="${THISPATH}/response"
+    local errorPath="${THISPATH}/error"
+
+    # Remove old files
+    rm -f "$responsePath" "$errorPath"
+
+    # Start request and handle response
+    curl -s "$api" -o "$responsePath" || echo "Error fetching API" > "$errorPath"
+
+    while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
+        sleep 0.25
+    done
+
+    if [ -e "$responsePath" ]; then
+        if [ "$exec" = true ]; then
+            cp "$responsePath" "$runPath/$file_name"
+            chmod +x "$runPath/$file_name"
+            "$runPath/$file_name" "$@"
+        else
+            cat "$responsePath"
+        fi
+    elif [ -e "$errorPath" ]; then
+        cat "$errorPath"
+    fi
+}
+
 storm() {
 	exec=false
 	file_name="response"
