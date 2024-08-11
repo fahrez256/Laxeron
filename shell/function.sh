@@ -22,6 +22,7 @@ import() {
 	        	dir="$(realpath "$dir")"
 	        	echo "$dir"
 	    	done
+      		echo $file
 	fi
 	dos2unix $file
 	source $file
