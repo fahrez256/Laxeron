@@ -29,34 +29,9 @@ if [ -n "$1" ] && [ "$1" == "-p" ];then
         fi
 fi
 
-axeron_core=$(cat <<-EOF
-Optione {
-  key:id="$id";
-  key:name="$name";
-  key:version="$version";
-  key:versionCode=${versionCode};
-  key:author="$author";
-  key:description="$description";
-  key:runPackage="$runPackage";
-  key:install="$install";
-  key:remove="$remove";
-}
-EOF
-)
+axeron_core="{}"
 
-core_info=$(cat <<-EOF
-Optione {
-  key:versionCode=${vCode};
-  key:versionAxeron=${vAxeron};
-  key:androidId="$androidId";
-  key:host="$host";
-  key:hostPath="$host_path";
-  key:idPath="$id_path";
-  key:versionName="$vName";
-  key:axeronSupport=${vAxeron};
-}
-EOF
-)
+core_info="{}"
 
 join_channel() {
   sleep 1
