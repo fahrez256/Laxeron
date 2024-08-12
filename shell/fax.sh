@@ -78,23 +78,27 @@ fax() {
 			continue
 		fi
 		
-		pathParent=$(dirname $(unzip -l "$file" | awk '{print $4}' | grep 'axeron.prop' | head -n 1))
-		pathCash="${pathCash:-"${cash}/${id}"}"
-		if [ -n "$pathParent" ]; then
-			cachePathParent="${cachePathProp}/${pathParent}"
-		else
-			cachePathParent="${cachePathProp}"
-		fi
+		# Mendapatkan direktori dari file 'axeron.prop' di dalam arsip zip
+		pathParent="$(dirname $(unzip -l "$file" | awk '/axeron.prop/ {print $4}' | head -n 1))"
+		[ "$pathParent" == "." ] && pathParent=""
 		
-		rm -r "$pathCash" && log "[Old module has ben removed.]"
-  	mkdir -p "$pathCash" && log "[New tmp folder has ben created.]"
-  	
-  	for item in "${cachePathParent%/}"/*; do
+		pathCash="${pathCash:-"${cash}/${id}"}"
+		cachePathParent="${cachePathProc}/${pathParent}"
+		
+		log "[pathParent]" "$cachePathParent"
+		
+		rm -r "$pathCash" > /dev/null 2>$1 && log "[Old module has been removed.]"
+		mkdir -p "$pathCash" && log "[Installing new module.]"
+		
+		for item in "${cachePathParent%/}"/*; do
 			if [ -e "$item" ]; then
 				mv -f "$item" "${pathCash}/"
 			fi
 		done
 		
+		pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
+		axprop --log "$showLog" "$pathCashProp" timeStamp "$tmpTStamp"
+		log "[\$] [Module successfully updated.]" "$(timeformat $tmpTStamp)"
 	done
 }
 
