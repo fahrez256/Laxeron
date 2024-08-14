@@ -168,12 +168,9 @@ storm() {
 
 	case $1 in
 	    --runPath|-rP) 
-	        if [ -n "$2" ] && [ -d "$2" ]; then
-	            runPath=$2
-	            shift 2
-	        else
-	            shift 1  # Shift hanya $1 jika $2 bukan direktori yang valid
-	        fi
+	        [ -d "$2" ] || [ "$#" -gt 1 ] && shift
+	        runPath=$2
+	        shift 2
 	        ;;
 	    *) 
 	        runPath="$(dirname $0)"
@@ -373,8 +370,10 @@ cashclear() {
 }
 
 shx() {
+	local path="/data/local/tmp/axeron_bin"
+ 	mkdir -p "$path"
 	echo "$THISPATH"
-	#storm -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
+	storm -rP "$path" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
 }
 
 fax() {
