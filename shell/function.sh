@@ -117,7 +117,10 @@ storm() {
 	 		#echo "storm -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
-            		[ "$cacheExec" = false ] && "${runPath}/$file_name" "$@"
+            		if [ "$cacheExec" = false ]; then
+	      			"${runPath}/$file_name" "$@"
+	  			am broadcast -a axeron.show.TOAST --es msg "Storm exec success" --ei duration 2000 > /dev/null 2>&1
+	  		fi
         	else
             		echo -e $(cat "$responsePath")
         	fi
