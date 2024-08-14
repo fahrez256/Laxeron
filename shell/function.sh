@@ -160,7 +160,7 @@ storm() {
     	exec=false
     	file_name="response"
      	runPath="$(dirname $0)"
-     	#echo "start $@"
+     	echo "start $@"
 
     	if [ $# -eq 0 ]; then
         	echo "Usage: storm <URL> [options]"
@@ -172,7 +172,6 @@ storm() {
 	        if [ -d "$2" ]; then
 	        	runPath="$2"
 	        	shift 2
-	  		return
 	  	else
     			shift 1
        		fi
