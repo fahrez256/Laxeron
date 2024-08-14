@@ -159,6 +159,7 @@ echo -e "$device_info"
 storm() {
     	exec=false
     	file_name="response"
+     	runPath="$(dirname $0)"
      	#echo "start $@"
 
     	if [ $# -eq 0 ]; then
@@ -168,12 +169,9 @@ storm() {
 
 	case $1 in
 	    --runPath|-rP) 
-	        [ -d "$2" ] || { runPath="$(dirname $0)"; shift; return }
-	        runPath=$2
+	        [ -d "$2" ] || { shift; return }
+	        runPath="$2"
 	        shift 2
-	        ;;
-	    *) 
-	        runPath="$(dirname $0)"
 	        ;;
 	esac
  	echo "runPath $runPath"
