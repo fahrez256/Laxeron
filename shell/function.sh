@@ -102,7 +102,6 @@ storm() {
 	#testCacheExec
  	if [ "$exec" = true ]; then
 		if [ -f "${runPath}/$file_name" ]; then
-  			echo "Storm use cache to execute"
   			"${runPath}/$file_name" "$@"
      			cacheExec=true
      		fi
