@@ -373,7 +373,7 @@ cashclear() {
 shx() {
 	local path="/data/local/tmp/axeron_bin"
  	mkdir -p "$path"
-	echo "$THISPATH"
+	#echo "$THISPATH"
 	storm -rP "$path" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
 }
 
