@@ -119,6 +119,7 @@ storm() {
             		chmod +x "$runPath/$file_name"
             		if [ "$cacheExec" = false ]; then
 	      			"${runPath}/$file_name" "$@"
+	  		else
 	  			am broadcast -a axeron.show.TOAST --es msg "Storm exec success" --ei duration 2000 > /dev/null 2>&1
 	  		fi
         	else
