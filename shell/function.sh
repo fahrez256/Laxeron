@@ -159,15 +159,31 @@ echo -e "$device_info"
 storm() {
     	exec=false
     	file_name="response"
-     	local runPath="$(dirname $0)"
-    	local responsePath="${THISPATH}/response"
-    	local errorPath="${THISPATH}/error"
      	#echo "start $@"
 
     	if [ $# -eq 0 ]; then
         	echo "Usage: storm <URL> [options]"
         	return 0
     	fi
+
+	case $1 in
+	    --runPath|-rP) 
+	        if [ -d "$2" ]; then
+	            runPath=$2
+	            shift 2
+	        else
+	            shift 1  # Shift hanya $1 jika $2 bukan direktori yang valid
+	        fi
+	        ;;
+	    *) 
+	        runPath="$(dirname $0)"
+	        ;;
+	esac
+ 	echo $runPath
+ 
+     	#local runPath="$(dirname $0)"
+    	local responsePath="${THISPATH}/response"
+    	local errorPath="${THISPATH}/error"
 
     	case $1 in
 		--exec|-x) exec=true; api=$([[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"); shift 2 ;;
