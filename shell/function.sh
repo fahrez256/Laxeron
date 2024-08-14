@@ -160,7 +160,7 @@ storm() {
     	exec=false
     	file_name="response"
      	runPath="$(dirname $0)"
-     	echo "start $@"
+     	#echo "start $@"
 
     	if [ $# -eq 0 ]; then
         	echo "Usage: storm <URL> [options]"
@@ -177,7 +177,7 @@ storm() {
        		fi
 	        ;;
 	esac
- 	echo "runPath $runPath"
+ 	#echo "runPath $runPath"
  
      	#local runPath="$(dirname $0)"
     	local responsePath="${THISPATH}/response"
