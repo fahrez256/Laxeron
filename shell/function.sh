@@ -172,6 +172,7 @@ storm() {
 	        if [ -d "$2" ]; then
 	        	runPath="$2"
 	        	shift 2
+	  		return
 	  	else
     			shift 1
        		fi
