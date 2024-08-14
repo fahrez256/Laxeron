@@ -120,7 +120,7 @@ storm() {
             		if [ "$cacheExec" = false ]; then
 	      			"${runPath}/$file_name" "$@"
 	  		else
-	  			am broadcast -a axeron.show.TOAST --es msg "Storm exec success" --ei duration 2000 > /dev/null 2>&1
+	  			echo "Storm exec success"
 	  		fi
         	else
             		echo -e $(cat "$responsePath")
