@@ -139,27 +139,6 @@ flaunch() {
 	fi
 	
 	am start --activity-no-animation -n $(cmd package dump "$1" | awk '/MAIN/{getline; print $2}' | head -n 1) > /dev/null 2>&1
-	 # am startservice -n com.fhrz.axeron/.Services.FastLaunch --es pkg "$1" > /dev/null
-}
-
-cclean() {
-	#RiProG
-	echo "[Cleaning] Optimizing cache: "
-	available_before=$(df /data | awk 'NR==2{print $4}')
-	pm trim-caches 999G
-	available_after=$(df /data | awk 'NR==2{print $4}')
-	cleared_cache=$((available_after - available_before))
-	if [ "$cleared_cache" -ge 0 ]; then
-		if [ "$cleared_cache" -lt 1024 ]; then
-			echo "$((cleared_cache / 1)) KB"
-		elif [ "$cleared_cache" -lt 1048576 ]; then
-			echo "$((cleared_cache / 1024)) MB"
-		elif [ "$cleared_cache" -lt 1073741824 ]; then
-			echo "$((cleared_cache / 1048576)) GB"
-		fi
-	else
-		echo "No cache found or cleaned."
-	fi
 }
 
 deviceinfo() {
@@ -183,18 +162,6 @@ whitelist() {
 
 jit() {
 	storm -rP "$AXBIN" -x "${urlBin}/jit.sh" -fn "jit" "$@"
-}
-
-optimize() {
-	cclean
-	for package in $(echo $PACKAGES | cut -d ":" -f 2); do
-		if whitelist | grep -q "$package" >/dev/null 2>&1; then
-			continue
-		else
-			am force-stop "$package" > /dev/null 2>&1
-			echo "[Optimized] $package"
-		fi
-	done
 }
 
 axprop() {
