@@ -1,18 +1,5 @@
 $AXFUN
-
-logview() { 
-	local ORANGE='\033[38;2;255;85;3m'
-	local GREY='\033[38;2;105;105;105m'
-	local NC='\033[0m'
-	echo -e "${ORANGE}${1}${NC} ${GREY}${2}${NC}"; 
-}
-
-#logview "[Parameter #$#]:" "$@"
-
 fax() {
-	local ORANGE='\033[38;2;255;85;3m'
-	local GREY='\033[38;2;105;105;105m'
-	local NC='\033[0m'
 	local showLog=true
 
 	log() { 
@@ -27,9 +14,6 @@ fax() {
 	fi
 	
 	local nameDir="$1"
-	local modulePath="/sdcard/AxeronModules"
-	local cachePath="/sdcard/AxeronModules/.cache"
-	local cash="/data/local/tmp/axeron_cash"
 	
 	start_time=$(date +%s%3N)
 	log "[Starting FAX]" "$nameDir"
@@ -85,7 +69,7 @@ fax() {
 		
 		log "[pathParent]" "$cachePathParent"
 		
-		rm -rf "$pathCash" && log "[Old module has been removed.]"
+		[ -d "$pathCash" ] rm -r "$pathCash" && log "[Old module has been removed.]"
 		mkdir -p "$pathCash" && log "[Installing new module.]"
 		
 		for item in "${cachePathParent%/}"/*; do
