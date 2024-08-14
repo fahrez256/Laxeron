@@ -34,4 +34,4 @@ toast() {
 	am broadcast -a axeron.show.TOAST --es title "$title" --es msg "$msg" --ei duration "$duration" > /dev/null 2>&1
 }
 
-toast $@
+toast "$@"
