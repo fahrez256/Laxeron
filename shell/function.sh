@@ -168,7 +168,7 @@ storm() {
 
 	case $1 in
 	    --runPath|-rP) 
-	        if [ -d "$2" ]; then
+	        if [ -n "$2" ] && [ -d "$2" ]; then
 	            runPath=$2
 	            shift 2
 	        else
