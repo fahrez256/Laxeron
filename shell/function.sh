@@ -99,12 +99,9 @@ storm() {
     	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
 
 	#testRealtimeExec
-     	if [ "$exec" = true ]; then
-		[ -f "${runPath}/$file_name" ] "${runPath}/$file_name" "$@" &
-	else
 
     	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-        	sleep 0.25
+        	sleep 0.1
     	done
 
     	if [ -e "$responsePath" ]; then
