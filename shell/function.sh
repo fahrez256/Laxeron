@@ -100,12 +100,12 @@ storm() {
     	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
 
 	#testCacheExec
- 	if [ "$exec" = true ]; then
-		if [ -f "${runPath}/$file_name" ]; then
-  			"${runPath}/$file_name" "$@"
-     			cacheExec=true
-     		fi
-	fi
+ # 	if [ "$exec" = true ]; then
+	# 	if [ -f "${runPath}/$file_name" ]; then
+ #  			"${runPath}/$file_name" "$@"
+ #     			cacheExec=true
+ #     		fi
+	# fi
 
     	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
         	#sleep 0.25
@@ -116,11 +116,7 @@ storm() {
 	 		#echo "storm -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
-            		if [ "$cacheExec" = false ]; then
-	      			"${runPath}/$file_name" "$@"
-	  		else
-	  			echo "Storm exec success"
-	  		fi
+            		"${runPath}/$file_name" "$@"
         	else
             		echo -e $(cat "$responsePath")
         	fi
