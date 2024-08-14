@@ -176,7 +176,7 @@ storm() {
 	        runPath="$(dirname $0)"
 	        ;;
 	esac
- 	echo $runPath
+ 	echo "runPath $runPath"
  
      	#local runPath="$(dirname $0)"
     	local responsePath="${THISPATH}/response"
