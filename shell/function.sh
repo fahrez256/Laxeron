@@ -9,8 +9,89 @@ export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 export AXFUN=". $FUNCTION"
 export AXBIN="/data/local/tmp/axeron_bin"
-mkdir -p "$AXBIN"
-whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
+local whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
+#color
+local ORANGE='\033[38;2;255;85;3m'
+local GREY='\033[38;2;105;105;105m'
+local NC='\033[0m'
+
+#constructor
+axfun_construct() {
+	mkdir -p "$AXBIN"
+}
+
+rozaq() {
+	if [ -z "$1" ]; then
+		echo "Error: No text provided."
+		return 1
+	fi
+	
+	echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
+}
+
+storm() {
+    	exec=false
+    	file_name="response"
+     	runPath="$(dirname $0)"
+     	#echo "start $@"
+
+    	if [ $# -eq 0 ]; then
+        	echo "Usage: storm <URL> [options]"
+        	return 0
+    	fi
+
+	case $1 in
+	    --runPath|-rP) 
+	        if [ -d "$2" ]; then
+	        	runPath="$2"
+	        	shift 2
+	  	else
+    			shift 1
+       		fi
+	        ;;
+	esac
+ 	#echo "runPath $runPath"
+ 
+     	#local runPath="$(dirname $0)"
+    	local responsePath="${THISPATH}/response"
+    	local errorPath="${THISPATH}/error"
+
+    	case $1 in
+		--exec|-x) exec=true; api=$([[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"); shift 2 ;;
+		* ) api=$1; shift ;;
+	esac
+
+	case $1 in
+		--fname|-fn) file_name="$2"; rm -f "{$runPath}/$file_name"; shift 2 ;;
+	esac
+ 	#echo "after case $@"
+
+    	if [ -z "$api" ]; then
+        	echo "Error: No API URL provided."
+        	return 1
+    	fi
+
+    	rm -f "$responsePath" "$errorPath"
+
+    	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
+
+    	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
+        	sleep 0.25
+    	done
+
+    	if [ -e "$responsePath" ]; then
+        	if [ "$exec" = true ]; then
+	 		#echo "storm -x $@"
+            		cp "$responsePath" "$runPath/$file_name"
+            		chmod +x "$runPath/$file_name"
+            		"$runPath/$file_name" "$@"
+        	else
+            		cat "$responsePath"
+        	fi
+    	elif [ -e "$errorPath" ]; then
+        	cat "$errorPath"
+    	fi
+}
 
 import() {
 	filename="$1"
@@ -107,15 +188,6 @@ pkglist() {
 	esac
 }
 
-rozaq() {
-	if [ -z "$1" ]; then
-		echo "Error: No text provided."
-		return 1
-	fi
-	
-	echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
-}
-
 flaunch() {
 	if [ $# -eq 0 ]; then
 		echo "Usage: flaunch <package_name>"
@@ -156,70 +228,6 @@ Optione {
 EOF
 )
 echo -e "$device_info"
-}
-
-storm() {
-    	exec=false
-    	file_name="response"
-     	runPath="$(dirname $0)"
-     	#echo "start $@"
-
-    	if [ $# -eq 0 ]; then
-        	echo "Usage: storm <URL> [options]"
-        	return 0
-    	fi
-
-	case $1 in
-	    --runPath|-rP) 
-	        if [ -d "$2" ]; then
-	        	runPath="$2"
-	        	shift 2
-	  	else
-    			shift 1
-       		fi
-	        ;;
-	esac
- 	#echo "runPath $runPath"
- 
-     	#local runPath="$(dirname $0)"
-    	local responsePath="${THISPATH}/response"
-    	local errorPath="${THISPATH}/error"
-
-    	case $1 in
-		--exec|-x) exec=true; api=$([[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"); shift 2 ;;
-		* ) api=$1; shift ;;
-	esac
-
-	case $1 in
-		--fname|-fn) file_name="$2"; rm -f "{$runPath}/$file_name"; shift 2 ;;
-	esac
- 	#echo "after case $@"
-
-    	if [ -z "$api" ]; then
-        	echo "Error: No API URL provided."
-        	return 1
-    	fi
-
-    	rm -f "$responsePath" "$errorPath"
-
-    	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
-
-    	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-        	sleep 0.25
-    	done
-
-    	if [ -e "$responsePath" ]; then
-        	if [ "$exec" = true ]; then
-	 		#echo "storm -x $@"
-            		cp "$responsePath" "$runPath/$file_name"
-            		chmod +x "$runPath/$file_name"
-            		"$runPath/$file_name" "$@"
-        	else
-            		cat "$responsePath"
-        	fi
-    	elif [ -e "$errorPath" ]; then
-        	cat "$errorPath"
-    	fi
 }
 
 xtorm() {
@@ -383,3 +391,5 @@ ax() {
 ax2() {
 	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/ax2.sh" -fn "ax2" "$@"
 }
+
+axfun_constructor $@
