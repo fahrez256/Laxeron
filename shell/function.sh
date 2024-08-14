@@ -386,15 +386,15 @@ cashclear() {
 }
 
 shx() {
-	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/bin/shx.sh" -fn "shx" "$@"
 }
 
 ax() {
-	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/ax.sh" -fn "ax" "$@"
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/bin/ax.sh" -fn "ax" "$@"
 }
 
 ax2() {
-	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/ax2.sh" -fn "ax2" "$@"
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/bin/ax2.sh" -fn "ax2" "$@"
 }
 
 axfun_construct $@
