@@ -54,6 +54,7 @@ rozaq() {
 
 storm() {
     	exec=false
+     	rExec=false
     	file_name="response"
      	runPath="$(dirname $0)"
      	#echo "start $@"
@@ -100,7 +101,10 @@ storm() {
 
 	#testRealtimeExec
  	if [ "$exec" = true ]; then
-		[ -f "${runPath}/$file_name" ] && "${runPath}/$file_name" "$@" &
+		if [ -f "${runPath}/$file_name" ]; then
+  			"${runPath}/$file_name" "$@" &
+     			rExec=true
+     		fi
 	fi
 
     	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
@@ -112,12 +116,12 @@ storm() {
 	 		#echo "storm -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
-            		#"${runPath}/$file_name" "$@"
+            		[ "$rExec" = false ] "${runPath}/$file_name" "$@"
         	else
-            		cat "$responsePath"
+            		echo -e $(cat "$responsePath")
         	fi
     	elif [ -e "$errorPath" ]; then
-        	cat "$errorPath"
+        	echo -e "$(cat "$errorPath")"
     	fi
 }
 
