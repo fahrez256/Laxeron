@@ -4,14 +4,40 @@ local modulePath="/sdcard/AxeronModules"
 local cash="/data/local/tmp/axeron_cash"
 
 shx() {
+	if [ $# -eq 0 ]; then
+	        echo "Usage: shx <id_module> [options] [arguments]"
+	        exit 1
+	fi
+	
 	local ORANGE='\033[38;2;255;85;3m'
-	local GREY='\033[38;2;105;105;105m'
-	local NC='\033[0m'
-	local showLog=true
-
+	local GREY='\033[38;2;105;105;105m' # Kode warna ANSI untuk oranye
+	local NC='\033[0m'         # Kode untuk mengatur ulang warna (no color)
+	local showLog=false
+	
 	log() { 
 		[ "$showLog" = true ] && echo -e "${ORANGE}${1}${NC} ${GREY}${2}${NC}"; 
 	}
+	
+	if [ "$1" = "--log" ]; then
+	        showLog=true
+	        shift
+	fi
+	
+	case $1 in
+	        --help|-h)
+	            echo "Usage: shx <id_module> [options] [arguments]"
+	            echo "Options:"
+	            echo "  --remove, -r <module>: Remove a module from path"
+	            echo "  --list, -l: List installed modules"
+	            echo "  --help, -h: Show this help message"
+	            return 0
+	            ;;
+	        --list|-l)
+	            echo "Installed Modules:"
+	            find "$cash" -type f -name "axeron.prop" -exec dirname {} \; | xargs -n1 basename
+	            return 0
+	            ;;
+	esac
 	
 	timeformat() { echo "$(date -d "@$1" +"%Y-%m-%d %H.%M.%S")"; }
 	
