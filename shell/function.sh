@@ -18,6 +18,7 @@ local NC='\033[0m'
 local modulePath="/sdcard/AxeronModules"
 local cachePath="/sdcard/AxeronModules/.cache"
 local cash="/data/local/tmp/axeron_cash"
+timeformat() { echo "$(date -d "@$1" +"%Y-%m-%d %H.%M.%S")"; }
 
 #constructor
 axfun_construct() {
@@ -396,4 +397,4 @@ ax2() {
 	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/ax2.sh" -fn "ax2" "$@"
 }
 
-axfun_constructor $@
+axfun_construct $@
