@@ -1,5 +1,5 @@
 $AXFUN
-fax() {
+ax() {
 	local showLog=true
 
 	log() { 
@@ -12,14 +12,17 @@ fax() {
 	fi
 	
 	local nameDir="$1"
+	local cachePath="/sdcard/AxeronModules/.cache"
+	local cash="/data/local/tmp/axeron_cash"
 	
 	start_time=$(date +%s%3N)
 	log "[Starting FAX]" "$nameDir"
 	
 	pathCash=$(find "$cash" -type d -iname "$nameDir")
-	
-	[ -n "$pathCash" ] && pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop") && log "[Path Cash]" "$pathCash"
-	[ -n "$pathCashProp" ] && dos2unix "$pathCashProp" && source "$pathCashProp" && log "[Loading prop from]" "$pathCashProp"
+	if [ -n "$pathCash" ]; then
+		pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
+		[ -n "$pathCashProp" ] && dos2unix "$pathCashProp" && source "$pathCashProp" && log "[Loading prop from]" "$pathCashProp"
+	fi
 
 	tmpVCode=${versionCode:-0}
 	tmpTStamp=${timeStamp:-0}
@@ -31,55 +34,63 @@ fax() {
 
 	ctr=0
 	idFound=false
+	cacheFile="/data/local/tmp/axeron_cache/modules_list.txt"
+	mkdir -p "/data/local/tmp/axeron_cache"
+	
+	find "$modulePath" -type f -iname "*.zip" > "$cacheFile"
 
-	IFS=$'\n'
-	for file in $(find "$modulePath" -type f -iname "*.zip*"); do
+	while IFS= read -r file; do
 		ctr=$((ctr + 1))
 		
+		# Mendapatkan path dari 'axeron.prop' dalam file zip
 		pathProp=$(unzip -l "$file" | awk '/axeron.prop/ {print $4; exit}')
+		[ -z "$pathProp" ] && continue
+		
 		timeStamp=$(stat -c %Y "$file")
 		cachePathProc="${cachePath}/proc${ctr}"
 		cachePathProp="${cachePathProc}/${pathProp}"
 		
+		mkdir -p "$cachePathProc"
 		unzip -o "$file" -d "$cachePathProc" > /dev/null
-		dos2unix "$cachePathProp"
+		#dos2unix "$cachePathProp"
 		source "$cachePathProp"
 		
+		# Cek ID dan logika
 		[ -n "$id" ] && echo "$id" | grep -iq "$nameDir" || continue
 		idFound=true
 		log "\n[Zip]" "$file"
 		log "[File Last Update]" "$(timeformat $timeStamp)"
 		
-		[ "$versionCode" -ge "$tmpVCode" ] || continue
+		# Cek jika versionCode dan timestamp sama, lewati proses instalasi
+		[ "$versionCode" -eq "$tmpVCode" ] && [ "$timeStamp" -eq "$tmpTStamp" ] && continue
+		log "[No changes detected. Skipping installation.]"
+		
+		# Cek versi terbaru
+		([ "$versionCode" -gt "$tmpVCode" ] || { [ "$versionCode" -eq "$tmpVCode" ] && [ "$timeStamp" -gt "$tmpTStamp" ]; }) || continue
 		tmpVCode=$versionCode
-		log "[Lastest Version]" "$versionCode"
-		
-		[ "$timeStamp" -gt "$tmpTStamp" ] || continue
 		tmpTStamp=$timeStamp
-		log "[Lastest Update]" "$(timeformat $tmpTStamp)"
+		log "[Latest Version]" "$versionCode"
+		log "[Latest Update]" "$(timeformat $tmpTStamp)"
 		
-		# Mendapatkan direktori dari file 'axeron.prop' di dalam arsip zip
 		pathParent="$(dirname $(unzip -l "$file" | awk '/axeron.prop/ {print $4}' | head -n 1))"
 		[ "$pathParent" == "." ] && pathParent=""
 		
-		pathCash="${pathCash:-"${cash}/${id}"}"
+		pathCash="${cash}/${id}"
 		cachePathParent="${cachePathProc}/${pathParent}"
 		
 		log "[pathParent]" "$cachePathParent"
 		
-		[ -d "$pathCash" ] rm -r "$pathCash" && log "[Old module has been removed.]"
+		[ -d "$pathCash" ] && rm -r "$pathCash" && log "[Old module has been removed.]"
 		mkdir -p "$pathCash" && log "[Installing new module.]"
 		
-		for item in "${cachePathParent%/}"/*; do
-			if [ -e "$item" ]; then
-				mv -f "$item" "${pathCash}/"
-			fi
-		done
+		# Optimalkan pemindahan file
+		[ -d "${cachePathParent%/}" ] && mv -f "${cachePathParent%/}"/* "$pathCash/"
 		
 		pathCashProp=$(find "$pathCash" -type f -iname "axeron.prop")
 		axprop --log "$showLog" "$pathCashProp" timeStamp "$tmpTStamp"
 		log "[\$] [Module successfully updated.]" "$(timeformat $tmpTStamp)"
-	done
+	done < "$cacheFile"
+
 	
 	if [ "$idFound" = false ]; then
 		log "[AX processing complete. No matching ID found.]"
@@ -98,7 +109,7 @@ fax() {
 		-r|--remove)
 			if [ -n "$remove" ]; then
 				shift 2
-				"${remove}" $@
+				"${remove}" "$@"
 				rm -rf "$pathCash"
 			else
 				echo "[ ! ] Cannot remove this module: Remove script not found."
@@ -107,7 +118,7 @@ fax() {
 		*)
 			if [ -n "$install" ]; then
 				shift
-				"${install}" $@
+				"${install}" "$@"
 			else
 				echo "[ ! ] Cannot install this module: Install script not found."
 			fi
@@ -115,4 +126,4 @@ fax() {
 	esac
 }
 
-fax $@
+ax "$@"
