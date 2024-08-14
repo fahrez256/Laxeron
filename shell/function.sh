@@ -112,7 +112,7 @@ storm() {
 	 		#echo "storm -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
-            		"${runPath}/$file_name" "$@"
+            		#"${runPath}/$file_name" "$@"
         	else
             		cat "$responsePath"
         	fi
