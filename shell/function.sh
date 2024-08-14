@@ -357,7 +357,8 @@ cashclear() {
 }
 
 shx() {
-	storm -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
+	echo "$THISPATH"
+	#storm -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
 }
 
 fax() {
