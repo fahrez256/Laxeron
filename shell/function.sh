@@ -120,7 +120,7 @@ import() {
 }
 
 toast() {
-	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/bin/toast.sh" -fn "ax2" "$@"
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/bin/toast.sh" -fn "toast" "$@"
 }
 
 openlink() {
@@ -132,34 +132,7 @@ buyvip() {
 }
 
 pkglist() {
-	case $1 in
-		-F|--full)
-			pkgfile="packages_full.list"
-			shift
-			;;
-		*)
-			pkgfile="packages.list"
-			;;
-	esac
-	case $1 in
-		-L|--getLabel)
-			if [ -z "$2" ]; then
-				echo "Usage: pkglist $1 <package>"
-				exit 0
-			fi
-			cat ${THISPATH}/${pkgfile} | grep "$2" | cut -d '|' -f 1
-			;;
-		-P|--getPackage)
-			if [ -z "$2" ]; then
-				echo "Usage: pkglist $1 <appname>"
-				exit 0
-			fi
-			cat ${THISPATH}/${pkgfile} | grep -i "$2" | cut -d '|' -f 2
-			;;
-		*)
-			cat ${THISPATH}/${pkgfile} | cut -d '|' -f 2
-			;;
-	esac
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/bin/pkglist.sh" -fn "pkglist" "$@"
 }
 
 flaunch() {
@@ -233,42 +206,7 @@ whitelist() {
 }
 
 jit() {
-	if [ $# -eq 0 ]; then
-		echo "Usage: jit [option/mode] <package_name>"
-		return 0
-	fi
-	
-	case $1 in
-		--check|-c)
-			if [ $2 == "--sdex" ]; then
-				cmd package dump "$3" | grep -B 1 status= | grep -A 1 "split_" | grep status= | sed 's/.*status=\([^]]*\).*/\1/' | head -n 1
-			else
-				cmd package dump "$2" | grep -B 1 status= | grep -A 1 "base.apk" | grep status= | sed 's/.*status=\([^]]*\).*/\1/'
-			fi
-			;;
-		--reset|-r)
-			if [ $2 == "--sdex" ]; then
-				pm compile --reset --secondary-dex "$3"
-			else
-				pm compile --reset "$2"
-			fi
-			;;
-		--help|-h)
-			echo "Usage: jit <mode> <package_name>"
-			echo "Option:"
-			echo "	--check, -c <package_name>: Check if the package is JIT compiled."
-			echo "	--reset, -r <package_name>: Reset JIT compilation for the package."
-			echo "Mode:"
-			echo "	[verify/speed/etc] <package_name>: Compile package using JIT mode."
-			;;
-		*)
-			if [ $2 == "--sdex" ]; then
-				pm compile -m "$1" --secondary-dex -f "$3"
-			else
-				pm compile -m "$1" -f "$2"
-			fi
-			;;
-	esac
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/bin/jit.sh" -fn "jit" "$@"
 }
 
 optimize() {
