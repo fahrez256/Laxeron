@@ -21,6 +21,27 @@ local cash="/data/local/tmp/axeron_cash"
 local urlBin="https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/bin"
 timeformat() { echo "$(date -d "@$1" +"%Y-%m-%d %H.%M.%S")"; }
 
+import() {
+	filename="$1"
+	file=$(find "$(dirname "$0")" -type f -name "$filename")
+	
+	if [ -z "$file" ]; then
+		    dir="$(dirname "$0")"
+		    while [ "$dir" != "/data/local/tmp/axeron_cash" ]; do
+			        # Cari file di direktori saat ini
+			        file=$(find "$dir" -maxdepth 1 -name "$filename")
+			        if [ -n "$file" ]; then
+			            file="$file"
+			            break
+			        fi
+			        dir="$(dirname "$dir")"
+		    done
+	fi
+	dos2unix $file
+	source $file
+ 	eval path_$(echo "$filename" | tr -cd '[:alnum:]_-')="$file"
+}
+
 #constructor
 axfun_construct() {
 	mkdir -p "$AXBIN"
@@ -99,27 +120,6 @@ storm() {
     	fi
 }
 
-import() {
-	filename="$1"
-	file=$(find "$(dirname "$0")" -type f -name "$filename")
-	
-	if [ -z "$file" ]; then
-		    dir="$(dirname "$0")"
-		    while [ "$dir" != "/data/local/tmp/axeron_cash" ]; do
-			        # Cari file di direktori saat ini
-			        file=$(find "$dir" -maxdepth 1 -name "$filename")
-			        if [ -n "$file" ]; then
-			            file="$file"
-			            break
-			        fi
-			        dir="$(dirname "$dir")"
-		    done
-	fi
-	dos2unix $file
-	source $file
- 	eval path_$(echo "$filename" | tr -cd '[:alnum:]_-')="$file"
-}
-
 toast() {
 	storm -rP "$AXBIN" -x "${urlBin}/toast.sh" -fn "toast" "$@"
 }
@@ -167,14 +167,13 @@ cclean() {
 }
 
 deviceinfo() {
-device_info=$(cat <<-EOF
+device_info="
 Optione {
-	key:checkJit="$(getprop dalvik.vm.usejit)";
-	key:checkVulkan="$(ls /system/lib/libvulkan.so > /dev/null 2>&1 && echo true || echo false)";
-	key:infoRender="$(getprop debug.hwui.renderer)";
+	key:checkJit=\"$(getprop dalvik.vm.usejit)\";
+	key:checkVulkan=\"$(ls /system/lib/libvulkan.so > /dev/null 2>&1 && echo true || echo false)\";
+	key:infoRender=\"$(getprop debug.hwui.renderer)\";
 }
-EOF
-)
+"
 echo -e "$device_info"
 }
 
@@ -183,27 +182,7 @@ xtorm() {
 }
 
 whitelist() {
-	[ ! -d "$(dirname "$whitelist_file")" ] && mkdir -p "$(dirname "$whitelist_file")"
-	[ ! -f "$whitelist_file" ] && touch "$whitelist_file" && echo "[Created] whitelist.list"
-	
-	local operation="${1:0:1}"
-	local packages="${1:1}"
-	
-	case $operation in
-		+)
-			echo "$packages" | tr ',' '\n' | while IFS= read -r package_name; do
-				grep -q "$package_name" "$whitelist_file" && echo "[Duplicate] $package_name" || { echo "$package_name" >> "$whitelist_file"; echo "[Added] $package_name"; }
-			done
-			;;
-		-)
-			echo "$packages" | tr ',' '\n' | while IFS= read -r package_name; do
-				grep -q "$package_name" "$whitelist_file" && { sed -i "/$package_name/d" "$whitelist_file"; echo "[Removed] $package_name"; } || echo "[Failed] $package_name"
-			done
-			;;
-		*)
-			cat "$whitelist_file"
-			;;
-	esac
+	storm -rP "$AXBIN" -x "${urlBin}/whitelist.sh" -fn "whitelist" "$@"
 }
 
 jit() {
