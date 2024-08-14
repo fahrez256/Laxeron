@@ -168,7 +168,7 @@ storm() {
 
 	case $1 in
 	    --runPath|-rP) 
-	        [ -d "$2" ] || [ "$#" -gt 1 ] && shift
+	        [ -d "$2" ] || shift; return
 	        runPath=$2
 	        shift 2
 	        ;;
