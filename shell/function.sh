@@ -356,6 +356,10 @@ cashclear() {
     	fi
 }
 
+shx() {
+	storm -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
+}
+
 fax() {
 	local ORANGE='\033[38;2;255;85;3m'
 	local GREY='\033[38;2;105;105;105m'
