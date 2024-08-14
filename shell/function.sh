@@ -54,7 +54,7 @@ rozaq() {
 
 storm() {
     	exec=false
-     	rExec=false
+     	cacheExec=false
     	file_name="response"
      	runPath="$(dirname $0)"
      	#echo "start $@"
@@ -99,11 +99,12 @@ storm() {
 
     	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
 
-	#testRealtimeExec
+	#testCacheExec
  	if [ "$exec" = true ]; then
 		if [ -f "${runPath}/$file_name" ]; then
+  			echo "Storm use cache to execute"
   			"${runPath}/$file_name" "$@" &
-     			rExec=true
+     			cacheExec=true
      		fi
 	fi
 
@@ -116,7 +117,7 @@ storm() {
 	 		#echo "storm -x $@"
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
-            		[ "$rExec" = false ] "${runPath}/$file_name" "$@"
+            		[ "$cacheExec" = false ] && "${runPath}/$file_name" "$@"
         	else
             		echo -e $(cat "$responsePath")
         	fi
