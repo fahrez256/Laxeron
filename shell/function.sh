@@ -100,11 +100,11 @@ storm() {
 
 	#testRealtimeExec
  	if [ "$exec" = true ]; then
-		[ -f "${runPath}/$file_name" ] "${runPath}/$file_name" "$@" &
+		[ -f "${runPath}/$file_name" ] && "${runPath}/$file_name" "$@" &
 	fi
 
     	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-        	sleep 0.1
+        	#sleep 0.25
     	done
 
     	if [ -e "$responsePath" ]; then
