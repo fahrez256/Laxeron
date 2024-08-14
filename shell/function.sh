@@ -8,6 +8,8 @@ export PACKAGES=$(echo -e $(cat ${THISPATH}/packages.list))
 export TMPFUNC="${THISPATH}/axeron.function"
 export FUNCTION="/data/local/tmp/axeron.function"
 export AXFUN=". $FUNCTION"
+export AXBIN="/data/local/tmp/axeron_bin"
+mkdir -p "$AXBIN"
 whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 
 import() {
@@ -371,15 +373,13 @@ cashclear() {
 }
 
 shx() {
-	local path="/data/local/tmp/axeron_bin"
- 	mkdir -p "$path"
-	#echo "$THISPATH"
-	storm -rP "$path" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/shx.sh" -fn "shx" "$@"
 }
 
 ax() {
-	local path="/data/local/tmp/axeron_bin"
- 	mkdir -p "$path"
-	#echo "$THISPATH"
-	storm -rP "$path" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/ax.sh" -fn "ax" "$@"
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/ax.sh" -fn "ax" "$@"
+}
+
+ax2() {
+	storm -rP "$AXBIN" -x "https://raw.githubusercontent.com/fahrez256/Laxeron/main/shell/ax2.sh" -fn "ax2" "$@"
 }
