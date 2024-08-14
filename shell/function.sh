@@ -14,6 +14,10 @@ local whitelist_file="/sdcard/AxeronModules/.config/whitelist.list"
 local ORANGE='\033[38;2;255;85;3m'
 local GREY='\033[38;2;105;105;105m'
 local NC='\033[0m'
+#local
+local modulePath="/sdcard/AxeronModules"
+local cachePath="/sdcard/AxeronModules/.cache"
+local cash="/data/local/tmp/axeron_cash"
 
 #constructor
 axfun_construct() {
