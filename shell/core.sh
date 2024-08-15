@@ -111,7 +111,7 @@ else
 	echo "$w ActivityManager & PackageManager not Permitted" && c_exit
 fi
 
-if echo "$PACKAGES" | grep -qw "$axeron"; then
+if echo "$(pkglist)" | grep -qw "$axeron"; then
 	echo "$s Axeron is detected [Fast Connect]" && sleep 1
 else
 	echo "$w Axeron not Installed"
