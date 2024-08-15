@@ -89,7 +89,7 @@ fi
 
 if [ -z "$runPackage" ]; then
 	echo "$w PackageName is empty" && c_exit
-elif ! echo "$PACKAGES" | grep -qw "$runPackage"; then
+elif ! echo "$(pkglist)" | grep -qw "$runPackage"; then
 	echo "$w PackageName is not detected or installed" && c_exit
 fi
 
