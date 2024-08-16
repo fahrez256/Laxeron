@@ -56,7 +56,8 @@ storm() {
     	exec=false
      	save=false
      	cacheExec=false
-    	file_name="response"
+     	usePath=false
+      	file_name="response"
      	runPath="$(dirname $0)"
      	#echo "start $@"
 
@@ -68,8 +69,8 @@ storm() {
 	case $1 in
 	    --runPath|-rP) 
 	        if [ -d "$2" ]; then
+	 		usePath=true
 	        	runPath="$2"
-	  		rm -f "$runPath"
 	        	shift 2
 	  	else
     			shift 1
