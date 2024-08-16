@@ -99,7 +99,9 @@ storm() {
         	return 1
     	fi
 
-    	rm -f "$responsePath" "$errorPath"
+    	rm -f "$responsePath"
+     	rm -f "$errorPath"
+      	rm -f "${runPath}/$file_name"
 
     	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
 
@@ -118,12 +120,12 @@ storm() {
     	if [ -e "$responsePath" ]; then
         	if [ "$exec" = true ]; then
 	 		#echo "storm -x $@"
-            		cp "$responsePath" "$runPath/$file_name"
-            		chmod +x "$runPath/$file_name"
+            		cp "$responsePath" "${runPath}/$file_name"
+            		chmod +x "${runPath}/$file_name"
             		"${runPath}/$file_name" "$@"
         	elif [ "$save" = true ]; then
- 			cp "$responsePath" "$runPath/$file_name"
-            		chmod +x "$runPath/$file_name"
+ 			cp "$responsePath" "${runPath}/$file_name"
+            		chmod +x "${runPath}/$file_name"
 	 	else
             		echo -e $(cat "$responsePath")
         	fi
