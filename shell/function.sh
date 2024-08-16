@@ -69,6 +69,7 @@ storm() {
 	    --runPath|-rP) 
 	        if [ -d "$2" ]; then
 	        	runPath="$2"
+	  		rm -f "$runPath"
 	        	shift 2
 	  	else
     			shift 1
