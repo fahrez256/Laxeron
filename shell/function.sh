@@ -119,7 +119,7 @@ storm() {
             		cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
             		"${runPath}/$file_name" "$@"
-        	else if [ "$save" = true ]; then
+        	elif [ "$save" = true ]; then
  			cp "$responsePath" "$runPath/$file_name"
             		chmod +x "$runPath/$file_name"
 	 	else
