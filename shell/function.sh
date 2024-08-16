@@ -101,7 +101,7 @@ storm() {
 
     	rm -f "$responsePath"
      	rm -f "$errorPath"
-      	rm -f "${runPath}/$file_name"
+      	[ "usePath" = true ] && rm -f "${runPath}/$file_name"
 
     	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
 
