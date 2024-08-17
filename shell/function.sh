@@ -77,9 +77,7 @@ storm() {
        		fi
 	        ;;
 	esac
- 	#echo "runPath $runPath"
  
-     	#local runPath="$(dirname $0)"
     	local responsePath="${THISPATH}/response"
     	local errorPath="${THISPATH}/error"
 
@@ -90,9 +88,8 @@ storm() {
 	esac
 
 	case $1 in
-		--fname|-fn) file_name="$2"; rm -f "{$runPath}/$file_name"; shift 2 ;;
+		--fname|-fn) file_name="$2"; rm -f "${runPath}/$file_name"; shift 2 ;;
 	esac
- 	#echo "after case $@"
 
     	if [ -z "$api" ]; then
         	echo "Error: No API URL provided."
@@ -101,20 +98,10 @@ storm() {
 
     	rm -f "$responsePath"
      	rm -f "$errorPath"
-      	[ "usePath" = true ] && rm -f "${runPath}/$file_name"
 
     	am startservice -n com.fhrz.axeron/.Storm --es api "$api" --es path "$responsePath" > /dev/null 2>&1
 
-	#testCacheExec
- # 	if [ "$exec" = true ]; then
-	# 	if [ -f "${runPath}/$file_name" ]; then
- #  			"${runPath}/$file_name" "$@"
- #     			cacheExec=true
- #     		fi
-	# fi
-
     	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-        	#sleep 0.25
     	done
 
     	if [ -e "$responsePath" ]; then
@@ -127,10 +114,10 @@ storm() {
  			cp "$responsePath" "${runPath}/$file_name"
             		chmod +x "${runPath}/$file_name"
 	 	else
-            		echo -e $(cat "$responsePath")
+            		cat "$responsePath" && echo
         	fi
     	elif [ -e "$errorPath" ]; then
-        	echo -e "$(cat "$errorPath")"
+        	cat "$errorPath") && echo
     	fi
 }
 
