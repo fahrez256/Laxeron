@@ -117,7 +117,7 @@ storm() {
             		cat "$responsePath" && echo
         	fi
     	elif [ -e "$errorPath" ]; then
-        	cat "$errorPath") && echo
+        	cat "$errorPath" && echo
     	fi
 }
 
