@@ -18,6 +18,7 @@ if ! echo "$CORE" | grep -q "$this_core"; then
   exit 0
 fi
 echo "You has ben banned"
+echo "You need to buy Axeron VIP"
 exit 1
 if storm "https://raw.githubusercontent.com/fahrez256/Laxeron/main/ban_list.txt" | grep -iq "$AXERONID"; then
   echo "You has ben banned"
